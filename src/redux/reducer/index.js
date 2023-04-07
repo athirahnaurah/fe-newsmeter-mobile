@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { globalReducer } from './global';
 import { kategoriReducer } from './kategori';
 import { mediaReducer } from './media';
 import {newsReducer} from './news';
@@ -9,6 +10,7 @@ const reducer = combineReducers({
     kategoriReducer,
     mediaReducer,
     rekomendasiReducer,
+    globalReducer,
 });
 
 export default reducer;

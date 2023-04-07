@@ -3,6 +3,9 @@ import {Logo, SportImg} from '../../assets';
 const initStateNewsList = {
   newsList: [],
   news: {},
+  bykategori: [],
+  newsbykategori: {},
+  // post: []
   // newsList: [
   //   {
   //     title: 'Tottenham Hotspur Masih Tanpa Conte saat Lawan Chelsea',
@@ -80,6 +83,18 @@ export const newsReducer = (state = initStateNewsList, action) => {
     return {
       ...state,
       news: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWSLIST_BY_KATEGORI') {
+    return {
+      ...state,
+      bykategori: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWS_BY_KATEGORI') {
+    return {
+      ...state,
+      newsbykategori: action.value,
     };
   }
   return state;

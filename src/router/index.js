@@ -14,6 +14,8 @@ import {
   MinatKategori,
   KategoriBerita,
   MediaBerita,
+  BeritaByKategori,
+  BeritaByMedia,
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -93,16 +95,16 @@ const Router = () => {
       />
 
       <Stack.Screen
-        name="KategoriBerita"
-        component={KategoriBerita}
+        name="BeritaByKategori"
+        component={BeritaByKategori}
         // options={{headerMode: 'none'}}
         options={{headerShown: false}}
         // options={{headerShown: false, cardStyleInterpolator: fadeConfig}}
       />
 
       <Stack.Screen
-        name="MediaBerita"
-        component={MediaBerita}
+        name="BeritaByMedia"
+        component={BeritaByMedia}
         // options={{headerMode: 'none'}}
         options={{headerShown: false}}
         // options={{headerShown: false, cardStyleInterpolator: fadeConfig}}

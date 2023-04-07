@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import ms from '../../../utils/ms';
 import { windowWidth } from '../../../utils/ms/constant';
 
-const Input = ({label, password, search, ...props}) => {
+const Input = ({label, password, nama, email, pass, search, ...props}) => {
   const [hidePassword, setHidePassword] = useState(password);
 
   return (
@@ -29,6 +29,22 @@ const Input = ({label, password, search, ...props}) => {
           </TouchableOpacity>
         )}
       </View>
+      {/* {nama && (
+          <View style={[ms.pdH(25), ms.pdB(8)]}>
+            <Text style={[ms.fzBC(12, '500', '#D9435E')]}>Nama perlu diisi</Text>
+          </View>
+      )}
+      {email && (
+          <View style={[ms.pdH(25), ms.pdB(8)]}>
+            <Text style={[ms.fzBC(12, '500', '#D9435E')]}>Email perlu diisi</Text>
+          </View>
+      )}
+      {pass && (
+          <View style={[ms.pdH(25), ms.pdB(8)]}>
+            <Text style={[ms.fzBC(12, '500', '#D9435E')]}>Password perlu diisi</Text>
+          </View>
+      )} */}
+
     </View>
   );
 };

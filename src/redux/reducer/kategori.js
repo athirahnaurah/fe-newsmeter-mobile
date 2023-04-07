@@ -16,79 +16,80 @@ import {
 } from '../../assets';
 
 const initStateNewsList = {
+  kategoriList: [],
   // newsList: {},
-  kategoriList: [
-    {
-      id: 1,
-      name: 'Politik',
-      icon: IconPolitik,
-    },
-    {
-      id: 2,
-      name: 'Nasional',
-      icon: IconNasional,
-    },
-    {
-      id: 3,
-      name: 'Metropolitan',
-      icon: IconMetropolitan,
-    },
-    {
-      id: 4,
-      name: 'Regional',
-      icon: IconRegional,
-    },
-    {
-      id: 5,
-      name: 'News',
-      icon: IconNews,
-    },
-    {
-      id: 6,
-      name: 'Ekonomi',
-      icon: IconEkonomi,
-    },
-    {
-      id: 7,
-      name: 'Hiburan',
-      icon: IconHiburan,
-    },
-    {
-      id: 8,
-      name: 'Tekno',
-      icon: IconTekno,
-    },
-    {
-      id: 9,
-      name: 'Sport',
-      icon: IconSport,
-    },
-    {
-      id: 10,
-      name: 'Otomotif',
-      icon: IconOtomotif,
-    },
-    {
-      id: 11,
-      name: 'Travel',
-      icon: IconTravel,
-    },
-    {
-      id: 12,
-      name: 'Kuliner',
-      icon: IconKuliner,
-    },
-    {
-      id: 13,
-      name: 'Kesehatan',
-      icon: IconKesehatan,
-    },
-    {
-      id: 14,
-      name: 'Bola',
-      icon: IconBola,
-    },
-  ],
+  // kategoriList: [
+  //   {
+  //     id: 1,
+  //     name: 'Politik',
+  //     icon: IconPolitik,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Nasional',
+  //     icon: IconNasional,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Metropolitan',
+  //     icon: IconMetropolitan,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'Regional',
+  //     icon: IconRegional,
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'News',
+  //     icon: IconNews,
+  //   },
+  //   {
+  //     id: 6,
+  //     name: 'Ekonomi',
+  //     icon: IconEkonomi,
+  //   },
+  //   {
+  //     id: 7,
+  //     name: 'Hiburan',
+  //     icon: IconHiburan,
+  //   },
+  //   {
+  //     id: 8,
+  //     name: 'Tekno',
+  //     icon: IconTekno,
+  //   },
+  //   {
+  //     id: 9,
+  //     name: 'Sport',
+  //     icon: IconSport,
+  //   },
+  //   {
+  //     id: 10,
+  //     name: 'Otomotif',
+  //     icon: IconOtomotif,
+  //   },
+  //   {
+  //     id: 11,
+  //     name: 'Travel',
+  //     icon: IconTravel,
+  //   },
+  //   {
+  //     id: 12,
+  //     name: 'Kuliner',
+  //     icon: IconKuliner,
+  //   },
+  //   {
+  //     id: 13,
+  //     name: 'Kesehatan',
+  //     icon: IconKesehatan,
+  //   },
+  //   {
+  //     id: 14,
+  //     name: 'Bola',
+  //     icon: IconBola,
+  //   },
+  // ],
   kategori: {},
 };
 

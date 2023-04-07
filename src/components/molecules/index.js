@@ -4,6 +4,7 @@ import Input from "./Input";
 import Kategori from "./Kategori";
 import Media from "./Media";
 import Rekomendasi from "./Rekomendasi";
+import InputCheck from "./InputCheck";
 
 export{
     BottomNavigator,
@@ -12,4 +13,5 @@ export{
     Kategori,
     Media,
     Rekomendasi,
+    InputCheck
 }
