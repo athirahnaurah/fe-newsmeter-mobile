@@ -34,7 +34,7 @@ export const getNews = (onCallback = res => {}, onError = err => {}) => dispatch
         console.log('result', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
-        dispatch({ type: 'SET_KATEGORILIST', value: [...res.data]});
+        dispatch({ type: 'SET_KATEGORILIST', value: res.data});
         // onCallback(res.data)
     })
     .catch((err) => {
@@ -55,6 +55,29 @@ export const getNews = (onCallback = res => {}, onError = err => {}) => dispatch
         // dispatch({ type: 'SET_POST', value: [...res.data] })
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         dispatch({ type: 'SET_NEWSLIST_BY_KATEGORI', value: [...res.data]});
+        // onCallback(res.data)
+    })
+    .catch((err) => {
+        console.log('error', err);
+        onError(err)
+    })
+    .finally(() => {
+        dispatch(setLoadingScreen(false));
+      });
+  };
+
+  export const getNewsByMedia = (media, onCallback = res => {}, onError = err => {}) => dispatch => {
+    // const paramList = [{}];
+    dispatch(setLoadingScreen(true));
+
+    console.log('media', media);
+    axios.get(`${ApiConfig}/api/get/news/media/${media}/100`, 
+    {headers: ApiHeader})
+    .then((res) => {
+        console.log('result', res);
+        // dispatch({ type: 'SET_POST', value: [...res.data] })
+        // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
+        dispatch({ type: 'SET_NEWSLIST_BY_MEDIA', value: [...res.data]});
         // onCallback(res.data)
     })
     .catch((err) => {

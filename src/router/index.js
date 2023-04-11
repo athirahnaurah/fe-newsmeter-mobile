@@ -12,10 +12,11 @@ import {
   Login,
   Registrasi,
   MinatKategori,
-  KategoriBerita,
-  MediaBerita,
   BeritaByKategori,
   BeritaByMedia,
+  DetailBeritaByKategori,
+  DetailBeritaByMedia,
+  DaftarMedia,
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -109,10 +110,24 @@ const Router = () => {
         options={{headerShown: false}}
         // options={{headerShown: false, cardStyleInterpolator: fadeConfig}}
       />
-
       <Stack.Screen
         name="DetailBerita"
         component={DetailBerita}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailBeritaByKategori"
+        component={DetailBeritaByKategori}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DetailBeritaByMedia"
+        component={DetailBeritaByMedia}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="DaftarMedia"
+        component={DaftarMedia}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

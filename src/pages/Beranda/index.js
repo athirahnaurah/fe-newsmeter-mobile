@@ -16,7 +16,7 @@ import {Logo, SportImg} from '../../assets/images';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {useDispatch, useSelector} from 'react-redux';
 import NewsList from '../../components/molecules/NewsList';
-import {getKategori, getNews} from '../../redux/action';
+import {getKategori, getMedia, getNews} from '../../redux/action';
 import {useEffect} from 'react';
 import Loading from '../../components/molecules/Loading';
 import {useCallback} from 'react';
@@ -58,7 +58,9 @@ const Beranda = ({navigation}) => {
   };
 
   const init = async () => {
-    await dispatch(getNews(newsList));    
+    await dispatch(getNews(newsList));   
+    await dispatch(getMedia());
+    await dispatch(getKategori()); 
   };
 
   const onRefresh = useCallback(() => {
@@ -90,7 +92,7 @@ const Beranda = ({navigation}) => {
     <SafeAreaView style={[ms.containerPage]}>
       {/* Header */}
       <View style={styles.background}>
-        <Image source={Logo} style={styles.logo} />
+        <Image source={Logo} />
       </View>
       {/* Title Terbaru */}
       <View style={styles.title}>
@@ -168,12 +170,8 @@ const styles = StyleSheet.create({
     width: (windowWidth * 100) / 100,
     height: (windowHeight * 6) / 100,
   },
-  logo: {
-    height: (windowHeight * 6) / 100,
-    width: (windowWidth * 35) / 100,
-  },
   title: {
-    marginTop: 13,
+    marginVertical: 10,
     marginLeft: 20,
   },
   loadMoreActive: {

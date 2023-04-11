@@ -5,6 +5,8 @@ const initStateNewsList = {
   news: {},
   bykategori: [],
   newsbykategori: {},
+  bymedia: [],
+  newsbymedia: {},
   // post: []
   // newsList: [
   //   {
@@ -95,6 +97,18 @@ export const newsReducer = (state = initStateNewsList, action) => {
     return {
       ...state,
       newsbykategori: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWSLIST_BY_MEDIA') {
+    return {
+      ...state,
+      bymedia: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWS_BY_MEDIA') {
+    return {
+      ...state,
+      newsbymedia: action.value,
     };
   }
   return state;

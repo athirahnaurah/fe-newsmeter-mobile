@@ -6,7 +6,8 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  RefreshControl
+  RefreshControl,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Gap, Input, Kategori, Media} from '../../components';
@@ -16,7 +17,7 @@ import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import KategoriBerita from '../BeritaByKategori';
-import {getKategori} from '../../redux/action';
+import {getKategori, getMedia} from '../../redux/action';
 import {useCallback, useEffect} from 'react';
 import {
   IconBola,
@@ -38,99 +39,136 @@ import {
 const Jelajah = ({navigation}) => {
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
-  const {mediaList} = useSelector(state => state.mediaReducer);
+  const {mediaList, medList} = useSelector(state => state.mediaReducer);
   const {newsList} = useSelector(state => state.newsReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [isclicked, setClicked] = useState("");
-  
+  const [isclicked, setClicked] = useState('');
+
   const [listkategori, setListKategori] = useState([
     {
       id: 1,
       name: 'politik',
-      icon: IconPolitik,
+      img: IconPolitik,
     },
     {
       id: 2,
       name: 'nasional',
-      icon: IconNasional,
+      img: IconNasional,
     },
     {
       id: 3,
       name: 'metropolitan',
-      icon: IconMetropolitan,
+      img: IconMetropolitan,
     },
     {
       id: 4,
       name: 'regional',
-      icon: IconRegional,
+      img: IconRegional,
     },
     {
       id: 5,
       name: 'news',
-      icon: IconNews,
+      img: IconNews,
     },
     {
       id: 6,
       name: 'ekonomi',
-      icon: IconEkonomi,
+      img: IconEkonomi,
     },
     {
       id: 7,
       name: 'hiburan',
-      icon: IconHiburan,
+      img: IconHiburan,
     },
     {
       id: 8,
       name: 'tekno',
-      icon: IconTekno,
+      img: IconTekno,
     },
     {
       id: 9,
       name: 'sport',
-      icon: IconSport,
+      img: IconSport,
     },
     {
       id: 10,
       name: 'otomotif',
-      icon: IconOtomotif,
+      img: IconOtomotif,
     },
     {
       id: 11,
       name: 'travel',
-      icon: IconTravel,
+      img: IconTravel,
     },
     {
       id: 12,
       name: 'kuliner',
-      icon: IconKuliner,
+      img: IconKuliner,
     },
     {
       id: 13,
       name: 'kesehatan',
-      icon: IconKesehatan,
+      img: IconKesehatan,
     },
     {
       id: 14,
       name: 'bola',
-      icon: IconBola,
+      img: IconBola,
     },
   ]);
 
-  const capitalizeFirstLetter = (string) => {
+  const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+  };
 
-  const onClickKategori = (kategori) => {
-    if(kategori == listkategori?.name){
-      setClicked(kategori)
+  const onClickKategori = kategori => {
+    if (kategori == kategoriList) {
+      setClicked(kategori);
       console?.log('kategori: ', kategori);
     } else {
-      setClicked("")
+      setClicked('');
     }
-  }
+    // setClicked(kategori)
+  };
+
+  const onClickMedia = media => {
+    if (media == medList) {
+      setClicked(media);
+      console?.log('media: ', media);
+    } else {
+      setClicked('');
+    }
+    // setClicked(kategori)
+  };
 
   const init = async () => {
-    // await dispatch(getKategori(kategoriList));
+    // await dispatch(getMedia());
+    // await dispatch(getKategori());
+  };
+
+  console.log('kategori', kategoriList);
+  
+  const imageSelect = kategori => {
+  
+    const kategoriArray = {
+      'Politik': require('../../assets/icon/kategori/Politik.png'),  
+      'Bola': require('../../assets/icon/kategori/Bola.png'),  
+      'Ekonomi': require('../../assets/icon/kategori/Ekonomi.png'),  
+      'Hiburan': require('../../assets/icon/kategori/Hiburan.png'),  
+      'Kesehatan': require('../../assets/icon/kategori/Kesehatan.png'),  
+      'Kuliner': require('../../assets/icon/kategori/Kuliner.png'),  
+      'Metropolitan': require('../../assets/icon/kategori/Metropolitan.png'),  
+      'Nasional': require('../../assets/icon/kategori/Nasional.png'),  
+      'News': require('../../assets/icon/kategori/News.png'),  
+      'Otomotif': require('../../assets/icon/kategori/Otomotif.png'),  
+      'Sport': require('../../assets/icon/kategori/Sport.png'),  
+      'Regional': require('../../assets/icon/kategori/Regional.png'),  
+      'Tekno': require('../../assets/icon/kategori/Tekno.png'),  
+      'Otomotif': require('../../assets/icon/kategori/Otomotif.png'),  
+      'Travel': require('../../assets/icon/kategori/Travel.png'),  
+    };
+  
+    return kategoriArray[kategori];
   };
 
   const wait = timeout => {
@@ -155,8 +193,8 @@ const Jelajah = ({navigation}) => {
     <SafeAreaView style={[ms.containerPage]}>
       <ScrollView
         refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {/* Search Bar */}
         <View style={[styles.cardInput]}>
           <Icon
@@ -180,7 +218,7 @@ const Jelajah = ({navigation}) => {
               Kategori
             </Text>
             <Gap
-              height={3}
+              height={2}
               backgroundColor={colors.grey3}
               width={(windowWidth * 65) / 100}
             />
@@ -188,63 +226,75 @@ const Jelajah = ({navigation}) => {
 
           {/* List Berita By Kategori */}
           <View style={[styles.cardKategori]}>
-            {listkategori?.map((kategori, index) => {
-              return (
-                <TouchableOpacity
-                  key={index}
-                  kategori={kategori}
-                  onPress={()=>{
-                    onClickKategori(kategori?.name)
-                    dispatch({type: 'SET_KATEGORI', value: kategori?.name})
-                    navigation.navigate("BeritaByKategori")
-                  }}
+            {kategoriList?.map((kategoriparam, index) => (
+              <TouchableOpacity
+                key={index}
+                kategori={kategoriparam}
+                onPress={() => {
+                  onClickKategori(kategoriparam);
+                  dispatch({type: 'SET_KATEGORI', value: kategoriparam});
+                  navigation.navigate('BeritaByKategori');
+                }}
+                style={[
+                  kategoriparam == isclicked
+                    ? styles.activebox
+                    : styles?.inactivebox,
+                ]}>
+                <View>
+                <Image source={imageSelect(kategoriparam)} style={[ms.width(20), ms.height(20)]} />
+                {/* <Image source={require('../../assets/icon/kategori/'+kategoriparam+'.png')} style={[ms.width(20), ms.height(20)]}/> */}
+                  {/* <Image source={kategori?.img} style={[ms.width(20), ms.height(20)]} /> */}
+                </View>
+                <Text
                   style={[
-                    kategori?.name == isclicked ?
-                    styles.activebox : styles?.inactivebox
-                  ]}
-                >
-                  <Text
-                    style={[
-                    kategori?.name == isclicked ?
-                      ms.fzBC(13, '650', colors.white) :
-                      ms.fzBC(13, '650', colors.greyDark)
-                    ]}>
-                    {capitalizeFirstLetter(kategori?.name)}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
-            
+                    kategoriparam == isclicked
+                      ? ms.fzBC(13, '650', colors.white)
+                      : ms.fzBC(13, '650', colors.greyDark),
+                  ]}>
+                  {kategoriparam}
+                </Text>
+              </TouchableOpacity>
+            ))}
           </View>
         </View>
 
         {/* Media */}
         <View style={[styles.cardMedia]}>
-          <View style={[ms.row, ms.ai('center'), ms.mgB(15)]}>
+          <View style={[ms.row, ms.ai('flex-end'), ms.mgB(15)]}>
             <Text style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
               Media
             </Text>
-            <Gap
-              height={3}
-              backgroundColor={colors.grey3}
-              width={(windowWidth * 70) / 100}
-            />
+            <View style={[ms.col]}>
+              <TouchableOpacity
+                style={[ms.mgH(10), ms.ai('flex-end'), ms.pdB(3)]}
+                onPress={() => {
+                  navigation.navigate('DaftarMedia');
+                }}>
+                <Text style={[ms.fzBC(12, '400', colors.greyDark)]}>
+                  Lihat Semua
+                </Text>
+              </TouchableOpacity>
+              <Gap
+                height={1}
+                backgroundColor={colors.grey3}
+                width={(windowWidth * 70) / 100}
+              />
+            </View>
           </View>
 
           <View>
             <ScrollView horizontal={true} showsHorizontalScrollIndicator={true}>
-              {mediaList?.slice(0,10).map((media, index) => {
-                return (
+              {medList?.slice(0, 10).map((media, index) => 
                   <Media
                     key={index}
-                    media={media}
+                    med={media}
                     onPress={() => {
-                      dispatch({type: 'SET_MEDIA', value: media});
+                      onClickMedia(media);
+                      dispatch({type: 'SET_MED', value: media});
                       navigation.navigate('BeritaByMedia');
                     }}
                   />
-                );
-              })}
+                )}
             </ScrollView>
           </View>
         </View>
@@ -298,7 +348,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.lightblue,
     borderRadius: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   activebox: {
     width: (windowWidth * 39) / 100,
@@ -308,7 +358,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: colors.blue,
     borderRadius: 10,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   // inner: {
   //   flex: 1,
@@ -316,7 +366,8 @@ const styles = StyleSheet.create({
   // },
 });
 
-{/* {kategoriList.map((kategori, index) => {
+{
+  /* {kategoriList.map((kategori, index) => {
             return (
               <Kategori
                 key={index}
@@ -327,4 +378,5 @@ const styles = StyleSheet.create({
                 }}
               />
             );
-          })} */}
+          })} */
+}

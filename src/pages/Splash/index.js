@@ -2,6 +2,7 @@ import { ImageBackground, StyleSheet, Text, View, Image } from 'react-native'
 import React, {useEffect } from 'react'
 import { Logo } from '../../assets/images'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { windowHeight, windowWidth } from '../../utils/ms/constant'
 
 const Splash = ({ navigation }) => {
 
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     logo: {
-        
+        width: (windowWidth*50)/100,
+        height: (windowHeight*4)/100
     }
 })

@@ -62,7 +62,7 @@ const DetailBerita = ({navigation}) => {
 
   return (
 
-    <SafeAreaView>
+    <SafeAreaView style={[ms.containerPage]}>
       <ScrollView>
         {/* Header */}
         <View style={styles.container}>
@@ -80,7 +80,7 @@ const DetailBerita = ({navigation}) => {
           </TouchableOpacity>
 
           <View style={[styles.background]}>
-            <Image source={Logo} style={styles.logo} />
+            <Image source={Logo}  />
           </View>
         </View>
 
@@ -172,12 +172,9 @@ const styles = StyleSheet.create({
   background: {
     width: (windowWidth * 70) / 100,
     height: (windowHeight * 6) / 100,
-  },
-  logo: {
-    height: (windowHeight * 6) / 100,
-    width: (windowWidth * 35) / 100,
+    justifyContent: 'center'
   },
   back: {
-    width: (windowWidth * 30) / 100,
+    width: (windowWidth * 35) / 100,
   },
 });

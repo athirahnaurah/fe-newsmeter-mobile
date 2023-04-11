@@ -24,7 +24,7 @@ import {slice} from 'lodash';
 
 const BeritaByKategori = ({navigation}) => {
   const dispatch = useDispatch();
-  const {bykategori} = useSelector(state => state.newsReducer);
+  const {bykategori, newsbykategori} = useSelector(state => state.newsReducer);
   const {kategori} = useSelector(state => state.kategoriReducer);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
@@ -73,21 +73,21 @@ const BeritaByKategori = ({navigation}) => {
     <SafeAreaView style={[ms.containerPage]}>
       {/* Header */}
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={styles.back}>
-          <Icon
-            name="arrowleft"
-            size={24}
-            color={colors.white}
-            style={[ms.mgL(20)]}
-          />
-        </TouchableOpacity>
+      <TouchableOpacity
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.back}>
+            <Icon
+              name="arrowleft"
+              size={24}
+              color={colors.white}
+              style={[ms.mgL(20)]}
+            />
+          </TouchableOpacity>
 
         <View style={[styles.background]}>
-          <Image source={Logo} style={styles.logo} />
+          <Image source={Logo} />
         </View>
       </View>
 
@@ -119,7 +119,7 @@ const BeritaByKategori = ({navigation}) => {
                   // height={65}
                   onPress={() => {
                     dispatch({type: 'SET_NEWS_BY_KATEGORI', value: news});
-                    navigation.navigate('DetailBerita');
+                    navigation.navigate('DetailBeritaByKategori');
                   }}
                 />
               );
@@ -177,9 +177,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   back: {
-    width: (windowWidth * 30) / 100,
+    width: (windowWidth * 35) / 100,
   },
   background: {
+    justifyContent: 'center',
     width: (windowWidth * 70) / 100,
     height: (windowHeight * 6) / 100,
   },

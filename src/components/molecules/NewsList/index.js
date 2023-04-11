@@ -10,7 +10,7 @@ const NewsList = ({news, onPress, width, height}) => {
     <TouchableOpacity onPress={onPress}>
       {/* List Berita */}
       <View style={[styles.NewsCard]}>
-        <View style={[ms.row, ms.pdV(17), ms.mgB(5)]}>
+        <View style={[ms.row, ms.mgT(5), ms.mgB(30)]}>
           <View style={[ms.width('60%'), ms.height(65), ms.pdL(20)]}>
             <Text style={[ms.fzBC(12.8, '700', colors.black)]}>
               {news?.title}

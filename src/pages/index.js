@@ -8,7 +8,10 @@ import Registrasi from "./Registrasi";
 import DetailBerita from "./DetailBerita";
 import MinatKategori from "./MinatKategori";
 import BeritaByKategori from "./BeritaByKategori";
+import DetailBeritaByKategori from "./DetailBeritaByKategori";
 import BeritaByMedia from "./BeritaByMedia";
+import DetailBeritaByMedia from "./DetailBeritaByMedia";
+import DaftarMedia from "./DaftarMedia";
 
 export{
     Beranda,
@@ -21,5 +24,8 @@ export{
     MinatKategori,
     DetailBerita,
     BeritaByKategori,
-    BeritaByMedia
+    BeritaByMedia,
+    DetailBeritaByKategori,
+    DetailBeritaByMedia,
+    DaftarMedia
 }
