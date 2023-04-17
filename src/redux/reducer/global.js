@@ -6,6 +6,7 @@ const initGlobalState = {
     error: 'error',
     global: false,
     loadingValue : 0.1,
+    searchData: [],
 
   };
   
@@ -53,6 +54,12 @@ const initGlobalState = {
       return {
         ...state,
         tokenMessage: action.value,
+      };
+    }
+    else if (action.type === 'SET_SEARCH_DATA') {
+      return {
+        ...state,
+        searchData: action.value,
       };
     }
 

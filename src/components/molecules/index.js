@@ -6,6 +6,7 @@ import Media from "./Media";
 import Rekomendasi from "./Rekomendasi";
 import InputCheck from "./InputCheck";
 import ListMedia from "./ListMedia";
+import SearchList from "./SearchList";
 
 export{
     BottomNavigator,
@@ -15,5 +16,6 @@ export{
     Media,
     Rekomendasi,
     InputCheck,
-    ListMedia
+    ListMedia,
+    SearchList
 }

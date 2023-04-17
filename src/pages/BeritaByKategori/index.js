@@ -94,7 +94,7 @@ const BeritaByKategori = ({navigation}) => {
       {/* Title Terbaru */}
       <View style={styles.title}>
         <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>
-          {capitalizeFirstLetter(kategori)}
+          {kategori}
         </Text>
       </View>
 

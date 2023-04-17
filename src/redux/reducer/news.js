@@ -7,6 +7,8 @@ const initStateNewsList = {
   newsbykategori: {},
   bymedia: [],
   newsbymedia: {},
+  newsListSearch: [],
+  search: {},
   // post: []
   // newsList: [
   //   {
@@ -109,6 +111,18 @@ export const newsReducer = (state = initStateNewsList, action) => {
     return {
       ...state,
       newsbymedia: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWSLIST_SEARCH') {
+    return {
+      ...state,
+      newsListSearch: action.value,
+    };
+  }
+  if (action.type === 'SET_SEARCH') {
+    return {
+      ...state,
+      search: action.value,
     };
   }
   return state;

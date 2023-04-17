@@ -6,7 +6,7 @@ import { CNN, IconEkonomi } from '../../../assets'
 import { colors } from '../../../utils'
 
 const Media = ({med, onPress}) => {
-  console.log('media', med);
+  // console.log('media', med);
 
   imageSelect = med => {
   
