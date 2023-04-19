@@ -1,5 +1,5 @@
 const ApiHeader = {
-    'Content-Type' : 'application/json',
+    'content-type' : 'application/json',
     'Accept': 'application/json',
 };
 

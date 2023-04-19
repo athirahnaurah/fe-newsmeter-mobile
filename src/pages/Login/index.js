@@ -37,13 +37,13 @@ const Login = ({navigation}) => {
         
         {/* Redirect Registrasi */}
         <View style={[ms.height((windowHeight * 7) / 100)]}>
-          <Gap width={(windowWidth * 100) / 100} height={0.5} backgroundColor={colors.grey}/>
+          <Gap width={(windowWidth * 100) / 100} height={1} backgroundColor={colors.grey}/>
           
           <View style={[ms.row, ms.aiJc('center'), ms.pdV(16)]}>
             <Text style={[ms.fzBC(10, '400', colors.grey)]}>Belum punya akun? </Text>
-            <TouchableOpacity onPress={() => {navigation.navigate("Registrasi")}}>
-              <Text style={[ms.fzBCLh(10, '400', colors.blue, 12)]}>Daftar</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => {navigation.navigate("Registrasi")}}>
+                <Text style={[ms.fzBCLh(10, '500', colors.blue, 12)]}>Daftar</Text>
+              </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

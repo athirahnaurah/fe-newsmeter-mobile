@@ -7,7 +7,7 @@ const initGlobalState = {
     global: false,
     loadingValue : 0.1,
     searchData: [],
-
+    registrationSuccess: false
   };
   
   export const globalReducer = (state = initGlobalState, action) => {
@@ -62,7 +62,12 @@ const initGlobalState = {
         searchData: action.value,
       };
     }
-
+    else if (action.type === 'SET_REGISTRATION_ON_SUCCESS') {
+      return {
+        ...state,
+        registrationSuccess: action.value,
+      };
+    }
     return state;
   };
   
