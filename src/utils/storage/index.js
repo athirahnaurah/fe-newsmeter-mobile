@@ -16,7 +16,17 @@ export const getData = async (storageKey) => {
         const jsonValue = await AsyncStorage.getItem(storageKey)
         return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
-        console.log("Error getData")
+        console.log("Error getData", e)
         // showMessage('Tidak dapat mengambil data di local storage' + e)
     }
+}
+
+export const authHeader = () => {
+    const user = getData ('token');
+    return { "x-auth-token" : user}
+    // if (user && user.access_token){
+        
+    // } else {
+    //     return{};
+    // }
 }

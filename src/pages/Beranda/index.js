@@ -10,7 +10,7 @@ import {
   RefreshControl
 } from 'react-native';
 import React, {useState} from 'react';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import ms from '../../utils/ms';
 import {Logo, SportImg} from '../../assets/images';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
@@ -23,31 +23,9 @@ import {useCallback} from 'react';
 import {slice} from 'lodash';
 
 const Beranda = ({navigation}) => {
-  // const [newsList, setnewsList] = useState([
-  //   {
-  //     title:'Tottenham Hotspur Masih Tanpa Conte saat Lawan Chelsea',
-  //     img: SportImg,
-  //     media: 'IDN.Times',
-  //   },
-  //   {
-  //     title:'Tottenham Hotspur Masih Tanpa Conte saat Lawan Chelsea',
-  //     img: SportImg,
-  //     media: 'IDN.Times',
-  //   },
-  //   {
-  //     title:'Tottenham Hotspur Masih Tanpa Conte saat Lawan Chelsea',
-  //     img: SportImg,
-  //     media: 'IDN.Times',
-  //   },
-  //   {
-  //     title:'Tottenham Hotspur Masih Tanpa Conte saat Lawan Chelsea',
-  //     img: SportImg,
-  //     media: 'IDN.Times',
-  //   },
-  // ]);
   const dispatch = useDispatch();
   const {newsList} = useSelector(state => state.newsReducer);
-  const {isLoadingScreen} = useSelector(state => state.globalReducer);
+  const {isLoadingScreen, isLogin} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
   const [i, setI] = useState(10);
   const initialGet = slice(newsList, 0, i);
@@ -58,9 +36,19 @@ const Beranda = ({navigation}) => {
   };
 
   const init = async () => {
-    await dispatch(getNews(newsList));   
-    await dispatch(getMedia());
-    await dispatch(getKategori()); 
+    if (isLogin == true){
+      getData('authUser').then(resAuthUser => {
+        if(resAuthUser?.data.email){
+          dispatch(getNews(newsList));   
+          dispatch(getMedia());
+          dispatch(getKategori()); 
+        }
+      })
+    } else {
+      dispatch(getNews(newsList));   
+      dispatch(getMedia());
+      dispatch(getKategori()); 
+    }
   };
 
   const onRefresh = useCallback(() => {

@@ -91,6 +91,7 @@ const initStateNewsList = {
   //   },
   // ],
   kategori: {},
+  minatKategori: [],
 };
 
 export const kategoriReducer = (state = initStateNewsList, action) => {
@@ -104,6 +105,12 @@ export const kategoriReducer = (state = initStateNewsList, action) => {
     return {
       ...state,
       kategori: action.value,
+    };
+  }
+  if (action.type === 'SET_MINAT_KATEGORI') {
+    return {
+      ...state,
+      minatKategori: action.value,
     };
   }
   return state;

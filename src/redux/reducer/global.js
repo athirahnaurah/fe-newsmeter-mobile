@@ -7,7 +7,11 @@ const initGlobalState = {
     global: false,
     loadingValue : 0.1,
     searchData: [],
-    registrationSuccess: false
+    registrationSuccess: false,
+    authUser: {},
+    authDetail: {},
+    user: {},
+    isLogin: false,
   };
   
   export const globalReducer = (state = initGlobalState, action) => {
@@ -66,6 +70,36 @@ const initGlobalState = {
       return {
         ...state,
         registrationSuccess: action.value,
+      };
+    }
+    else if (action.type === 'SET_AUTH_USER') {
+      return {
+        ...state,
+        authUser: action.value,
+      };
+    }
+    else if (action.type === 'SET_AUTH_DETAIL') {
+      return {
+        ...state,
+        authDetail: action.value,
+      };
+    }
+    else if (action.type === 'SET_TOKEN') {
+      return {
+        ...state,
+        token: action.value,
+      };
+    }
+    else if (action.type === 'SET_USER') {
+      return {
+        ...state,
+        user: action.value,
+      };
+    }
+    else if (action.type === 'SET_LOGIN') {
+      return {
+        ...state,
+        isLogin: action.value,
       };
     }
     return state;
