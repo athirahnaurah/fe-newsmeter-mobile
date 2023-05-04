@@ -10,14 +10,15 @@ import {getKategori} from '../../redux/action';
 const MinatKategori = ({navigation}) => {
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
-  const [isclicked, setClicked] = useState('');
-  
-  const onClickKategori = kategori => {
+  const [isclicked, setClicked] = useState([]);
+  console.log('kategoriList: ', kategoriList);
+
+  const onClickKategori = (kategori) => {
     if (kategori == kategoriList) {
       setClicked(kategori);
-      console?.log('kategori: ', kategori);
+      console?.log('kategori: ', kategoriList);
     } else {
-      setClicked('');
+      setClicked([]);
     }
     // setClicked(kategori)
   };

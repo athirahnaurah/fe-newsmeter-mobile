@@ -18,7 +18,7 @@ const BeritaByMedia = ({navigation}) => {
   const {med} = useSelector(state => state.mediaReducer);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [i, setI] = useState(10);
+  const [i, setI] = useState(15);
   const initialGet = slice(bymedia, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -45,7 +45,7 @@ const BeritaByMedia = ({navigation}) => {
   };
 
   const loadMore = () => {
-    setI(i + 10);
+    setI(i + 15);
     console.log('index', i);
     if (i >= bymedia.length) {
       setIsCompleted(true);

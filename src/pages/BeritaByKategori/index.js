@@ -28,7 +28,7 @@ const BeritaByKategori = ({navigation}) => {
   const {kategori} = useSelector(state => state.kategoriReducer);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [i, setI] = useState(10);
+  const [i, setI] = useState(15);
   const initialGet = slice(bykategori, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -55,7 +55,7 @@ const BeritaByKategori = ({navigation}) => {
   };
 
   const loadMore = () => {
-    setI(i + 10);
+    setI(i + 15);
     console.log('index', i);
     if (i >= bykategori.length) {
       setIsCompleted(true);

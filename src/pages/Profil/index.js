@@ -37,7 +37,7 @@ const Profil = ({navigation}) => {
 
   const onLogout = () => {
     AsyncStorage.clear();
-    navigation.navigation('Splash')
+    navigation.navigate('Splash')
     // navigation.reset({index: 0, routes: [{name: 'Splash'}]});
     dispatch({ type: 'SET_AUTH_USER', value: null});
     dispatch({ type: 'SET_AUTH_DETAIL', value: null});
@@ -82,9 +82,9 @@ const Profil = ({navigation}) => {
           ]}>
           <Image source={Profile} />
           <Text style={[ms.fzBC(12, '400', colors.black), ms.mgT(10)]}>
-            Nama
+            -
           </Text>
-          <Text style={[ms.fzBC(10, '400', colors.black)]}>Email</Text>
+          <Text style={[ms.fzBC(10, '400', colors.black)]}>-</Text>
         </View>
         )}
         

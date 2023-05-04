@@ -27,7 +27,7 @@ const Beranda = ({navigation}) => {
   const {newsList} = useSelector(state => state.newsReducer);
   const {isLoadingScreen, isLogin} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
-  const [i, setI] = useState(10);
+  const [i, setI] = useState(15);
   const initialGet = slice(newsList, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -60,7 +60,7 @@ const Beranda = ({navigation}) => {
   }, []);
 
   const loadMore = () => {
-    setI(i + 10);
+    setI(i + 15);
     console.log('index', i);
     if (i >= newsList.length) {
       setIsCompleted(true);
