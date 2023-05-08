@@ -13,12 +13,13 @@ import {
 import React, {useState} from 'react';
 import {Gap, Input, Kategori, Media, SearchList} from '../../components';
 import ms from '../../utils/ms';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import KategoriBerita from '../BeritaByKategori';
 import {getKategori, getMedia, getSearchNews} from '../../redux/action';
+import {postHistory} from '../../redux/action/login';
 import {useCallback, useEffect} from 'react';
 import {slice} from 'lodash';
 
@@ -140,6 +141,44 @@ const Jelajah = ({navigation}) => {
       init();
     });
   }, []);
+
+  //membuat data riwayat
+  const makeHistory = news => {
+    let date = new Date(Date.now());
+    let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}.${date.getMilliseconds().toString().padStart(6, '0')}`;
+    let dataHistory = {
+      _id: news?._id,
+      original: news?.original,
+      content: news?.content,
+      date: news?.date,
+      image: news?.image,
+      kategori: news?.kategori,
+      media: news?.media,
+      title: news?.title,
+      timestamp: dateString,
+    };
+    return dataHistory;
+  };
+
+  //menyimpan data riwayat
+  const saveHistory = dataHistory => {
+    getData('authUser').then(resAuthUser => {
+      if (resAuthUser?.data.email) {
+        dispatch(postHistory(dataHistory));
+        console.log('login');
+      } else {
+        console.log('not login');
+      }
+    });
+  };
 
   // useEffect(() => {
   //   if (navigation.isFocused) {
@@ -308,6 +347,7 @@ const Jelajah = ({navigation}) => {
                       key={index}
                       search={search}
                       onPress={() => {
+                        saveHistory(makeHistory(search));
                         dispatch({type: 'SET_SEARCH', value: search});
                         navigation.navigate('DetailSearch');
                       }}

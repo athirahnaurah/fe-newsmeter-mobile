@@ -12,11 +12,12 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ms from '../../utils/ms';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {Logo} from '../../assets';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {useDispatch, useSelector} from 'react-redux';
 import {getNewsByKategori} from '../../redux/action';
+import {postHistory} from '../../redux/action/login';
 import {useCallback} from 'react';
 import {useEffect, useState} from 'react';
 import NewsList from '../../components/molecules/NewsList';
@@ -63,6 +64,45 @@ const BeritaByKategori = ({navigation}) => {
       setIsCompleted(false);
     }
   };
+
+  //membuat data riwayat
+  const makeHistory = news => {
+    let date = new Date(Date.now());
+    let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}.${date.getMilliseconds().toString().padStart(6, '0')}`;
+    let dataHistory = {
+      _id: news?._id,
+      original: news?.original,
+      content: news?.content,
+      date: news?.date,
+      image: news?.image,
+      kategori: news?.kategori,
+      media: news?.media,
+      title: news?.title,
+      timestamp: dateString,
+    };
+    return dataHistory;
+  };
+
+  //menyimpan data riwayat
+  const saveHistory = dataHistory => {
+    getData('authUser').then(resAuthUser => {
+      if (resAuthUser?.data.email) {
+        dispatch(postHistory(dataHistory));
+        console.log('login');
+      } else {
+        console.log('not login');
+      }
+    });
+  };
+
   useEffect(() => {
     if (navigation.isFocused) {
       init();
@@ -73,18 +113,18 @@ const BeritaByKategori = ({navigation}) => {
     <SafeAreaView style={[ms.containerPage]}>
       {/* Header */}
       <View style={styles.container}>
-      <TouchableOpacity
-            onPress={() => {
-              navigation.goBack();
-            }}
-            style={styles.back}>
-            <Icon
-              name="arrowleft"
-              size={24}
-              color={colors.white}
-              style={[ms.mgL(20)]}
-            />
-          </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={styles.back}>
+          <Icon
+            name="arrowleft"
+            size={24}
+            color={colors.white}
+            style={[ms.mgL(20)]}
+          />
+        </TouchableOpacity>
 
         <View style={[styles.background]}>
           <Image source={Logo} />
@@ -93,9 +133,7 @@ const BeritaByKategori = ({navigation}) => {
 
       {/* Title Terbaru */}
       <View style={styles.title}>
-        <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>
-          {kategori}
-        </Text>
+        <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>{kategori}</Text>
       </View>
 
       {/* List Berita By Kategori */}
@@ -109,57 +147,57 @@ const BeritaByKategori = ({navigation}) => {
         ) : (
           <View>
             {bykategori.length > 0 ? (
-          <View>
-            {initialGet.map((news, index) => {
-              return (
-                <NewsList
-                  key={index}
-                  news={news}
-                  // width={'60%'}
-                  // height={65}
-                  onPress={() => {
-                    dispatch({type: 'SET_NEWS_BY_KATEGORI', value: news});
-                    navigation.navigate('DetailBeritaByKategori');
-                  }}
-                />
-              );
-            })}
+              <View>
+                {initialGet.map((news, index) => {
+                  return (
+                    <NewsList
+                      key={index}
+                      news={news}
+                      // width={'60%'}
+                      // height={65}
+                      onPress={() => {
+                        saveHistory(makeHistory(news));
+                        dispatch({type: 'SET_NEWS_BY_KATEGORI', value: news});
+                        navigation.navigate('DetailBeritaByKategori');
+                      }}
+                    />
+                  );
+                })}
 
-            <View
-              style={[
-                ms.width(windowWidth * 100) / 100,
-                ms.containerPage,
-                ms.aiJc('center'),
-              ]}>
-              {isCompleted ? (
-                <TouchableOpacity
-                  onPress={loadMore}
-                  activeOpacity={0.9}
-                  style={[styles.loadMoreDeactive]}>
-                  <Text style={[ms.fzBC(12, '500', colors.white)]}>
-                    Tampilkan lebih banyak
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={loadMore}
-                  activeOpacity={0.9}
-                  style={[styles.loadMoreActive]}>
-                  <Text style={[ms.fzBC(12, '700', colors.white)]}>
-                    Tampilkan lebih banyak
-                  </Text>
-                </TouchableOpacity>
-              )}
-            </View>
-          </View>
-        ) : (
-          <View style={[styles.nonews]}>
-            <Text>Tidak ada berita untuk kategori yang dipilih</Text>
+                <View
+                  style={[
+                    ms.width(windowWidth * 100) / 100,
+                    ms.containerPage,
+                    ms.aiJc('center'),
+                  ]}>
+                  {isCompleted ? (
+                    <TouchableOpacity
+                      onPress={loadMore}
+                      activeOpacity={0.9}
+                      style={[styles.loadMoreDeactive]}>
+                      <Text style={[ms.fzBC(12, '500', colors.white)]}>
+                        Tampilkan lebih banyak
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={loadMore}
+                      activeOpacity={0.9}
+                      style={[styles.loadMoreActive]}>
+                      <Text style={[ms.fzBC(12, '700', colors.white)]}>
+                        Tampilkan lebih banyak
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+            ) : (
+              <View style={[styles.nonews]}>
+                <Text>Tidak ada berita untuk kategori yang dipilih</Text>
+              </View>
+            )}
           </View>
         )}
-          </View>
-        )}
-        
       </ScrollView>
     </SafeAreaView>
   );
