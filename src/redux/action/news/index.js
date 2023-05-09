@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
-import {setLoadingScreen} from '../global';
+import {setLoadingScreen, setLoadingValue, setSearch} from '../global';
 import ApiConfigLocal from '../../../config/ApiConfigLocal';
 
 export const getNews =
@@ -96,6 +96,11 @@ export const getSearchNews =
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         // dispatch({ type: 'SET_NEWSLIST', value: [...res.data]});
         dispatch({type: 'SET_NEWSLIST_SEARCH', value: res.data});
+        if (res.data.length > 0) {
+          dispatch(setSearch(true));
+        } else {
+          dispatch(setSearch(false));
+        }
         // onCallback(res.data)
       })
       .catch(err => {
@@ -106,3 +111,19 @@ export const getSearchNews =
         dispatch(setLoadingScreen(false));
       });
   };
+
+// post data history ke database
+export const postHistory = dataNews => dispatch => {
+  getData('token').then(resAuth => {
+    axios
+      .post('http://10.0.2.2:5000/history', dataNews, {
+        headers: {Authorization: `Bearer ${resAuth}`},
+      })
+      .then(res => {
+        console.log('response:', res.data.message);
+      })
+      .catch(err => {
+        console.log('Error:', err);
+      });
+  });
+};

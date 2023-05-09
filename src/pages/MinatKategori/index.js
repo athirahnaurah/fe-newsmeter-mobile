@@ -1,4 +1,4 @@
-import {Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ms from '../../utils/ms';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
@@ -6,22 +6,55 @@ import {colors} from '../../utils';
 import {Kategori, MainButton} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {getKategori} from '../../redux/action';
+import { event } from 'react-native-reanimated';
+
+const MAX_CATEGORY = 3;
 
 const MinatKategori = ({navigation}) => {
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
   const [isclicked, setClicked] = useState([]);
-  console.log('kategoriList: ', kategoriList);
+  // console.log('kategoriList: ', kategoriList);
+
+  const handleDeepLink = (event) => {
+    const data = parseDeepLink(event.url);
+    console.log('data: ', data)
+  }
+
+  const parseDeepLink = (url) => {
+    const params = new URLSearchParams(url.split('?')[1]);
+    const email = params.get('email');
+    console.log('email to: ', email)
+    return {email};
+  }
+  
+  const onHandleChange = (text, input) => {
+    setInput((prevState) => ({...prevState, [input]: text}))
+  }
 
   const onClickKategori = (kategori) => {
-    if (kategori == kategoriList) {
-      setClicked(kategori);
-      console?.log('kategori: ', kategoriList);
-    } else {
-      setClicked([]);
+    if(isclicked.includes(kategori)){
+      setClicked(isclicked.filter((k) => k !== kategori));
+    } else if (isclicked.length < MAX_CATEGORY){
+      setClicked([...isclicked, kategori])
+
     }
+    console.log('minat kategori: ', isclicked);
+    // if (kategori == kategoriList) {
+    //   // setClicked((prevState) => ({...prevState, [input]: kategori}));
+    //   setClicked(kategori)
+    //   console?.log('kategori: ', kategori);
+    // } else {
+    //   setClicked([]);
+    // }
     // setClicked(kategori)
   };
+
+  const onClickNext = () => {
+    console.log('kategori dipilih: ', isclicked);
+
+
+  }
 
   const imageSelect = kategori => {
     const kategoriArray = {
@@ -52,7 +85,11 @@ const MinatKategori = ({navigation}) => {
   useEffect(() => {
     if (navigation.isFocused) {
       init();
+      Linking.addEventListener('url', handleDeepLink);
+
+      return () => Linking.removeAllListeners('url', handleDeepLink);
     }
+    
   }, [navigation]);
 
   return (
@@ -79,7 +116,7 @@ const MinatKategori = ({navigation}) => {
                 dispatch({type: 'SET_MINAT_KATEGORI', value: kategoriparam});
               }}
               style={[
-                kategoriparam == isclicked
+                isclicked.includes(kategoriparam)
                   ? styles.activebox
                   : styles?.inactivebox,
               ]}>
@@ -93,7 +130,7 @@ const MinatKategori = ({navigation}) => {
               </View>
               <Text
                 style={[
-                  kategoriparam == isclicked
+                  isclicked.includes(kategoriparam)
                     ? ms.fzBC(13, '650', colors.white)
                     : ms.fzBC(13, '650', colors.greyDark),
                 ]}>
@@ -106,8 +143,10 @@ const MinatKategori = ({navigation}) => {
         <View style={[styles.button]}>
           <MainButton
             label="Berikutnya"
-            width={(windowWidth * 40) / 100}
-            onPress={() => navigation.navigate('Login')}
+            // width={(windowWidth * 40) / 100}
+            style={[isclicked.length == 0 ? styles.inactiveButton : styles.activeButton]}
+            onPress={()=>{onClickNext()}}
+            // onPress={() => navigation.navigate('Login')}
           />
         </View>
       </ScrollView>
@@ -153,4 +192,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginHorizontal: 20,
   },
+  activeButton: {
+    width: (windowWidth * 40) / 100,
+    height: 40,
+    fontSize : 12,
+    fontWeight : '700',
+    color : colors.white,
+    margin : 5,
+    borderColor : colors.blue,
+    borderRadius : 12,
+    borderWidth : 0.5,
+    backgroundColor: colors.blue,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  inactiveButton: {
+    width: (windowWidth * 40) / 100,
+    height: 40,
+    fontSize : 12,
+    fontWeight : '700',
+    color : colors.blue,
+    margin : 5,
+    borderColor : colors.grey3,
+    borderRadius : 12,
+    borderWidth : 0.5,
+    backgroundColor : colors.grey3,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 });

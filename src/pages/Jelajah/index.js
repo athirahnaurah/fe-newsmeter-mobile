@@ -13,13 +13,12 @@ import {
 import React, {useState} from 'react';
 import {Gap, Input, Kategori, Media, SearchList} from '../../components';
 import ms from '../../utils/ms';
-import {colors, getData} from '../../utils';
+import {colors} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import KategoriBerita from '../BeritaByKategori';
 import {getKategori, getMedia, getSearchNews} from '../../redux/action';
-import {postHistory} from '../../redux/action/login';
 import {useCallback, useEffect} from 'react';
 import {slice} from 'lodash';
 
@@ -30,13 +29,12 @@ const Jelajah = ({navigation}) => {
   const {newsListSearch, search} = useSelector(state => state.newsReducer);
   const [refreshing, setRefreshing] = useState(false);
   const [isclicked, setClicked] = useState('');
-  const {searchData} = useSelector(state => state.globalReducer);
   const [searchText, setSearchText] = useState('');
   const [searchTimer, setSearchTimer] = useState(null);
   const [isAvail, setisAvail] = useState(false);
-  const {isLoadingScreen} = useSelector(state => state.globalReducer);
+  const {isLoadingScreen, searchValue} = useSelector(state => state.globalReducer);
 
-  const [i, setI] = useState(10);
+  const [i, setI] = useState(15);
   const initialGet = slice(newsListSearch, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
@@ -67,12 +65,13 @@ const Jelajah = ({navigation}) => {
     // setClicked(kategori)
   };
 
-  const onHandleSearch = text => {
+  const onHandleSearch = async text => {
     if (text !== '') {
-      init(text);
+      // onSearch(text);
+      await dispatch(getSearchNews(text));
       setisAvail(true);
     } else {
-      init('');
+      // await dispatch(getSearchNews(''));
       setisAvail(false);
     }
 
@@ -91,7 +90,7 @@ const Jelajah = ({navigation}) => {
 
   // Load More Button
   const loadMore = () => {
-    setI(i + 10);
+    setI(i + 15);
     console.log('index', i);
     if (i >= newsListSearch.length) {
       setIsCompleted(true);
@@ -100,12 +99,13 @@ const Jelajah = ({navigation}) => {
     }
   };
 
-  const init = async text => {
-    await dispatch(getSearchNews(text));
-    // await dispatch(getMedia());
-    // await dispatch(getKategori());
+  const onSearch = async text => {
   };
 
+  const init = async () => {
+    await dispatch(getMedia());
+    await dispatch(getKategori());
+  }
   // console.log('kategori', kategoriList);
 
   const imageSelect = kategori => {
@@ -180,11 +180,11 @@ const Jelajah = ({navigation}) => {
     });
   };
 
-  // useEffect(() => {
-  //   if (navigation.isFocused) {
-  //     init();
-  //   }
-  // }, [navigation]);
+  useEffect(() => {
+    if (navigation.isFocused) {
+      init();
+    }
+  }, [navigation]);
 
   return (
     <SafeAreaView style={[ms.containerPage]}>
@@ -242,98 +242,109 @@ const Jelajah = ({navigation}) => {
         ))} */}
         {!isAvail ? (
           <View>
-            {/* Kategori */}
-            <View>
-              <View style={[ms.row, ms.ai('center'), ms.mgB(15)]}>
-                <Text style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
-                  Kategori
-                </Text>
-                <Gap
-                  height={2}
-                  backgroundColor={colors.grey3}
-                  width={(windowWidth * 65) / 100}
-                />
-              </View>
-
-              {/* List Berita By Kategori */}
-              <View style={[styles.cardKategori]}>
-                {kategoriList?.map((kategoriparam, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    kategori={kategoriparam}
-                    onPress={() => {
-                      onClickKategori(kategoriparam);
-                      dispatch({type: 'SET_KATEGORI', value: kategoriparam});
-                      navigation.navigate('BeritaByKategori');
-                    }}
-                    style={[
-                      kategoriparam == isclicked
-                        ? styles.activebox
-                        : styles?.inactivebox,
-                    ]}>
-                    <View>
-                      <Image
-                        source={imageSelect(kategoriparam)}
-                        style={[ms.width(20), ms.height(20)]}
-                      />
-                      {/* <Image source={require('../../assets/icon/kategori/'+kategoriparam+'.png')} style={[ms.width(20), ms.height(20)]}/> */}
-                      {/* <Image source={kategori?.img} style={[ms.width(20), ms.height(20)]} /> */}
-                    </View>
+            {isLoadingScreen ? (
+              <ActivityIndicator color={colors.black} style={{margin: 5}} />
+            ) : (
+              <View>
+                {/* Kategori */}
+                <View>
+                  <View style={[ms.row, ms.ai('center'), ms.mgB(15)]}>
                     <Text
-                      style={[
-                        kategoriparam == isclicked
-                          ? ms.fzBC(13, '650', colors.white)
-                          : ms.fzBC(13, '650', colors.greyDark),
-                      ]}>
-                      {kategoriparam}
+                      style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
+                      Kategori
                     </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
+                    <Gap
+                      height={2}
+                      backgroundColor={colors.grey3}
+                      width={(windowWidth * 65) / 100}
+                    />
+                  </View>
 
-            {/* Media */}
-            <View style={[styles.cardMedia]}>
-              <View style={[ms.row, ms.ai('flex-end'), ms.mgB(15)]}>
-                <Text style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
-                  Media
-                </Text>
-                <View style={[ms.col]}>
-                  <TouchableOpacity
-                    style={[ms.mgH(10), ms.ai('flex-end'), ms.pdB(3)]}
-                    onPress={() => {
-                      navigation.navigate('DaftarMedia');
-                    }}>
-                    <Text style={[ms.fzBC(12, '400', colors.greyDark)]}>
-                      Lihat Semua
+                  {/* List Berita By Kategori */}
+                  <View style={[styles.cardKategori]}>
+                    {kategoriList?.map((kategoriparam, index) => (
+                      <TouchableOpacity
+                        key={index}
+                        kategori={kategoriparam}
+                        onPress={() => {
+                          onClickKategori(kategoriparam);
+                          dispatch({
+                            type: 'SET_KATEGORI',
+                            value: kategoriparam,
+                          });
+                          navigation.navigate('BeritaByKategori');
+                        }}
+                        style={[
+                          kategoriparam == isclicked
+                            ? styles.activebox
+                            : styles?.inactivebox,
+                        ]}>
+                        <View>
+                          <Image
+                            source={imageSelect(kategoriparam)}
+                            style={[ms.width(20), ms.height(20)]}
+                          />
+                          {/* <Image source={require('../../assets/icon/kategori/'+kategoriparam+'.png')} style={[ms.width(20), ms.height(20)]}/> */}
+                          {/* <Image source={kategori?.img} style={[ms.width(20), ms.height(20)]} /> */}
+                        </View>
+                        <Text
+                          style={[
+                            kategoriparam == isclicked
+                              ? ms.fzBC(13, '650', colors.white)
+                              : ms.fzBC(13, '650', colors.greyDark),
+                          ]}>
+                          {kategoriparam}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Media */}
+                <View style={[styles.cardMedia]}>
+                  <View style={[ms.row, ms.ai('flex-end'), ms.mgB(15)]}>
+                    <Text
+                      style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
+                      Media
                     </Text>
-                  </TouchableOpacity>
-                  <Gap
-                    height={1}
-                    backgroundColor={colors.grey3}
-                    width={(windowWidth * 70) / 100}
-                  />
+                    <View style={[ms.col]}>
+                      <TouchableOpacity
+                        style={[ms.mgH(10), ms.ai('flex-end'), ms.pdB(3)]}
+                        onPress={() => {
+                          navigation.navigate('DaftarMedia');
+                        }}>
+                        <Text style={[ms.fzBC(12, '400', colors.grey)]}>
+                          Lihat Semua
+                        </Text>
+                      </TouchableOpacity>
+                      <Gap
+                        height={1}
+                        backgroundColor={colors.grey3}
+                        width={(windowWidth * 70) / 100}
+                      />
+                    </View>
+                  </View>
+
+                  <View>
+                    <ScrollView
+                      horizontal={true}
+                      showsHorizontalScrollIndicator={false}>
+                      {medList?.slice(0, 10).map((media, index) => (
+                        <Media
+                          key={index}
+                          med={media}
+                          onPress={() => {
+                            onClickMedia(media);
+                            dispatch({type: 'SET_MED', value: media});
+                            navigation.navigate('BeritaByMedia');
+                          }}
+                        />
+                      ))}
+                    </ScrollView>
+                  </View>
                 </View>
               </View>
-
-              <View>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  {medList?.slice(0, 10).map((media, index) => (
-                    <Media
-                      key={index}
-                      med={media}
-                      onPress={() => {
-                        onClickMedia(media);
-                        dispatch({type: 'SET_MED', value: media});
-                        navigation.navigate('BeritaByMedia');
-                      }}
-                    />
-                  ))}
-                </ScrollView>
-              </View>
-            </View>
+            )}
           </View>
         ) : (
           <View>
@@ -341,6 +352,8 @@ const Jelajah = ({navigation}) => {
               <ActivityIndicator color={colors.black} style={{margin: 5}} />
             ) : (
               <View style={[]}>
+                {searchValue ? (
+                  <View>
                 {initialGet?.map((search, index) => {
                   return (
                     <SearchList
@@ -378,15 +391,23 @@ const Jelajah = ({navigation}) => {
                       <Text style={[ms.fzBC(12, '700', colors.white)]}>
                         Tampilkan lebih banyak
                       </Text>
-                      {isLoadingScreen ? (
+                      {/* {isLoadingScreen ? (
                         <ActivityIndicator
                           color={colors.white}
                           style={{marginLeft: 5}}
                         />
-                      ) : null}
+                      ) : null} */}
                     </TouchableOpacity>
                   )}
                 </View>
+                  </View>
+                ) : (
+                  <View style={[styles.nonews]}>
+                    <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center')]}>Maaf, hasil pencarian tidak ditemukan. Silahkan coba kata kunci yang berbeda.</Text>
+                  </View>
+                )}
+                {/* add condition if there's no news */}
+                
               </View>
             )}
           </View>
@@ -465,6 +486,14 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 8,
     backgroundColor: colors.grey3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nonews: {
+    height: (windowHeight * 85) / 100,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
   },

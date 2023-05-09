@@ -13,12 +13,29 @@ const App = () => {
         Registrasi: {
           path: "register"
         },
+        Login: {
+          path: "login"
+        },
         MinatKategori: {
-          path: "minatkategori/:email"
+          path: "minatkategori/:email",
+          parse: {
+            email: (email) => `${email}`
+          }
         }
       }
     }
   }
+
+  const handleDeepLink = async (url) => {
+    const deeplink = 'newsmeter://minatkategori/:email'
+
+    try{
+      await Linking.openURL(deeplink);
+    } catch (err) {
+      console.log('error deeplink: ', err);
+    }
+  }
+
   return (
     <Provider store={store}>
       <NavigationContainer linking={linking}>

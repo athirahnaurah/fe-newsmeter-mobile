@@ -56,7 +56,7 @@ const Profil = ({navigation}) => {
   }, [navigation]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={[ms.containerPage]}>
       <ScrollView>
         {isLogin ? (
           <View

@@ -60,7 +60,11 @@ const Registrasi = ({navigation}) => {
     if(!input.name){
       onHandleError('Nama tidak boleh kosong', 'name');
       isValid = false;
+    }else if (input.name.length > 255){
+      onHandleError('Nama maksimal 255', 'name');
+      isValid = false;
     }
+
     if(!input.password){
       onHandleError('Password tidak boleh kosong', 'password');
       isValid = false;

@@ -35,7 +35,7 @@ const Media = ({med, onPress}) => {
             {/* <Image source={med?.img}  style={[ms.width(50), ms.height(50)]}/> */}
         </View>
         <View style={[ms.width(windowWidth*15)/100, ms.pdT(10)]}>
-            <Text style={[ms.fzBC(10, '400', colors.black)]}>{med}</Text>
+            <Text style={[ms.fzBC(12, '400', colors.black)]}>{med}</Text>
         </View>
       </TouchableOpacity>
     </View>

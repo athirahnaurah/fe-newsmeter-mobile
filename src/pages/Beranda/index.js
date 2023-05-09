@@ -7,7 +7,7 @@ import {
   View,
   Image,
   ActivityIndicator,
-  RefreshControl,
+  RefreshControl
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors, getData} from '../../utils';
@@ -16,8 +16,7 @@ import {Logo, SportImg} from '../../assets/images';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {useDispatch, useSelector} from 'react-redux';
 import NewsList from '../../components/molecules/NewsList';
-import {getKategori, getMedia, getNews, setLogin} from '../../redux/action';
-import {postHistory} from '../../redux/action/login';
+import {getKategori, getMedia, getNews, postHistory, setLogin} from '../../redux/action';
 import {useEffect} from 'react';
 import Loading from '../../components/molecules/Loading';
 import {useCallback} from 'react';
@@ -37,19 +36,19 @@ const Beranda = ({navigation}) => {
   };
 
   const init = async () => {
-      getData('authUser').then(resAuthUser => {
-        if (resAuthUser?.data.email) {
-          dispatch(setLogin(true));
-          dispatch(getNews(newsList));
-          dispatch(getMedia());
-          dispatch(getKategori());
-        }else{
-          dispatch(getNews(newsList));
-          dispatch(getMedia());
-          dispatch(getKategori());
-        }
-      });
-    };
+    getData('authUser').then(resAuthUser => {
+      if(resAuthUser?.data.email){
+        dispatch(setLogin(true));
+        dispatch(getNews(newsList));   
+        // dispatch(getMedia());
+        // dispatch(getKategori()); 
+      } else {
+        dispatch(getNews(newsList));   
+        // dispatch(getMedia());
+        // dispatch(getKategori());
+      }
+    })
+  };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -128,58 +127,59 @@ const Beranda = ({navigation}) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
+          
         {isLoadingScreen ? (
           <ActivityIndicator color={colors.black} style={{margin: 5}} />
         ) : (
           <View style={[]}>
-            {initialGet.map((news, index) => {
-              return (
-                <NewsList
-                  key={index}
-                  news={news}
-                  // width={'60%'}
-                  // height={65}
-                  onPress={() => {
-                    saveHistory(makeHistory(news));
-                    dispatch({type: 'SET_NEWS', value: news});
-                    navigation.navigate('DetailBerita');
-                  }}
-                />
-              );
-            })}
-            <View
-              style={[
-                ms.width(windowWidth * 100) / 100,
-                ms.containerPage,
-                ms.aiJc('center'),
-              ]}>
-              {isCompleted ? (
-                <TouchableOpacity
-                  onPress={loadMore}
-                  activeOpacity={0.9}
-                  style={[styles.loadMoreDeactive]}>
-                  <Text style={[ms.fzBC(12, '500', colors.white)]}>
-                    Tampilkan lebih banyak
-                  </Text>
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={loadMore}
-                  activeOpacity={0.9}
-                  style={[styles.loadMoreActive]}>
-                  <Text style={[ms.fzBC(12, '700', colors.white)]}>
-                    Tampilkan lebih banyak
-                  </Text>
-                  {isLoadingScreen ? (
-                    <ActivityIndicator
-                      color={colors.white}
-                      style={{marginLeft: 5}}
-                    />
-                  ) : null}
-                </TouchableOpacity>
-              )}
-            </View>
+          {initialGet.map((news, index) => {
+            return (
+              <NewsList
+                key={index}
+                news={news}
+                // width={'60%'}
+                // height={65}
+                onPress={() => {
+                  saveHistory(makeHistory(news));
+                  dispatch({type: 'SET_NEWS', value: news});
+                  navigation.navigate('DetailBerita');
+                }}
+              />
+            );
+          })}
+          <View
+            style={[
+              ms.width(windowWidth * 100) / 100,
+              ms.containerPage,
+              ms.aiJc('center'),
+            ]}>
+            {isCompleted ? (
+              <TouchableOpacity
+                onPress={loadMore}
+                activeOpacity={0.9}
+                style={[styles.loadMoreDeactive]}>
+                <Text style={[ms.fzBC(12, '500', colors.white)]}>
+                  Tampilkan lebih banyak
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                onPress={loadMore}
+                activeOpacity={0.9}
+                style={[styles.loadMoreActive]}>
+                <Text style={[ms.fzBC(12, '700', colors.white)]}>
+                  Tampilkan lebih banyak
+                </Text>
+                {isLoadingScreen ? (
+                  <ActivityIndicator
+                    color={colors.white}
+                    style={{marginLeft: 5}}
+                  />
+                ) : null}
+              </TouchableOpacity>
+            )}
           </View>
+        </View>
         )}
       </ScrollView>
     </SafeAreaView>

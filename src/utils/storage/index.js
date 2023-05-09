@@ -5,7 +5,6 @@ export const storeData = async (storageKey, value) => {
     try{
         const jsonValue = JSON.stringify(value)
         await AsyncStorage.setItem(storageKey, jsonValue)
-        console.log('jsonValue:', jsonValue);
     } catch (e) {
         console.log("Error storageData", e)
         // showMessage('Tidak dapat menyimpan di local storage')
