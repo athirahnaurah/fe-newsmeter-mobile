@@ -13,6 +13,7 @@ const initGlobalState = {
     user: {},
     isLogin: false,
     searchValue: false,
+    parameterValue: null,
   };
   
   export const globalReducer = (state = initGlobalState, action) => {
@@ -107,6 +108,12 @@ const initGlobalState = {
       return {
         ...state,
         searchValue: action.value,
+      };
+    }
+    else if (action.type === 'SET_PARAMETER_VALUE') {
+      return {
+        ...state,
+        parameterValue: action.value,
       };
     }
     return state;

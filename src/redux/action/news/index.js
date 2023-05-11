@@ -3,9 +3,9 @@ import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
 import {setLoadingScreen, setLoadingValue, setSearch} from '../global';
 import ApiConfigLocal from '../../../config/ApiConfigLocal';
+import { getData } from '../../../utils';
 
-export const getNews =
-  (onCallback = res => {}, onError = err => {}) =>
+export const getNews = (onCallback = res => {}, onError = err => {}) =>
   dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
@@ -56,9 +56,7 @@ export const getNewsByKategori =
       });
   };
 
-export const getNewsByMedia =
-  (media, onCallback = res => {}, onError = err => {}) =>
-  dispatch => {
+export const getNewsByMedia = (media, onCallback = res => {}, onError = err => {}) => dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
 
@@ -81,9 +79,7 @@ export const getNewsByMedia =
       });
   };
 
-export const getSearchNews =
-  (search, onCallback = res => {}, onError = err => {}) =>
-  dispatch => {
+export const getSearchNews = (search, onCallback = res => {}, onError = err => {}) => dispatch => {
     // const paramList = [{}];
     console.log('search: ', search);
     dispatch(setLoadingScreen(true));

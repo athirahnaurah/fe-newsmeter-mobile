@@ -24,3 +24,18 @@ export const getKategori = (onCallback = res => {}, onError = err => {}) => disp
         dispatch(setLoadingScreen(false));
       });
   };
+
+export const postPreference = (dataPreference, navigation, onCallback = res => {}, onError = err => {}) => dispatch => {
+    dispatch(setLoadingScreen(true));
+    axios.post('http://10.0.2.2:5000/preference', dataPreference, { header: ApiHeader })
+    .then((res) => {
+        console.log('res preference: ', res);
+        navigation.reset({ index: 0, routes: [{name: 'Login'}] });
+    })
+    .catch((err) => {
+        console.log('error: ', err);
+    })
+    .finally(() => {
+        dispatch(setLoadingScreen(false))
+    })
+}

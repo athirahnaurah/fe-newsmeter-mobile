@@ -34,3 +34,9 @@ export const setLoading = (value) => {
       value,
     };
   }
+  export const setParameterValue = (value) => {
+    return {
+      type: 'SET_PARAMETER_VALUE',
+      value,
+    };
+  }

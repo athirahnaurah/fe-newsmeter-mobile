@@ -3,35 +3,30 @@ import React, {useEffect, useState} from 'react';
 import ms from '../../utils/ms';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {colors} from '../../utils';
-import {Kategori, MainButton} from '../../components';
+import {Kategori, Loader, MainButton} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import {getKategori} from '../../redux/action';
+import {getKategori, postPreference, setParameterValue} from '../../redux/action';
 import { event } from 'react-native-reanimated';
+import { Alert } from 'react-native';
 
 const MAX_CATEGORY = 3;
 
-const MinatKategori = ({navigation}) => {
+const MinatKategori = ({route, navigation}) => {
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
+  const {parameterValue} = useSelector(state => state.globalReducer);
   const [isclicked, setClicked] = useState([]);
-  // console.log('kategoriList: ', kategoriList);
-
-  const handleDeepLink = (event) => {
-    const data = parseDeepLink(event.url);
-    console.log('data: ', data)
-  }
-
-  const parseDeepLink = (url) => {
-    const params = new URLSearchParams(url.split('?')[1]);
-    const email = params.get('email');
-    console.log('email to: ', email)
-    return {email};
-  }
+  const {isLoadingScreen} = useSelector(state => state.globalReducer);
   
+  // console.log('kategoriList: ', kategoriList);
+  // console.log('param val: ', parameterValue);
+
   const onHandleChange = (text, input) => {
     setInput((prevState) => ({...prevState, [input]: text}))
   }
 
+  const emailValue = route.params.email;
+  
   const onClickKategori = (kategori) => {
     if(isclicked.includes(kategori)){
       setClicked(isclicked.filter((k) => k !== kategori));
@@ -50,10 +45,24 @@ const MinatKategori = ({navigation}) => {
     // setClicked(kategori)
   };
 
-  const onClickNext = () => {
-    console.log('kategori dipilih: ', isclicked);
-
-
+  const onClickNext = async () => {
+    // console.log('kategori dipilih: ', isclicked);
+    if (isclicked.length === 0){
+      Alert.alert(
+        'Anda belum memilih minat bacaan',
+        'Silahkan pilih 1 hingga 3 kategori untuk memberikan rekomendasi bacaan yang Anda minati.',
+    );
+    } else {
+      let dataPreference = {
+        email: emailValue,
+        preference: isclicked,
+      };
+  
+      console.log('data preference: ', dataPreference);
+      // setClicked([]);
+  
+      await dispatch(postPreference(dataPreference, navigation));
+    }
   }
 
   const imageSelect = kategori => {
@@ -82,18 +91,61 @@ const MinatKategori = ({navigation}) => {
     await dispatch(getKategori());
   };
 
+  // const parseDeepLink = (url) => {
+  //   const params = new URLSearchParams(url.split(':')[1]);
+  //   const email = params.get('email');
+  //   console.log('email to: ', email)
+  //   return {email};
+  // }
+
+  // const handleDeepLink = async (event) => {
+  //   // const data = parseDeepLink(event.url)
+  //   // const params = new URLSearchParams(event.url.split(':')[1]);
+  //   // const email = params.get('email');
+  //   const deeplink = event.url;
+  //   const email = deeplink.substring(deeplink.indexOf(':') + 18);
+  //   const emailValue = JSON.stringify(email);
+  //   dispatch(setParameterValue(emailValue));
+  //   console.log('data: ', emailValue);
+
+  // };
+
+  // const getDeepLink = () => {
+  //   const item = navigation.getParam('email', {});
+
+  //   return console.log('item: ', item)
+  // }
+
   useEffect(() => {
     if (navigation.isFocused) {
       init();
-      Linking.addEventListener('url', handleDeepLink);
+      // getDeepLink();
+      // console.log('data email: ', email);
+      // Linking.addEventListener('url', handleDeepLink);
 
-      return () => Linking.removeAllListeners('url', handleDeepLink);
+      // Linking.getInitialURL().then((url) => {
+      //   console.log('url', url);
+      // })
+      // return () => Linking.removeAllListeners('url', handleDeepLink);
+      
+      
+    }
+
+    
+
+  }, []);
+
+  useEffect(() => {
+    if (navigation.isFocused) {
+      init();
+      
     }
     
   }, [navigation]);
 
   return (
     <SafeAreaView style={[ms.containerPage]}>
+      <Loader isVisible={isLoadingScreen}/>
       <ScrollView>
         {/* Header */}
         <View
