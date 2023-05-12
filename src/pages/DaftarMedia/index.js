@@ -123,6 +123,8 @@ const DaftarMedia = ({navigation}) => {
               ms.width(windowWidth * 100) / 100,
               ms.containerPage,
               ms.aiJc('center'),
+              ms.mgT(20),
+              ms.mgB(10)
             ]}>
             {isCompleted ? (
               <TouchableOpacity

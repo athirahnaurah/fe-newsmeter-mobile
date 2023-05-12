@@ -152,6 +152,8 @@ const Beranda = ({navigation}) => {
               ms.width(windowWidth * 100) / 100,
               ms.containerPage,
               ms.aiJc('center'),
+              ms.mgT(22),
+              ms.mgB(10)
             ]}>
             {isCompleted ? (
               <TouchableOpacity

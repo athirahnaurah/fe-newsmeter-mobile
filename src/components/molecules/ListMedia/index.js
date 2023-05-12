@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
 import ms from '../../../utils/ms';
 import { colors } from '../../../utils';
+import { Gap } from '../../atoms';
 
 const ListMedia = ({med, onPress, navigation}) => {
   const dispatch = useDispatch();
@@ -132,11 +133,15 @@ const ListMedia = ({med, onPress, navigation}) => {
   };
 
   return (
-    <View style={[ms.containerPage, ms.mgH(20), ms.pdV(10)]}>
-      <TouchableOpacity onPress={onPress} style={[ms.row, ms.ai('center')]}>
-      <Image source={imageSelect(med)} style={[ms.width(24), ms.height(24), ms.mgR(10)]}/>
+    <View style={[ms.containerPage, ms.mgH(20), ms.mgT(12)]}>
+      <TouchableOpacity onPress={onPress} style={[ms.row, ms.ai('center'),]}>
+        <Image source={imageSelect(med)} style={[ms.width(24), ms.height(24), ms.mgR(10)]}/>
         <Text style={[ms.fzBC(14, '400', colors.black)]}>{med}</Text>
       </TouchableOpacity>
+
+      <View style={[ms.mgH(5), ms.pdT(15)]}>
+          <Gap height={1} backgroundColor={colors.grey3}/>
+        </View>
     </View>
   );
 };

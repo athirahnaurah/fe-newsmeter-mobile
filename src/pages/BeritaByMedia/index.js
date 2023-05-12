@@ -3,14 +3,14 @@ import React from 'react'
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ms from '../../utils/ms';
-import { colors } from '../../utils';
+import { colors, getData } from '../../utils';
 import { slice } from 'lodash';
 import { useCallback } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Logo } from '../../assets';
 import { windowHeight, windowWidth } from '../../utils/ms/constant';
 import NewsList from '../../components/molecules/NewsList';
-import { getNewsByMedia } from '../../redux/action';
+import { getNewsByMedia, postHistory } from '../../redux/action';
 
 const BeritaByMedia = ({navigation}) => {
   const dispatch = useDispatch();
@@ -160,6 +160,8 @@ const BeritaByMedia = ({navigation}) => {
                 ms.width(windowWidth * 100) / 100,
                 ms.containerPage,
                 ms.aiJc('center'),
+                ms.mgT(22),
+                ms.mgB(10)
               ]}>
               {isCompleted ? (
                 <TouchableOpacity

@@ -90,7 +90,7 @@ const Login = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={[ms.height((windowHeight * 70) / 100)]}>
+        <View style={[ms.height((windowHeight * 75) / 100)]}>
           {/* Input */}
           <View style={[ms.jc('center')]}>
             <Text

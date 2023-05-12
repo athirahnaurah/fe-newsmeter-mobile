@@ -318,7 +318,7 @@ const Jelajah = ({navigation}) => {
                         </Text>
                       </TouchableOpacity>
                       <Gap
-                        height={1}
+                        height={2}
                         backgroundColor={colors.grey3}
                         width={(windowWidth * 70) / 100}
                       />

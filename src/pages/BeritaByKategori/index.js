@@ -12,7 +12,7 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ms from '../../utils/ms';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {Logo} from '../../assets';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {useDispatch, useSelector} from 'react-redux';
@@ -170,6 +170,8 @@ const BeritaByKategori = ({navigation}) => {
                 ms.width(windowWidth * 100) / 100,
                 ms.containerPage,
                 ms.aiJc('center'),
+                ms.mgT(22),
+                ms.mgB(10)
               ]}>
               {isCompleted ? (
                 <TouchableOpacity

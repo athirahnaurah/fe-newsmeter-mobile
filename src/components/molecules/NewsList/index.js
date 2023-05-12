@@ -10,9 +10,11 @@ const NewsList = ({news, onPress, width, height}) => {
     <TouchableOpacity onPress={onPress}>
       {/* List Berita */}
       <View style={[styles.NewsCard]}>
-        <View style={[ms.row, ms.mgT(5), ms.mgB(30)]}>
+        <View style={[ms.row, ms.mgT(16), ms.mgB(30)]}>
           <View style={[ms.width('60%'), ms.height(65), ms.pdL(20)]}>
-            <Text style={[ms.fzBC(12.8, '700', colors.black)]}>
+            <Text
+              numberOfLines={3}
+              style={[ms.fzBC(12.8, '700', colors.black)]}>
               {news?.title}
             </Text>
             <Text style={[ms.fzBC(11, '400', colors.black)]}>
@@ -26,7 +28,10 @@ const NewsList = ({news, onPress, width, height}) => {
                 </Text>
               </View>
               <View style={[ms.width('100%'), ms.row]}>
-                <Image source={Point} style={[ms.width(2), ms.height(2), ms.mgT(7), ms.mgH(5)]} />
+                <Image
+                  source={Point}
+                  style={[ms.width(2), ms.height(2), ms.mgT(7), ms.mgH(5)]}
+                />
                 <Text style={[ms.fzBC(10, '400', colors.black)]}>
                   {news?.date}
                 </Text>
@@ -36,13 +41,16 @@ const NewsList = ({news, onPress, width, height}) => {
 
           <View style={[ms.width('40%'), ms.ai('center')]}>
             <Image
-              source={{uri : news?.image}}
+              source={{uri: news?.image}}
               style={[ms.width('75%'), ms.height('100%')]}
             />
           </View>
+
+        </View>
+        <View style={[ms.mgH(20)]}>
+          <Gap height={1} backgroundColor={colors.grey3}/>
         </View>
 
-        <Gap height={1} backgroundColor={colors.grey} />
       </View>
     </TouchableOpacity>
   );
@@ -72,6 +80,6 @@ const styles = StyleSheet.create({
     //   backgroundColor: colors.grey,
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'row',
+    // flexDirection: 'row',
   },
 });
