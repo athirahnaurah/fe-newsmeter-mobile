@@ -3,9 +3,10 @@ import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
 import {setLoadingScreen, setLoadingValue, setSearch} from '../global';
 import ApiConfigLocal from '../../../config/ApiConfigLocal';
-import { getData } from '../../../utils';
+import {getData} from '../../../utils';
 
-export const getNews = (onCallback = res => {}, onError = err => {}) =>
+export const getNews =
+  (onCallback = res => {}, onError = err => {}) =>
   dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
@@ -56,7 +57,9 @@ export const getNewsByKategori =
       });
   };
 
-export const getNewsByMedia = (media, onCallback = res => {}, onError = err => {}) => dispatch => {
+export const getNewsByMedia =
+  (media, onCallback = res => {}, onError = err => {}) =>
+  dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
 
@@ -79,7 +82,9 @@ export const getNewsByMedia = (media, onCallback = res => {}, onError = err => {
       });
   };
 
-export const getSearchNews = (search, onCallback = res => {}, onError = err => {}) => dispatch => {
+export const getSearchNews =
+  (search, onCallback = res => {}, onError = err => {}) =>
+  dispatch => {
     // const paramList = [{}];
     console.log('search: ', search);
     dispatch(setLoadingScreen(true));
@@ -122,4 +127,96 @@ export const postHistory = dataNews => dispatch => {
         console.log('Error:', err);
       });
   });
+};
+
+export const getRecommendationByKategori =
+  (onCallback = res => {}, onError = err => {}) =>
+  dispatch => {
+    dispatch(setLoadingScreen(true));
+    // let preferences = ['Ekonomi', 'Politik', 'Nasional'];
+    getData('token').then(resAuth => {
+      axios
+        .get('http://10.0.2.2:5000/preference', {
+          headers: {Authorization: `Bearer ${resAuth}`},
+        })
+        .then(res => {
+          console.log('response:', res.data);
+          let newData = [];
+          let i = 0;
+          for (let preference of res.data) {
+            console.log('preference', preference);
+            axios
+              .get(`${ApiConfig}/api/get/news/kategori/${preference}/50`, {
+                headers: ApiHeader,
+              })
+              .then(result => {
+                console.log('get news');
+                result.data.forEach(
+                  ({
+                    _id,
+                    original,
+                    content,
+                    title,
+                    date,
+                    kategori,
+                    media,
+                    image,
+                  }) => {
+                    newData.push({
+                      _id,
+                      original,
+                      content,
+                      title,
+                      date,
+                      kategori,
+                      media,
+                      image,
+                    });
+                  },
+                );
+                i++;
+
+                if (i === res.data.length) {
+                  console.log('done get news 3 category');
+                  newData.sort((a, b) => {
+                    console.log('sorting');
+                    return (
+                      new Date(convertTimestamp(b.date)) -
+                      new Date(convertTimestamp(a.date))
+                    );
+                  });
+                  console.log('rec by category:', newData);
+                  dispatch({
+                    type: 'SET_NEWS_RECOMMEND_BY_KATEGORI',
+                    value: [...newData],
+                  });
+                }
+              })
+              .catch(err => {
+                console.log('error', err);
+                onError(err);
+              });
+          }
+        })
+        .catch(err => {
+          console.log('Error:', err);
+        })
+        .finally(() => {
+          dispatch(setLoadingScreen(false));
+        });
+    });
+  };
+
+const convertTimestamp = dateString => {
+  const parts = dateString.split(' ');
+  const dateParts = parts[0].split('-');
+  const timeParts = parts[1].split(':');
+  const year = parseInt(dateParts[0], 10);
+  const month = parseInt(dateParts[1], 10) - 1;
+  const day = parseInt(dateParts[2], 10);
+  const hour = parseInt(timeParts[0], 10);
+  const minute = parseInt(timeParts[1], 10);
+  const second = parseInt(timeParts[2], 10);
+  const timestamp = new Date(year, month, day, hour, minute, second).getTime();
+  return timestamp;
 };

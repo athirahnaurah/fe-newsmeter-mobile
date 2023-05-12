@@ -18,6 +18,7 @@ import {
   DetailBeritaByMedia,
   DaftarMedia,
   DetailSearch,
+  RekomendasiByKategori,
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -134,6 +135,11 @@ const Router = () => {
       <Stack.Screen
         name="DetailSearch"
         component={DetailSearch}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="RekomendasiByKategori"
+        component={RekomendasiByKategori}
         options={{headerShown: false}}
       />
     </Stack.Navigator>
