@@ -12,13 +12,13 @@ const KategoriRekomendasi = ({rekomendasi, onPress}) => {
       style={[
         ms.width(windowWidth * 100) / 100,
         ms.height(windowHeight * 30) / 100,
-        
-        styles.card
+
+        styles.card,
       ]}>
       <TouchableOpacity style={[ms.jc('center')]} onPress={onPress}>
         <View style={[ms.ai('center')]}>
           <Image
-            source={rekomendasi?.img}
+            source={{uri: rekomendasi?.image}}
             style={[ms.width(120), ms.height(70)]}
           />
         </View>
@@ -29,7 +29,7 @@ const KategoriRekomendasi = ({rekomendasi, onPress}) => {
             ms.pdT(10),
             ms.jc('center'),
           ]}>
-          <Text style={[ms.fzBC(11, '400', colors.black)]}>
+          <Text style={[ms.fzBC(11, '700', colors.black)]}>
             {rekomendasi?.title}
           </Text>
         </View>
@@ -62,20 +62,20 @@ const KategoriRekomendasi = ({rekomendasi, onPress}) => {
 export default KategoriRekomendasi;
 
 const styles = StyleSheet.create({
-    card: {
-        marginTop: 15,
-        marginHorizontal: 15,
-        padding: 5,
-        backgroundColor: 'white',
-        // borderRadius: 10,
-        shadowColor: colors.grey,
-        // shadowOffset: {
-        //   width: 0,
-        //   height: 8,
-        // },
-        // shadowOpacity: 0.23,
-        // shadowRadius: 10,
-        elevation: 3,
-        margin: 5,
-    }
+  card: {
+    marginTop: 15,
+    marginHorizontal: 15,
+    padding: 5,
+    backgroundColor: 'white',
+    // borderRadius: 10,
+    shadowColor: colors.grey,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 8,
+    // },
+    // shadowOpacity: 0.23,
+    // shadowRadius: 10,
+    elevation: 3,
+    margin: 5,
+  },
 });

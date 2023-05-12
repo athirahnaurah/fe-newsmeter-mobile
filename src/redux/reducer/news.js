@@ -9,6 +9,7 @@ const initStateNewsList = {
   newsbymedia: {},
   newsListSearch: [],
   search: {},
+  recomByKategori: [],
   // post: []
   // newsList: [
   //   {
@@ -73,7 +74,6 @@ const initStateNewsList = {
   //     kategori: 'Entertainment'
   //   },
   // ],
-  
 };
 
 export const newsReducer = (state = initStateNewsList, action) => {
@@ -123,6 +123,12 @@ export const newsReducer = (state = initStateNewsList, action) => {
     return {
       ...state,
       search: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWS_RECOMMEND_BY_KATEGORI') {
+    return {
+      ...state,
+      recomByKategori: action.value,
     };
   }
   return state;

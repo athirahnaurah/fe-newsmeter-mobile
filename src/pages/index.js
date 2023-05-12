@@ -13,6 +13,7 @@ import BeritaByMedia from "./BeritaByMedia";
 import DetailBeritaByMedia from "./DetailBeritaByMedia";
 import DaftarMedia from "./DaftarMedia";
 import DetailSearch from "./DetailSearch";
+import RekomendasiByKategori from './RekomendasiByKategori';
 
 export{
     Beranda,
@@ -29,5 +30,6 @@ export{
     DetailBeritaByKategori,
     DetailBeritaByMedia,
     DaftarMedia,
-    DetailSearch
+    DetailSearch,
+    RekomendasiByKategori,
 }
