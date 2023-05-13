@@ -4,9 +4,9 @@ import ms from '../../../utils/ms';
 import {colors} from '../../../utils';
 import {windowHeight, windowWidth} from '../../../utils/ms/constant';
 import {Gap} from '../../atoms';
-import {Point} from '../../../assets';
+import {ImageDefault, Point} from '../../../assets';
 
-const KategoriRekomendasi = ({rekomendasi, onPress}) => {
+const KategoriRekomendasi = ({news, onPress}) => {
   return (
     <View
       style={[
@@ -16,12 +16,28 @@ const KategoriRekomendasi = ({rekomendasi, onPress}) => {
         styles.card,
       ]}>
       <TouchableOpacity style={[ms.jc('center')]} onPress={onPress}>
-        <View style={[ms.ai('center')]}>
-          <Image
-            source={{uri: rekomendasi?.image}}
-            style={[ms.width(120), ms.height(70)]}
-          />
-        </View>
+        {news?.image !== null ? (
+          <View style={[ms.ai('center')]}>
+            <Image
+              source={{uri: news?.image}}
+              style={[
+                ms.width((windowWidth * 50) / 100),
+                ms.height((windowHeight * 14) / 100),
+              ]}
+            />
+          </View>
+        ) : (
+          <View style={[ms.ai('center')]}>
+            <Image
+              source={ImageDefault}
+              style={[
+                ms.width((windowWidth * 50) / 100),
+                ms.height((windowHeight * 14) / 100),
+              ]}
+            />
+          </View>
+        )}
+
         <View
           style={[
             ms.width(180),
@@ -29,29 +45,25 @@ const KategoriRekomendasi = ({rekomendasi, onPress}) => {
             ms.pdT(10),
             ms.jc('center'),
           ]}>
-          <Text style={[ms.fzBC(11, '700', colors.black)]}>
-            {rekomendasi?.title}
+          <Text numberOfLines={2} style={[ms.fzBC(12, '700', colors.black)]}>
+            {news?.title}
           </Text>
         </View>
         <View style={[ms.pdT(2)]}>
-          <Text style={[ms.fzBC(8, '400', colors.black)]}>
-            {rekomendasi?.media}
-          </Text>
+          <Text style={[ms.fzBC(10, '400', colors.black)]}>{news?.media}</Text>
         </View>
         <View style={[ms.row, ms.mgT(3)]}>
           <View style={[ms.mgL()]}>
-            <Text style={[ms.fzBC(9, '500', colors.blue)]}>
-              {rekomendasi?.kategori}
+            <Text style={[ms.fzBC(11, '500', colors.blue)]}>
+              {news?.kategori}
             </Text>
           </View>
           <View style={[ms.width((windowWidth * 30) / 100), ms.row]}>
             <Image
               source={Point}
-              style={[ms.width(2), ms.height(2), ms.mgT(5), ms.mgH(5)]}
+              style={[ms.width(2.5), ms.height(2.5), ms.mgT(6), ms.mgH(5)]}
             />
-            <Text style={[ms.fzBC(9, '400', colors.black)]}>
-              {rekomendasi?.date}
-            </Text>
+            <Text style={[ms.fzBC(11, '400', colors.black)]}>{news?.date}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -63,18 +75,18 @@ export default KategoriRekomendasi;
 
 const styles = StyleSheet.create({
   card: {
-    marginTop: 15,
-    marginHorizontal: 15,
+    // marginBottom: 20,
+    marginLeft: 20,
     padding: 5,
     backgroundColor: 'white',
-    // borderRadius: 10,
-    shadowColor: colors.grey,
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 8,
-    // },
-    // shadowOpacity: 0.23,
-    // shadowRadius: 10,
+    borderRadius: 5,
+    shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 10,
     elevation: 3,
     margin: 5,
   },

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
-import {setLoadingScreen, setLoadingValue, setSearch} from '../global';
+import {setLoadingScreen, setLoadingValue, setPreferenceValue, setSearch} from '../global';
 import ApiConfigLocal from '../../../config/ApiConfigLocal';
 import {getData} from '../../../utils';
 
@@ -15,8 +15,6 @@ export const getNews =
       .get(`${ApiConfig}/api/get/news/100`, {headers: ApiHeader})
       .then(res => {
         console.log('result', res);
-        // dispatch({ type: 'SET_POST', value: [...res.data] })
-        // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         dispatch({type: 'SET_NEWSLIST', value: [...res.data]});
         dispatch({type: 'SET_NEWSLIST_GLOBAL', value: [...res.data]});
         // onCallback(res.data)
@@ -185,11 +183,12 @@ export const getRecommendationByKategori =
                       new Date(convertTimestamp(a.date))
                     );
                   });
-                  console.log('rec by category:', newData);
+                  // console.log('rec by category:', newData);
                   dispatch({
                     type: 'SET_NEWS_RECOMMEND_BY_KATEGORI',
                     value: [...newData],
                   });
+                  dispatch(setLoadingScreen(false));
                 }
               })
               .catch(err => {
@@ -201,9 +200,9 @@ export const getRecommendationByKategori =
         .catch(err => {
           console.log('Error:', err);
         })
-        .finally(() => {
-          dispatch(setLoadingScreen(false));
-        });
+        // .finally(() => {
+        //   dispatch(setLoadingScreen(false));
+        // });
     });
   };
 

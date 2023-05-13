@@ -17,6 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getUser, logoutAction} from '../../redux/action/login';
 import {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setLogin } from '../../redux/action';
 
 const Profil = ({navigation}) => {
   const dispatch = useDispatch();
@@ -42,6 +43,10 @@ const Profil = ({navigation}) => {
     dispatch({ type: 'SET_AUTH_USER', value: null});
     dispatch({ type: 'SET_AUTH_DETAIL', value: null});
     dispatch({ type: 'SET_TOKEN', value: null});
+    dispatch(setLogin(false));
+    getData('authUser').then(resAuthUser => {
+        console.log('token : ', resAuthUser)
+    })
     // dispatch(logoutAction(navigation));
     // getData('authUser').then(resAuthUser => {
     //   if(resAuthUser?.data.email){

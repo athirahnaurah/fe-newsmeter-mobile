@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import ms from '../../../utils/ms'
 import { colors } from '../../../utils'
-import { IconValidasi, Point } from '../../../assets'
+import { IconValidasi, ImageDefault, Point } from '../../../assets'
 import { Gap } from '../../atoms'
 
 const Rekomendasi = ({rekom, onPress}) => {
@@ -38,12 +38,22 @@ const Rekomendasi = ({rekom, onPress}) => {
             </View>
           </View>
 
-          <View style={[ms.width('40%'), ms.ai('center')]}>
+          {rekom?.image !== null ? (
+            <View style={[ms.width('40%'), ms.ai('center')]}>
             <Image
-              source={rekom?.img}
+              source={{uri: rekom?.image}}
               style={[ms.width('75%'), ms.height('100%')]}
             />
           </View>
+          ) : (
+            <View style={[ms.width('40%'), ms.ai('center')]}>
+            <Image
+              source={ImageDefault}
+              style={[ms.width('75%'), ms.height('100%')]}
+            />
+          </View>
+          )}
+          
         </View>
 
         <Gap height={1} backgroundColor={colors.grey} />

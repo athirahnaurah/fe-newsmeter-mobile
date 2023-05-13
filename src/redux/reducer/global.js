@@ -14,6 +14,7 @@ const initGlobalState = {
     isLogin: false,
     searchValue: false,
     parameterValue: null,
+    preferenceValue: false,
   };
   
   export const globalReducer = (state = initGlobalState, action) => {
@@ -114,6 +115,12 @@ const initGlobalState = {
       return {
         ...state,
         parameterValue: action.value,
+      };
+    }
+    else if (action.type === 'SET_PREFERENCE_VALUE') {
+      return {
+        ...state,
+        preferenceValue: action.value,
       };
     }
     return state;

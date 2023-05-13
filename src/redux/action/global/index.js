@@ -40,3 +40,9 @@ export const setLoading = (value) => {
       value,
     };
   }
+  export const setPreferenceValue = (value) => {
+    return {
+      type: 'SET_PREFERENCE_VALUE',
+      value,
+    };
+  }

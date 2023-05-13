@@ -90,7 +90,7 @@ const Login = ({navigation}) => {
           </TouchableOpacity>
         </View>
 
-        <View style={[ms.height((windowHeight * 75) / 100)]}>
+        <View style={[ms.height((windowHeight * 70) / 100)]}>
           {/* Input */}
           <View style={[ms.jc('center')]}>
             <Text
@@ -144,14 +144,14 @@ const Login = ({navigation}) => {
         </View>
 
         {/* Redirect Registrasi */}
-        <View style={[ms.height((windowHeight * 7) / 100)]}>
+        <View style={[ms.height((windowHeight * 10) / 100)]}>
           <Gap
             width={(windowWidth * 100) / 100}
             height={1}
             backgroundColor={colors.grey}
           />
 
-          <View style={[ms.row, ms.aiJc('center'), ms.pdV(16)]}>
+          <View style={[ms.row, ms.aiJc('center'), ms.pdV(16), ms.height((windowHeight * 7) / 100)]}>
             <Text style={[ms.fzBC(10, '400', colors.grey)]}>
               Belum punya akun?{' '}
             </Text>

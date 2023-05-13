@@ -10,15 +10,18 @@ import {
   Button,
   Alert,
 } from 'react-native';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
 import ms from '../../utils/ms';
 import {colors} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
-import {Logo, Point, SportImg} from '../../assets/images';
+import {ImageDefault, Logo, Point, SportImg} from '../../assets/images';
 import RenderHTML from 'react-native-render-html';
 import { Linking } from 'react-native';
+import { Cheerio, html }  from 'cheerio';
+import { useState } from 'react';
+import cheerio from 'react-native-cheerio/lib/cheerio';
 
 const DetailBerita = ({navigation}) => {
   // const tagsStyles = {
@@ -37,14 +40,21 @@ const DetailBerita = ({navigation}) => {
   //     />
   //   ) 
   // } 
-
+  const [htmlData, setHtmlData] = useState('');
   const {news} = useSelector(state => state.newsReducer);
   const {width : contentWidth} = ms.width((windowWidth * 90) / 100);
+  
+  const removeImg = (htmlAttribs, children, convertedCSSStyles, passProps) => {
+    return null;
+  }
+  const renderers = {
+    img: removeImg,
+  }
   const source = {
     html: news?.content
   }
 
-  const OpenURLButton = ({url, node}) => {
+  const OpenURLButton = ({url}) => {
     const handlePress = useCallback(async () => {
       // Checking if the link is supported for links with custom URL scheme.
       const supported = await Linking.openURL(url);
@@ -118,24 +128,33 @@ const DetailBerita = ({navigation}) => {
         </View>
 
         {/* Content */}
-        {/* https://medium.com/@nutanbhogendrasharma/how-to-display-html-content-in-react-native-mobile-app-b43cfda8325 */}
         <View
           style={[
             ms.mgT(20),
             ms.aiJc('center'),
             ms.width((windowWidth * 100) / 100),
           ]}>
-          <View style={[ms.mgB(20)]}>
+
+          {news?.image !== null ? (
+            <View style={[ms.mgB(20)]}>
             <Image
-              source={{uri : news?.image}}
-              style={[
-                ms.width((windowWidth * 90) / 100),
-                ms.height((windowHeight * 30) / 100),
-              ]}
+              source={{uri: news?.image}}
+              style={[ms.width((windowWidth * 90) / 100),
+              ms.height((windowHeight * 30) / 100),]}
             />
           </View>
+          ) : (
+            <View style={[ms.mgB(20)]}>
+            <Image
+              source={ImageDefault}
+              style={[ms.width((windowWidth * 90) / 100),
+              ms.height((windowHeight * 30) / 100),]}
+            />
+          </View>
+          )}
+
           <View style={[ms.width((windowWidth * 90) / 100), ms.jc('center')]}>
-            <RenderHTML source={source} contentWidth={contentWidth}/>
+            <RenderHTML source={source} contentWidth={contentWidth} renderers={renderers} />
         
           </View>
         </View>

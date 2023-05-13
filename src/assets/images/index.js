@@ -12,6 +12,7 @@ import Okezone from './image36.png';
 import SindoNews from './image37.png';
 import Tempo from './image38.png';
 import Profile from './Profile-Default.png';
+import ImageDefault from './Image-Default.png';
 
 export{
     Logo,
@@ -28,4 +29,5 @@ export{
     SindoNews,
     Tempo,
     Profile,
+    ImageDefault
 }

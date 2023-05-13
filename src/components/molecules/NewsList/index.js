@@ -3,9 +3,23 @@ import React from 'react';
 import {colors, windowHeight, windowWidth} from '../../../utils';
 import ms from '../../../utils/ms';
 import {Gap} from '../../atoms';
-import {Point} from '../../../assets';
+import {ImageDefault, Point} from '../../../assets';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const NewsList = ({news, onPress, width, height}) => {
+
+  {/* Condition while there's no image in var img */}
+  // const [imgNull, setImgNull] = useState(news?.image);
+  
+  // const stateNull = () => {
+  //   setImgNull(null);
+  // }
+
+  // useEffect(() => {
+  //   stateNull()
+  // })
+
   return (
     <TouchableOpacity onPress={onPress}>
       {/* List Berita */}
@@ -39,12 +53,39 @@ const NewsList = ({news, onPress, width, height}) => {
             </View>
           </View>
 
-          <View style={[ms.width('40%'), ms.ai('center')]}>
+          {news?.img !== null ? (
+            <View style={[ms.width('40%'), ms.ai('center')]}>
             <Image
               source={{uri: news?.image}}
               style={[ms.width('75%'), ms.height('100%')]}
             />
           </View>
+          ) : (
+            <View style={[ms.width('40%'), ms.ai('center')]}>
+            <Image
+              source={ImageDefault}
+              style={[ms.width('75%'), ms.height('100%')]}
+            />
+          </View>
+          )}
+
+          {/* Condition while there's no image in var img */}
+          {/* {imgNull !== null ? (
+            <View style={[ms.width('40%'), ms.ai('center')]}>
+            <Image
+              source={{uri: news?.image}}
+              style={[ms.width('75%'), ms.height('100%')]}
+            />
+          </View>
+          ) : (
+            <View style={[ms.width('40%'), ms.ai('center')]}>
+            <Image
+              source={ImageDefault}
+              style={[ms.width('75%'), ms.height('100%')]}
+            />
+          </View>
+          )} */}
+          
 
         </View>
         <View style={[ms.mgH(20)]}>

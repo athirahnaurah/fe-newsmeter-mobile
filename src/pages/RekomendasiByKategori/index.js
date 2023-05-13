@@ -148,7 +148,8 @@ const RekomendasiByKategori = ({navigation}) => {
           <ActivityIndicator color={colors.black} style={{margin: 5}} />
         ) : (
           <View>
-            <View>
+            {recomByKategori > 0 ? (
+              <View>
               {initialGet.map((news, index) => {
                 return (
                   <NewsList
@@ -197,6 +198,11 @@ const RekomendasiByKategori = ({navigation}) => {
                 )}
               </View>
             </View>
+            ) : (
+              <View style={[ms.aiJc('center'), ms.height(windowHeight*75/100)]}>
+                  <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center'), ms.width(windowWidth*50/100),]}>Tidak ada rekomendasi berita untuk kategori yang Anda pilih</Text>
+                </View>
+            )}
           </View>
         )}
       </ScrollView>

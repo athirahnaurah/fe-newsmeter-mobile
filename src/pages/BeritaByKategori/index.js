@@ -158,8 +158,8 @@ const BeritaByKategori = ({navigation}) => {
                   // height={65}
                   onPress={() => {
                     saveHistory(makeHistory(news));
-                    dispatch({type: 'SET_NEWS_BY_KATEGORI', value: news});
-                    navigation.navigate('DetailBeritaByKategori');
+                    dispatch({type: 'SET_NEWS', value: news});
+                    navigation.navigate('DetailBerita');
                   }}
                 />
               );

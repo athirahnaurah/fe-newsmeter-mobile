@@ -7,7 +7,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import ms from '../../utils/ms';
 import {colors, getData} from '../../utils';
 import {Logo} from '../../assets/images';
@@ -16,19 +16,104 @@ import {useDispatch, useSelector} from 'react-redux';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import KategoriRekomendasi from '../../components/molecules/KategoriRekomendasi';
 import {Gap, Rekomendasi} from '../../components';
+import { getRecommendationByKategori, postHistory } from '../../redux/action';
+import { slice } from 'lodash';
 
 const Untukmu = ({navigation}) => {
+  // const dispatch = useDispatch();
+  // const {recomByKategori} = useSelector(state => state.newsReducer);
+  // const {newsList} = useSelector(state => state.newsReducer);
+  // const {isLogin} = useSelector(state => state.globalReducer);
+
   const dispatch = useDispatch();
   const {recomByKategori} = useSelector(state => state.newsReducer);
   const {newsList} = useSelector(state => state.newsReducer);
-  const {isLogin} = useSelector(state => state.globalReducer);
+  const {isLoadingScreen, isLogin, preferenceValue} = useSelector(state => state.globalReducer);
+  const [refreshing, setRefreshing] = useState(false);
+  const [i, setI] = useState(15);
+  const initialGet = slice(recomByKategori, 0, i);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
 
   const init = async () => {
-    if (isLogin) {
-      console.log('running recommendation');
-      dispatch(getRecommendationByKategori());
+    getData('authUser').then(resAuthUser => {
+      if (resAuthUser?.data.email) {
+        dispatch(getRecommendationByKategori());
+      }
+    });
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    wait(3000).then(() => {
+      setRefreshing(false);
+      init();
+    });
+  }, []);
+
+  const loadMore = () => {
+    setI(i + 15);
+    console.log('index', i);
+    if (i >= recomByKategori.length) {
+      setIsCompleted(true);
+    } else {
+      setIsCompleted(false);
     }
   };
+
+  //membuat data riwayat
+  const makeHistory = news => {
+    let date = new Date(Date.now());
+    let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}.${date.getMilliseconds().toString().padStart(6, '0')}`;
+    let dataHistory = {
+      _id: news?._id,
+      original: news?.original,
+      content: news?.content,
+      date: news?.date,
+      image: news?.image,
+      kategori: news?.kategori,
+      media: news?.media,
+      title: news?.title,
+      timestamp: dateString,
+    };
+    return dataHistory;
+  };
+
+  //menyimpan data riwayat
+  const saveHistory = dataHistory => {
+    getData('authUser').then(resAuthUser => {
+      if (resAuthUser?.data.email) {
+        dispatch(postHistory(dataHistory));
+        console.log('login');
+      } else {
+        console.log('not login');
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (navigation.isFocused) {
+      init();
+    }
+  }, [navigation]);
+
+  // const init = async () => {
+  //   if (isLogin) {
+  //     console.log('running recommendation');
+  //     dispatch(getRecommendationByKategori());
+  //   }
+  // };
 
   return (
     <SafeAreaView style={[ms.containerPage]}>
@@ -67,34 +152,45 @@ const Untukmu = ({navigation}) => {
                   />
                 </View>
               </View>
-              <View>
+              {recomByKategori.length > 0 ? (
+                <View style={[]}>
                 <ScrollView
                   horizontal={true}
-                  showsHorizontalScrollIndicator={true}>
-                  {/* {recomByKategori.map((rekomendasi, index) => {
+                  showsHorizontalScrollIndicator={false}>
+                  {recomByKategori.slice(0,10).map((news, index) => {
                     return (
                       <KategoriRekomendasi
                         key={index}
-                        rekomendasi={rekomendasi}
+                        news={news}
                         onPress={() => {
-                          dispatch({type: 'SET_NEWS', value: rekomendasi});
+                          saveHistory(makeHistory(news));
+                          dispatch({type: 'SET_NEWS', value: news});
                           navigation.navigate('DetailBerita');
                           // detail rekomendasi
                         }}
                       />
                     );
-                  })} */}
+                  })}
                 </ScrollView>
               </View>
+              ) : (
+                <View style={[ms.aiJc('center'), ms.height(windowHeight*25/100)]}>
+                  <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center'), ms.width(windowWidth*50/100),]}>Tidak ada rekomendasi berita untuk kategori yang Anda pilih</Text>
+                </View>
+              )}
+              
             </View>
-            <View style={[ms.mgT(20), ms.mgH(20)]}>
+            <View style={[ms.mgT(40), ms.mgH(20)]}>
               <Gap
                 width={(windowWidth * 90) / 100}
                 height={2}
                 backgroundColor={colors.grey3}
               />
             </View>
-            <View style={[ms.mgH(20), ms.mgT(15)]}>
+
+            {/* Rekomendasi By History */}
+            <View>
+            <View style={[ms.mgH(20), ms.mgT(10)]}>
               <Text style={[ms.fzBC(17, '700', colors.black)]}>
                 Berita Untukmu
               </Text>
@@ -115,6 +211,8 @@ const Untukmu = ({navigation}) => {
                 );
               })}
             </View>
+            </View>
+            
           </View>
         ) : (
           <View style={[styles.nonews]}>

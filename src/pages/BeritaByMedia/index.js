@@ -148,8 +148,8 @@ const BeritaByMedia = ({navigation}) => {
                   // height={65}
                   onPress={() => {
                     saveHistory(makeHistory(news));
-                    dispatch({type: 'SET_NEWS_BY_MEDIA', value: news});
-                    navigation.navigate('DetailBeritaByMedia');
+                    dispatch({type: 'SET_NEWS', value: news});
+                    navigation.navigate('DetailBerita');
                   }}
                 />
               );
