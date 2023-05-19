@@ -2,6 +2,8 @@ import axios from 'axios';
 import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
 import { setLoadingScreen } from '../global';
+import {Alert} from 'react-native';
+import { storeData, getData } from '../../../utils';
 
 export const getKategori = (onCallback = res => {}, onError = err => {}) => dispatch => {
     // const paramList = [{}];
@@ -29,13 +31,51 @@ export const postPreference = (dataPreference, navigation, onCallback = res => {
     dispatch(setLoadingScreen(true));
     axios.post('http://10.0.2.2:5000/preference', dataPreference, { header: ApiHeader })
     .then((res) => {
+        storeData('preference', res.data);
         console.log('res preference: ', res);
-        navigation.reset({ index: 0, routes: [{name: 'Login'}] });
+        getData('authUser').then((resAuthUser) => {
+          if (resAuthUser !== null){
+            navigation.reset({ index: 0, routes: [{name: 'MainApp'}] });
+          } else {
+            navigation.reset({ index: 0, routes: [{name: 'Login'}] });
+          }})
     })
     .catch((err) => {
-        console.log('error: ', err);
+        console.log('error post preference: ', err);
     })
     .finally(() => {
         dispatch(setLoadingScreen(false))
     })
 }
+
+export const getPreference = (user, navigation, onCallback=(res)=>{}, onError=(err)=>{}) => (dispatch) => {
+
+    // const users = [{
+    //   email : email
+    // }]
+  
+    // console.log('email user: ', users);
+    axios.get('http://10.0.2.2:5000/preference', {
+      headers: { 'Authorization': `Bearer ${user} `}
+    })
+    .then((res) => {
+      console.log('res get preference: ', res);
+      // dispatch({ type: 'SET_PREFERENCE', value: res.data});
+      // onCallback(res.data);
+      if(res.data.length > 0){
+        Alert.alert(
+          'Login',
+          'Login berhasil.',
+        );
+        navigation.reset({ index: 0, routes: [{name: 'MainApp'}] });
+      } else {
+        navigation.reset({ index: 0, routes: [{name: 'MinatKategori'}] });
+        
+      }
+
+    })
+    .catch((err) => {
+      console.log('error get prefrerence: ', err);
+      onError(err)
+    })
+  }

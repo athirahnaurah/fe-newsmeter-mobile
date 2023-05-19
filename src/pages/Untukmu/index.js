@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   View,
   Image,
+  ActivityIndicator,
 } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import ms from '../../utils/ms';
 import {colors, getData} from '../../utils';
 import {Logo} from '../../assets/images';
@@ -16,8 +17,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import KategoriRekomendasi from '../../components/molecules/KategoriRekomendasi';
 import {Gap, Rekomendasi} from '../../components';
-import { getRecommendationByKategori, postHistory } from '../../redux/action';
-import { slice } from 'lodash';
+import {getRecommendationByKategori, postHistory} from '../../redux/action';
+import {slice} from 'lodash';
 
 const Untukmu = ({navigation}) => {
   // const dispatch = useDispatch();
@@ -28,7 +29,9 @@ const Untukmu = ({navigation}) => {
   const dispatch = useDispatch();
   const {recomByKategori} = useSelector(state => state.newsReducer);
   const {newsList} = useSelector(state => state.newsReducer);
-  const {isLoadingScreen, isLogin, preferenceValue} = useSelector(state => state.globalReducer);
+  const {isLoadingScreen, isLogin, preferenceValue} = useSelector(
+    state => state.globalReducer,
+  );
   const [refreshing, setRefreshing] = useState(false);
   const [i, setI] = useState(15);
   const initialGet = slice(recomByKategori, 0, i);
@@ -123,8 +126,8 @@ const Untukmu = ({navigation}) => {
       </View>
       <ScrollView>
         {isLogin ? (
-          // Rekomendasi By Kategori
           <View>
+            {/* Rekomendasi By Kategori */}
             <View
               style={[
                 styles.cardRekomendasiKategori,
@@ -152,33 +155,50 @@ const Untukmu = ({navigation}) => {
                   />
                 </View>
               </View>
-              {recomByKategori.length > 0 ? (
-                <View style={[]}>
-                <ScrollView
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}>
-                  {recomByKategori.slice(0,10).map((news, index) => {
-                    return (
-                      <KategoriRekomendasi
-                        key={index}
-                        news={news}
-                        onPress={() => {
-                          saveHistory(makeHistory(news));
-                          dispatch({type: 'SET_NEWS', value: news});
-                          navigation.navigate('DetailBerita');
-                          // detail rekomendasi
-                        }}
-                      />
-                    );
-                  })}
-                </ScrollView>
-              </View>
+              {isLoadingScreen ? (
+                <ActivityIndicator color={colors.black} style={{margin: 5}} />
               ) : (
-                <View style={[ms.aiJc('center'), ms.height(windowHeight*25/100)]}>
-                  <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center'), ms.width(windowWidth*50/100),]}>Tidak ada rekomendasi berita untuk kategori yang Anda pilih</Text>
+                <View>
+                  {recomByKategori.length > 0 ? (
+                    <View style={[]}>
+                      <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}>
+                        {recomByKategori.slice(0, 10).map((news, index) => {
+                          return (
+                            <KategoriRekomendasi
+                              key={index}
+                              news={news}
+                              onPress={() => {
+                                saveHistory(makeHistory(news));
+                                dispatch({type: 'SET_NEWS', value: news});
+                                navigation.navigate('DetailBerita');
+                                // detail rekomendasi
+                              }}
+                            />
+                          );
+                        })}
+                      </ScrollView>
+                    </View>
+                  ) : (
+                    <View
+                      style={[
+                        ms.aiJc('center'),
+                        ms.height((windowHeight * 25) / 100),
+                      ]}>
+                      <Text
+                        style={[
+                          ms.fzBC(13, '400', colors.black),
+                          ms.txA('center'),
+                          ms.width((windowWidth * 50) / 100),
+                        ]}>
+                        Tidak ada rekomendasi berita untuk kategori yang Anda
+                        pilih
+                      </Text>
+                    </View>
+                  )}
                 </View>
               )}
-              
             </View>
             <View style={[ms.mgT(40), ms.mgH(20)]}>
               <Gap
@@ -190,29 +210,28 @@ const Untukmu = ({navigation}) => {
 
             {/* Rekomendasi By History */}
             <View>
-            <View style={[ms.mgH(20), ms.mgT(10)]}>
-              <Text style={[ms.fzBC(17, '700', colors.black)]}>
-                Berita Untukmu
-              </Text>
+              <View style={[ms.mgH(20), ms.mgT(10)]}>
+                <Text style={[ms.fzBC(17, '700', colors.black)]}>
+                  Berita Untukmu
+                </Text>
+              </View>
+              <View>
+                {newsList.map((rekom, index) => {
+                  return (
+                    <Rekomendasi
+                      key={index}
+                      rekom={rekom}
+                      // width={'60%'}
+                      // height={65}
+                      onPress={() => {
+                        dispatch({type: 'SET_NEWS', value: rekom});
+                        navigation.navigate('DetailBerita');
+                      }}
+                    />
+                  );
+                })}
+              </View>
             </View>
-            <View>
-              {newsList.map((rekom, index) => {
-                return (
-                  <Rekomendasi
-                    key={index}
-                    rekom={rekom}
-                    // width={'60%'}
-                    // height={65}
-                    onPress={() => {
-                      dispatch({type: 'SET_NEWS', value: rekom});
-                      navigation.navigate('DetailBerita');
-                    }}
-                  />
-                );
-              })}
-            </View>
-            </View>
-            
           </View>
         ) : (
           <View style={[styles.nonews]}>

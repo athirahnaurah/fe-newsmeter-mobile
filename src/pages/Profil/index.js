@@ -27,13 +27,16 @@ const Profil = ({navigation}) => {
   console.log('user: ', user);
 
   const init = async () => {
-    getData('authUser').then(resAuthUser => {
-      if (resAuthUser?.data.email) {
-        getData('token').then(resAuth => {
-          dispatch(getUser(resAuthUser?.data.email, resAuth));
-        });
-      }
+    getData('token').then(resAuth => {
+      dispatch(getUser(resAuth));
     });
+    // getData('authUser').then(resAuthUser => {
+    //   if (resAuthUser?.data.email) {
+    //     getData('token').then(resAuth => {
+    //       dispatch(getUser(resAuthUser?.data.email, resAuth));
+    //     });
+    //   }
+    // });
   };
 
   const onLogout = () => {
@@ -43,6 +46,7 @@ const Profil = ({navigation}) => {
     dispatch({ type: 'SET_AUTH_USER', value: null});
     dispatch({ type: 'SET_AUTH_DETAIL', value: null});
     dispatch({ type: 'SET_TOKEN', value: null});
+    dispatch({ type: 'SET_PREFERENCE', value: null});
     dispatch(setLogin(false));
     getData('authUser').then(resAuthUser => {
         console.log('token : ', resAuthUser)

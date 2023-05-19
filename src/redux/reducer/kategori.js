@@ -17,7 +17,40 @@ import {
 
 const initStateNewsList = {
   kategoriList: [],
-  // newsList: {},
+  kategori: {},
+  minatKategori: [],
+  preference: [],
+};
+
+export const kategoriReducer = (state = initStateNewsList, action) => {
+  if (action.type === 'SET_KATEGORILIST') {
+    return {
+      ...state,
+      kategoriList: action.value,
+    };
+  }
+  if (action.type === 'SET_KATEGORI') {
+    return {
+      ...state,
+      kategori: action.value,
+    };
+  }
+  if (action.type === 'SET_MINAT_KATEGORI') {
+    return {
+      ...state,
+      minatKategori: action.value,
+    };
+  }
+  if (action.type === 'SET_PREFERENCE') {
+    return {
+      ...state,
+      preference: action.value,
+    };
+  }
+  return state;
+};
+
+// newsList: {},
   // kategoriList: [
   //   {
   //     id: 1,
@@ -90,28 +123,3 @@ const initStateNewsList = {
   //     icon: IconBola,
   //   },
   // ],
-  kategori: {},
-  minatKategori: [],
-};
-
-export const kategoriReducer = (state = initStateNewsList, action) => {
-  if (action.type === 'SET_KATEGORILIST') {
-    return {
-      ...state,
-      kategoriList: action.value,
-    };
-  }
-  if (action.type === 'SET_KATEGORI') {
-    return {
-      ...state,
-      kategori: action.value,
-    };
-  }
-  if (action.type === 'SET_MINAT_KATEGORI') {
-    return {
-      ...state,
-      minatKategori: action.value,
-    };
-  }
-  return state;
-};

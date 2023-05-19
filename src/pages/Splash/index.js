@@ -10,7 +10,13 @@ const Splash = ({ navigation }) => {
     const init = () => {
         getData('authUser').then((resAuthUser) => {
             if (resAuthUser?.data.email){
-                return navigation.reset({index: 0, routes: [{name: 'MainApp'}]})
+                getData('preference').then(resPreference => {
+                    if(resPreference === null){
+                        return navigation.reset({index: 0, routes: [{name: 'MinatKategori'}]}) 
+                    } else {
+                        return navigation.reset({index: 0, routes: [{name: 'MainApp'}]}) 
+                    }
+                  })
             } else {
                 return navigation.reset({index: 0, routes: [{name: 'Login'}]})
             }

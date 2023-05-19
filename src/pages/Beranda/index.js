@@ -39,7 +39,7 @@ const Beranda = ({navigation}) => {
     getData('authUser').then(resAuthUser => {
       if(resAuthUser?.data.email){
         dispatch(setLogin(true));
-        dispatch(getNews(newsList));   
+        dispatch(getNews(newsList));
         // dispatch(getMedia());
         // dispatch(getKategori()); 
       } else {

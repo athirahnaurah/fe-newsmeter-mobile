@@ -2,7 +2,7 @@ import {Image, Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpa
 import React, {useEffect, useState} from 'react';
 import ms from '../../utils/ms';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {Kategori, Loader, MainButton} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {getKategori, postPreference, setParameterValue} from '../../redux/action';
@@ -17,16 +17,26 @@ const MinatKategori = ({route, navigation}) => {
   const {parameterValue} = useSelector(state => state.globalReducer);
   const [isclicked, setClicked] = useState([]);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
-  
+  const [emailValue, setEmailValue] = useState('');
   // console.log('kategoriList: ', kategoriList);
   // console.log('param val: ', parameterValue);
 
+  const init = async () => {
+    await dispatch(getKategori());
+
+    getData('authUser').then(resAuthUser => {
+      if(resAuthUser?.data.email){
+        setEmailValue(resAuthUser?.data.email) 
+      } else {
+         setEmailValue(route.params.email)
+      }
+    })
+  };
+  
   const onHandleChange = (text, input) => {
     setInput((prevState) => ({...prevState, [input]: text}))
   }
 
-  const emailValue = route.params.email;
-  
   const onClickKategori = (kategori) => {
     if(isclicked.includes(kategori)){
       setClicked(isclicked.filter((k) => k !== kategori));
@@ -87,9 +97,7 @@ const MinatKategori = ({route, navigation}) => {
     return kategoriArray[kategori];
   };
 
-  const init = async () => {
-    await dispatch(getKategori());
-  };
+  
 
   // const parseDeepLink = (url) => {
   //   const params = new URLSearchParams(url.split(':')[1]);
@@ -115,25 +123,6 @@ const MinatKategori = ({route, navigation}) => {
 
   //   return console.log('item: ', item)
   // }
-
-  useEffect(() => {
-    if (navigation.isFocused) {
-      init();
-      // getDeepLink();
-      // console.log('data email: ', email);
-      // Linking.addEventListener('url', handleDeepLink);
-
-      // Linking.getInitialURL().then((url) => {
-      //   console.log('url', url);
-      // })
-      // return () => Linking.removeAllListeners('url', handleDeepLink);
-      
-      
-    }
-
-    
-
-  }, []);
 
   useEffect(() => {
     if (navigation.isFocused) {

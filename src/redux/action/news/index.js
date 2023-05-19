@@ -177,7 +177,7 @@ export const getRecommendationByKategori =
                 if (i === res.data.length) {
                   console.log('done get news 3 category');
                   newData.sort((a, b) => {
-                    console.log('sorting');
+                    // console.log('sorting');
                     return (
                       new Date(convertTimestamp(b.date)) -
                       new Date(convertTimestamp(a.date))

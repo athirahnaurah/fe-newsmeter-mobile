@@ -9,12 +9,13 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import ms from '../../utils/ms';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {TextInput} from 'react-native-gesture-handler';
 import {Gap, Input, Loader, MainButton} from '../../components';
 import { loginAction } from '../../redux/action/login';
 import { useDispatch, useSelector } from 'react-redux';
+import { getPreference } from '../../redux/action/kategori';
 
 const Login = ({navigation}) => {
   const dispatch = useDispatch();
@@ -144,14 +145,15 @@ const Login = ({navigation}) => {
         </View>
 
         {/* Redirect Registrasi */}
-        <View style={[ms.height((windowHeight * 10) / 100)]}>
+        <View style={[ms.height((windowHeight * 7) / 100)]}>
           <Gap
             width={(windowWidth * 100) / 100}
             height={1}
             backgroundColor={colors.grey}
           />
 
-          <View style={[ms.row, ms.aiJc('center'), ms.pdV(16), ms.height((windowHeight * 7) / 100)]}>
+          <View>
+          <View style={[ms.row, ms.aiJc('center'), ms.pdV(16)]}>
             <Text style={[ms.fzBC(10, '400', colors.grey)]}>
               Belum punya akun?{' '}
             </Text>
@@ -164,6 +166,8 @@ const Login = ({navigation}) => {
               </Text>
             </TouchableOpacity>
           </View>
+          </View>
+          
         </View>
       </ScrollView>
     </SafeAreaView>

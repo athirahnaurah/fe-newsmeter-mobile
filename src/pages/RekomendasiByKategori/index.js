@@ -43,13 +43,13 @@ const RekomendasiByKategori = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
-  const init = async () => {
-    getData('authUser').then(resAuthUser => {
-      if (resAuthUser?.data.email) {
-        dispatch(getRecommendationByKategori());
-      }
-    });
-  };
+  // const init = async () => {
+  //   getData('authUser').then(resAuthUser => {
+  //     if (resAuthUser?.data.email) {
+  //       dispatch(getRecommendationByKategori());
+  //     }
+  //   });
+  // };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -107,11 +107,11 @@ const RekomendasiByKategori = ({navigation}) => {
     });
   };
 
-  useEffect(() => {
-    if (navigation.isFocused) {
-      init();
-    }
-  }, [navigation]);
+  // useEffect(() => {
+  //   if (navigation.isFocused) {
+  //     init();
+  //   }
+  // }, [navigation]);
 
   // console.log('load more', loadMore)
   return (
@@ -144,11 +144,11 @@ const RekomendasiByKategori = ({navigation}) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-        {isLoadingScreen ? (
+        {/* {isLoadingScreen ? (
           <ActivityIndicator color={colors.black} style={{margin: 5}} />
-        ) : (
+        ) : ( */}
           <View>
-            {recomByKategori > 0 ? (
+            {recomByKategori.length > 0 ? (
               <View>
               {initialGet.map((news, index) => {
                 return (
@@ -204,7 +204,7 @@ const RekomendasiByKategori = ({navigation}) => {
                 </View>
             )}
           </View>
-        )}
+        {/* )} */}
       </ScrollView>
     </SafeAreaView>
   );
