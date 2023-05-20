@@ -53,7 +53,7 @@ const NewsList = ({news, onPress, width, height}) => {
             </View>
           </View>
 
-          {news?.img !== null ? (
+          {news?.image !== null ? (
             <View style={[ms.width('40%'), ms.ai('center')]}>
             <Image
               source={{uri: news?.image}}

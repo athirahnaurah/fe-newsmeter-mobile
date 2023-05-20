@@ -28,6 +28,7 @@ const Profil = ({navigation}) => {
 
   const init = async () => {
     getData('token').then(resAuth => {
+      // console.log('token profil: ', resAuth);
       dispatch(getUser(resAuth));
     });
     // getData('authUser').then(resAuthUser => {
@@ -41,8 +42,8 @@ const Profil = ({navigation}) => {
 
   const onLogout = () => {
     AsyncStorage.clear();
-    navigation.navigate('Splash')
-    // navigation.reset({index: 0, routes: [{name: 'Splash'}]});
+    // navigation.navigate('Splash')
+    navigation.reset({index: 0, routes: [{name: 'Splash'}]});
     dispatch({ type: 'SET_AUTH_USER', value: null});
     dispatch({ type: 'SET_AUTH_DETAIL', value: null});
     dispatch({ type: 'SET_TOKEN', value: null});

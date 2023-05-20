@@ -6,13 +6,16 @@ import { IconValidasi, ImageDefault, Point } from '../../../assets'
 import { Gap } from '../../atoms'
 
 const Rekomendasi = ({rekom, onPress}) => {
+   const percentage = (score) => {
+    return (score * 100).toFixed(0)
+   }
   return (
     <TouchableOpacity onPress={onPress}>
         {/* List Berita */}
         <View style={[styles.NewsCard]}>
         <View style={[ms.row, ms.pdV(17), ms.mgB(5), ms.jc('space-between')]}>
-          <View style={[ms.width('60%'), ms.height(65), ms.pdL(20)]}>
-            <Text style={[ms.fzBC(12.8, '700', colors.black)]}>
+          <View style={[ms.width('60%'), ms.height(67), ms.pdL(20)]}>
+            <Text numberOfLines={2} style={[ms.fzBC(12.8, '700', colors.black)]}>
               {rekom?.title}
             </Text>
             <Text style={[ms.fzBC(11, '400', colors.black)]}>
@@ -34,7 +37,7 @@ const Rekomendasi = ({rekom, onPress}) => {
             </View>
             <View style={[ms.row, ms.ai('center'), ms.mgT(3)]}>
                 <Image source={IconValidasi} style={[ms.width(8), ms.height(8)]} />
-                <Text style={[ms.fzBC(8, '400', colors.black)]}> 75% mirip dengan bacaanmu.</Text>
+                <Text style={[ms.fzBC(9, '500', colors.black)]}> {percentage(rekom?.score)}% mirip dengan bacaanmu.</Text>
             </View>
           </View>
 
@@ -56,7 +59,9 @@ const Rekomendasi = ({rekom, onPress}) => {
           
         </View>
 
-        <Gap height={1} backgroundColor={colors.grey} />
+        <View style={[ms.mgH(20), ms.mgT(3)]}>
+          <Gap height={1} backgroundColor={colors.grey3}/>
+        </View>
       </View>
     </TouchableOpacity>
   )
@@ -71,6 +76,6 @@ const styles = StyleSheet.create({
       //   backgroundColor: colors.grey,
         flex:1,
         justifyContent:'center',
-        flexDirection: 'row',
+        // flexDirection: 'row',
       }
 })

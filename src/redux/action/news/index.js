@@ -16,7 +16,7 @@ export const getNews =
       .then(res => {
         console.log('result', res);
         dispatch({type: 'SET_NEWSLIST', value: [...res.data]});
-        dispatch({type: 'SET_NEWSLIST_GLOBAL', value: [...res.data]});
+        // dispatch({type: 'SET_NEWSLIST_GLOBAL', value: [...res.data]});
         // onCallback(res.data)
       })
       .catch(err => {
@@ -219,3 +219,30 @@ const convertTimestamp = dateString => {
   const timestamp = new Date(year, month, day, hour, minute, second).getTime();
   return timestamp;
 };
+
+export const getRecommendationByHistory =
+  (onCallback = res => {}, onError = err => {}) =>
+  dispatch => {
+    dispatch(setLoadingScreen(true));
+
+    getData('token').then(resAuth => {
+      axios
+        .get('http://10.0.2.2:5000/get_recommendation', {
+          headers: {Authorization: `Bearer ${resAuth}`},
+        })
+        .then(res => {
+          console.log('result recommendation by history: ', res);
+          if(res.data.length > 0){
+            dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: [...res.data]});
+          }
+          // onCallback(res.data)
+        })
+        .catch(err => {
+          console.log('error get recom: ', err);
+          onError(err);
+        })
+        .finally(() => {
+          dispatch(setLoadingScreen(false));
+        });
+    });
+  };

@@ -4,15 +4,21 @@ import { Logo } from '../../assets/images'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { windowHeight, windowWidth } from '../../utils/ms/constant'
 import { getData } from '../../utils'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch } from 'react-redux'
+import { setLogin } from '../../redux/action'
 
 const Splash = ({ navigation }) => {
+const dispatch = useDispatch();
 
     const init = () => {
         getData('authUser').then((resAuthUser) => {
             if (resAuthUser?.data.email){
                 getData('preference').then(resPreference => {
                     if(resPreference === null){
-                        return navigation.reset({index: 0, routes: [{name: 'MinatKategori'}]}) 
+                        AsyncStorage.clear();
+                        dispatch(setLogin(false));
+                        return navigation.reset({index: 0, routes: [{name: 'Login'}]}) 
                     } else {
                         return navigation.reset({index: 0, routes: [{name: 'MainApp'}]}) 
                     }

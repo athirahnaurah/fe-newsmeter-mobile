@@ -56,7 +56,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
             getData('preference')
               .then(resP => {
                 console.log('preference login: ', resP)
-                if(resP !== 0){
+                if(resP !== null){
                   Alert.alert(
                     'Login',
                     'Login berhasil.',
