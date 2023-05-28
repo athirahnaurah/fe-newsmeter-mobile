@@ -45,11 +45,11 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
         .then(
           resUser => {
             const authUser = resUser;
-            console.log('response auth user: ', authUser);
+            // console.log('response auth user: ', authUser);
             storeData('authUser', authUser);
 
             getData('token').then(resAuth => {
-              console.log('token login: ', resAuth);
+              // console.log('token login: ', resAuth);
               axios
                 .get(`http://10.0.2.2:5000/preference`, {
                   headers: {Authorization: `Bearer ${resAuth} `},
@@ -57,7 +57,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
                 // getData('preference')
                 .then(resP => {
                   storeData('preference', resP.data);
-                  console.log('preference login: ', resP.data);
+                  // console.log('preference login: ', resP.data);
                   if (resP.data.length !== 0) {
                     Alert.alert('Login', 'Login berhasil.');
                     navigation.reset({index: 0, routes: [{name: 'MainApp'}]});

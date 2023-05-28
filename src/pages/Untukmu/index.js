@@ -44,6 +44,7 @@ const Untukmu = ({navigation}) => {
   const initialGet = slice(recomByHistory, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  // console.log('recom by history', recomByHistory);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };

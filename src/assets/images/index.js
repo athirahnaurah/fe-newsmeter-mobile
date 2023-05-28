@@ -13,6 +13,7 @@ import SindoNews from './image37.png';
 import Tempo from './image38.png';
 import Profile from './Profile-Default.png';
 import ImageDefault from './Image-Default.png';
+import NewsmeterLogo from './newsmeterlogo.png';
 
 export{
     Logo,
@@ -29,5 +30,6 @@ export{
     SindoNews,
     Tempo,
     Profile,
-    ImageDefault
+    ImageDefault,
+    NewsmeterLogo
 }

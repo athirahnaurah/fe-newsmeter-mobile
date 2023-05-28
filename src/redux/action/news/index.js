@@ -232,9 +232,8 @@ export const getRecommendationByHistory =
         })
         .then(res => {
           // console.log('result recommendation by history: ', res);
-          if(res.data.length > 0){
-            dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: [...res.data]});
-          }
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: [...res.data]});
+
         })
         .catch(err => {
           console.log('error get recom: ', err);
