@@ -1,5 +1,4 @@
 import axios from "axios";
-import ApiConfigLocal from "../../../config/ApiConfigLocal";
 import ApiHeader from "../../../config/ApiHeader";
 import { storeData, showMessage, showToasty } from "../../../utils";
 import { setLoading, setLoadingScreen } from "../global";
@@ -12,7 +11,7 @@ export const registrasiAction = (dataRegistrasi, onCallback = res => {}, onError
     console.log('data registrasi:', dataRegistrasi)
     dispatch(setLoadingScreen(true));
     // showToasty('...Memproses')
-    axios.post('http://10.0.2.2:5000/register', dataRegistrasi)
+    axios.post(`http://10.0.2.2:5000/registrasi`, dataRegistrasi)
     .then((res) => {
         console.log('response:', res);
         // dispatch({ type: 'SET_REGISTRATION_ON_SUCCESS', value: true});

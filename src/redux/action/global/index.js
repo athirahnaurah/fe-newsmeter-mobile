@@ -46,3 +46,10 @@ export const setLoading = (value) => {
       value,
     };
   }
+
+  export const setUser = (value) => {
+    return {
+      type: 'SET_USER',
+      value,
+    };
+  }

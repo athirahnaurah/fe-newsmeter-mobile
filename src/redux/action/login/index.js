@@ -1,5 +1,4 @@
 import axios from 'axios';
-import ApiConfigLocal from '../../../config/ApiConfigLocal';
 import ApiHeader from '../../../config/ApiHeader';
 import {
   storeData,
@@ -15,14 +14,15 @@ import {useState} from 'react';
 import {Alert} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getPreference} from '../kategori';
-import { get } from 'lodash';
+import {get} from 'lodash';
+import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
 
 export const loginAction = (dataLogin, navigation) => dispatch => {
   console.log('data login:', dataLogin);
   dispatch(setLoadingScreen(true));
   // showToasty('...Memproses')
   axios
-    .post('http://10.0.2.2:5000/login', dataLogin, {headers: ApiHeader})
+    .post(`http://10.0.2.2:5000/login`, dataLogin, {headers: ApiHeader})
     .then(res => {
       console.log('response:', res);
       // dispatch({ type: 'SET_REGISTRATION_ON_SUCCESS', value: true});
@@ -39,7 +39,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
       //       );
 
       axios
-        .get('http://10.0.2.2:5000/user', {
+        .get(`http://10.0.2.2:5000/user`, {
           headers: {Authorization: `Bearer ${res.data.access_token} `},
         })
         .then(
@@ -48,29 +48,34 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
             console.log('response auth user: ', authUser);
             storeData('authUser', authUser);
 
-            // getData('token').then(resAuth => {
-            //   console.log('token login: ', resAuth);
-            //   axios.get('http://10.0.2.2:5000/preference', {
-            //     headers: {Authorization: `Bearer ${resAuth} `},
-            //   })
-            getData('preference')
-              .then(resP => {
-                console.log('preference login: ', resP)
-                if(resP !== null){
-                  Alert.alert(
-                    'Login',
-                    'Login berhasil.',
-                  );
-                  navigation.reset({ index: 0, routes: [{name: 'MainApp'}] });
-                } else {
-                  navigation.reset({ index: 0, routes: [{name: 'MinatKategori'}] });
-                }
-              })
-            // });
+            getData('token').then(resAuth => {
+              console.log('token login: ', resAuth);
+              axios
+                .get(`http://10.0.2.2:5000/preference`, {
+                  headers: {Authorization: `Bearer ${resAuth} `},
+                })
+                // getData('preference')
+                .then(resP => {
+                  storeData('preference', resP.data);
+                  console.log('preference login: ', resP.data);
+                  if (resP.data.length !== 0) {
+                    Alert.alert('Login', 'Login berhasil.');
+                    navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
+                  } else {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'MinatKategori'}],
+                    });
+                  }
+                }),
+                error => {
+                  console.log('err preference: ', error);
+                };
+            });
           },
           err => {
             console.log('err user: ', err);
-            Alert.alert('Login', 'Login gagal.');
+            // Alert.alert('Login', 'Login gagal.');
           },
         );
     })
@@ -108,7 +113,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
 // }
 
 export const getUser =
-  (user, onCallback = res => {}, onError = err => {}) =>
+  (user, navigation, onCallback = res => {}, onError = err => {}) =>
   dispatch => {
     // const users = [{
     //   email : email
@@ -121,11 +126,40 @@ export const getUser =
       })
       .then(res => {
         console.log('res user: ', res);
-        dispatch({type: 'SET_USER', value: res.data});
-        onCallback(res.data);
+        if (res !== 'undefined') {
+          dispatch({type: 'SET_USER', value: res.data});
+        } else {
+          Alert.alert(
+            'Sesi Berakhir',
+            'Silakan lakukan login kembali untuk masuk ke dalam aplikasi.',
+          );
+          navigation.reset({index: 0, routes: [{name: 'Login'}]});
+        }
       })
       .catch(err => {
-        console.log('error', err);
+        // console.log('error get use', err.msg);
+        Alert.alert(
+          'Sesi Berakhir',
+          'Sesi telah berakhir, silakan lakukan login kembali.',
+        );
+        navigation.reset({index: 0, routes: [{name: 'Login'}]});
+        // dispatch({type: 'SET_USER', value: err.msg});
+        dispatch({type: 'SET_USER', value: null});
+        dispatch({type: 'SET_AUTH_USER', value: null});
+        dispatch({type: 'SET_TOKEN', value: null});
+        dispatch({type: 'SET_PREFERENCE', value: null});
+        dispatch({type: 'SET_NEWSLIST', value: null});
+        dispatch({type: 'SET_NEWS', value: null});
+        dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
+        dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
+        dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
+        dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
+        dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
+        dispatch({type: 'SET_SEARCH', value: null});
+        dispatch({type: 'SET_MEDLIST', value: null});
+        dispatch({type: 'SET_MED', value: null});
+        dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
+        dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
         onError(err);
       });
   };

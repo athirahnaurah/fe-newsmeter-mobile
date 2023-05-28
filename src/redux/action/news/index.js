@@ -2,8 +2,8 @@ import axios from 'axios';
 import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
 import {setLoadingScreen, setLoadingValue, setPreferenceValue, setSearch} from '../global';
-import ApiConfigLocal from '../../../config/ApiConfigLocal';
 import {getData} from '../../../utils';
+import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
 
 export const getNews =
   (onCallback = res => {}, onError = err => {}) =>
@@ -14,7 +14,7 @@ export const getNews =
     axios
       .get(`${ApiConfig}/api/get/news/100`, {headers: ApiHeader})
       .then(res => {
-        console.log('result', res);
+        // console.log('result', res);
         dispatch({type: 'SET_NEWSLIST', value: [...res.data]});
         // dispatch({type: 'SET_NEWSLIST_GLOBAL', value: [...res.data]});
         // onCallback(res.data)
@@ -40,7 +40,7 @@ export const getNewsByKategori =
         headers: ApiHeader,
       })
       .then(res => {
-        console.log('result', res);
+        // console.log('result', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: [...res.data]});
@@ -65,7 +65,7 @@ export const getNewsByMedia =
     axios
       .get(`${ApiConfig}/api/get/news/media/${media}/100`, {headers: ApiHeader})
       .then(res => {
-        console.log('result', res);
+        // console.log('result', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: [...res.data]});
@@ -90,7 +90,7 @@ export const getSearchNews =
     axios
       .get(`${ApiConfig}/api/search/news/${search}/7`, {headers: ApiHeader})
       .then(res => {
-        console.log('res search', res);
+        // console.log('res search', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         // dispatch({ type: 'SET_NEWSLIST', value: [...res.data]});
@@ -134,21 +134,21 @@ export const getRecommendationByKategori =
     // let preferences = ['Ekonomi', 'Politik', 'Nasional'];
     getData('token').then(resAuth => {
       axios
-        .get('http://10.0.2.2:5000/preference', {
+        .get(`http://10.0.2.2:5000/preference`, {
           headers: {Authorization: `Bearer ${resAuth}`},
         })
         .then(res => {
-          console.log('response:', res.data);
+          // console.log('response:', res.data);
           let newData = [];
           let i = 0;
           for (let preference of res.data) {
-            console.log('preference', preference);
+            // console.log('preference', preference);
             axios
               .get(`${ApiConfig}/api/get/news/kategori/${preference}/50`, {
                 headers: ApiHeader,
               })
               .then(result => {
-                console.log('get news');
+                // console.log('get news');
                 result.data.forEach(
                   ({
                     _id,
@@ -227,15 +227,14 @@ export const getRecommendationByHistory =
 
     getData('token').then(resAuth => {
       axios
-        .get('http://10.0.2.2:5000/get_recommendation', {
+        .get(`http://10.0.2.2:5000/get_recommendation`, {
           headers: {Authorization: `Bearer ${resAuth}`},
         })
         .then(res => {
-          console.log('result recommendation by history: ', res);
+          // console.log('result recommendation by history: ', res);
           if(res.data.length > 0){
             dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: [...res.data]});
           }
-          // onCallback(res.data)
         })
         .catch(err => {
           console.log('error get recom: ', err);
@@ -246,3 +245,23 @@ export const getRecommendationByHistory =
         });
     });
   };
+
+export const saveRecommendation = (onCallback = res => {}, onError = err => {}) =>
+dispatch =>{
+  getData('token').then(resAuth => {
+  axios
+    .get('http://10.0.2.2:5000/save_recommendation', {
+      headers: {Authorization: `Bearer ${resAuth}`},
+    })
+    .then(response => {
+        console.log('Proses berhasil dipicu di server:', response);
+    })
+    .catch(error => {
+      // Tangani error yang terjadi saat mengirim permintaan
+      console.log(
+        'Terjadi kesalahan saat mengirim permintaan ke server:',
+        error,
+      );
+    });
+  })
+}

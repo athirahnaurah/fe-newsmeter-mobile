@@ -7,7 +7,7 @@ import {
   View,
   Image,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors, getData} from '../../utils';
@@ -16,14 +16,24 @@ import {Logo, SportImg} from '../../assets/images';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {useDispatch, useSelector} from 'react-redux';
 import NewsList from '../../components/molecules/NewsList';
-import {getKategori, getMedia, getNews, postHistory, setLogin} from '../../redux/action';
+import {
+  getKategori,
+  getMedia,
+  getNews,
+  postHistory,
+  setLogin,
+} from '../../redux/action';
 import {useEffect} from 'react';
 import Loading from '../../components/molecules/Loading';
 import {useCallback} from 'react';
 import {slice} from 'lodash';
+import {getUser} from '../../redux/action/login';
+// import BackgroundService from 'react-native-background-actions';
+// import {saveRecommendationBackground, options} from '../../../index';
 
 const Beranda = ({navigation}) => {
   const dispatch = useDispatch();
+  const {user} = useSelector(state => state.globalReducer);
   const {newsList} = useSelector(state => state.newsReducer);
   const {isLoadingScreen, isLogin} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
@@ -37,17 +47,17 @@ const Beranda = ({navigation}) => {
 
   const init = async () => {
     getData('authUser').then(resAuthUser => {
-      if(resAuthUser?.data.email){
-        dispatch(setLogin(true));
+      if (resAuthUser?.data.email) {
+        getData('token').then(resAuth => {
+          dispatch(getUser(resAuth, navigation));
+        });
+        if (user !== 'undefined') {
+          dispatch(setLogin(true));
+          dispatch(getNews(newsList));
+        }
         dispatch(getNews(newsList));
-        // dispatch(getMedia());
-        // dispatch(getKategori()); 
-      } else {
-        dispatch(getNews(newsList));   
-        // dispatch(getMedia());
-        // dispatch(getKategori());
       }
-    })
+    });
   };
 
   const onRefresh = useCallback(() => {
@@ -110,6 +120,19 @@ const Beranda = ({navigation}) => {
     if (navigation.isFocused) {
       init();
     }
+    // }
+
+    //   const isRunning = BackgroundService.isRunning();
+    //   if(isRunning){
+    //     BackgroundService.stop();
+    //   } else {
+    //     BackgroundService.start(saveRecommendationBackground, options);
+    //   }
+    // }
+    //   return () => {
+    //     BackgroundService.stop();
+    //     // console.log('[Save Recommendation] dihentikan')
+    //   };
   }, [navigation]);
 
   // console.log('load more', loadMore)
@@ -127,61 +150,60 @@ const Beranda = ({navigation}) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-          
         {isLoadingScreen ? (
           <ActivityIndicator color={colors.black} style={{margin: 5}} />
         ) : (
           <View style={[]}>
-          {initialGet.map((news, index) => {
-            return (
-              <NewsList
-                key={index}
-                news={news}
-                // width={'60%'}
-                // height={65}
-                onPress={() => {
-                  saveHistory(makeHistory(news));
-                  dispatch({type: 'SET_NEWS', value: news});
-                  navigation.navigate('DetailBerita');
-                }}
-              />
-            );
-          })}
-          <View
-            style={[
-              ms.width(windowWidth * 100) / 100,
-              ms.containerPage,
-              ms.aiJc('center'),
-              ms.mgT(22),
-              ms.mgB(10)
-            ]}>
-            {isCompleted ? (
-              <TouchableOpacity
-                onPress={loadMore}
-                activeOpacity={0.9}
-                style={[styles.loadMoreDeactive]}>
-                <Text style={[ms.fzBC(12, '500', colors.white)]}>
-                  Tampilkan lebih banyak
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={loadMore}
-                activeOpacity={0.9}
-                style={[styles.loadMoreActive]}>
-                <Text style={[ms.fzBC(12, '700', colors.white)]}>
-                  Tampilkan lebih banyak
-                </Text>
-                {isLoadingScreen ? (
-                  <ActivityIndicator
-                    color={colors.white}
-                    style={{marginLeft: 5}}
-                  />
-                ) : null}
-              </TouchableOpacity>
-            )}
+            {initialGet.map((news, index) => {
+              return (
+                <NewsList
+                  key={index}
+                  news={news}
+                  // width={'60%'}
+                  // height={65}
+                  onPress={() => {
+                    saveHistory(makeHistory(news));
+                    dispatch({type: 'SET_NEWS', value: news});
+                    navigation.navigate('DetailBerita');
+                  }}
+                />
+              );
+            })}
+            <View
+              style={[
+                ms.width(windowWidth * 100) / 100,
+                ms.containerPage,
+                ms.aiJc('center'),
+                ms.mgT(22),
+                ms.mgB(10),
+              ]}>
+              {isCompleted ? (
+                <TouchableOpacity
+                  onPress={loadMore}
+                  activeOpacity={0.9}
+                  style={[styles.loadMoreDeactive]}>
+                  <Text style={[ms.fzBC(12, '500', colors.white)]}>
+                    Tampilkan lebih banyak
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={loadMore}
+                  activeOpacity={0.9}
+                  style={[styles.loadMoreActive]}>
+                  <Text style={[ms.fzBC(12, '700', colors.white)]}>
+                    Tampilkan lebih banyak
+                  </Text>
+                  {isLoadingScreen ? (
+                    <ActivityIndicator
+                      color={colors.white}
+                      style={{marginLeft: 5}}
+                    />
+                  ) : null}
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -232,3 +254,19 @@ const styles = StyleSheet.create({
   //   flexDirection: 'row',
   // }
 });
+
+
+        // getData('authUser').then(resAuthUser => {
+        //   if (resAuthUser?.data.email) {
+
+        //     dispatch(setLogin(true));
+        //     dispatch(getNews(newsList));
+
+        //     // dispatch(getMedia());
+        //     // dispatch(getKategori());
+        //   } else {
+        //     dispatch(getNews(newsList));
+        //     // dispatch(getMedia());
+        //     // dispatch(getKategori());
+        //   }
+        // });

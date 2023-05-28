@@ -7,6 +7,7 @@ import {
   View,
   Image,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import ms from '../../utils/ms';
@@ -23,6 +24,7 @@ import {
   postHistory,
 } from '../../redux/action';
 import {slice} from 'lodash';
+import {getUser} from '../../redux/action/login';
 
 const Untukmu = ({navigation}) => {
   // const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const Untukmu = ({navigation}) => {
 
   const dispatch = useDispatch();
   const {recomByKategori} = useSelector(state => state.newsReducer);
-  const {newsList} = useSelector(state => state.newsReducer);
+  const {user} = useSelector(state => state.globalReducer);
   const {recomByHistory} = useSelector(state => state.rekomendasiReducer);
   const {isLoadingScreen, isLogin, preferenceValue} = useSelector(
     state => state.globalReducer,
@@ -46,15 +48,22 @@ const Untukmu = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
+  //inisiasi function crud
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
-        dispatch(getRecommendationByKategori());
-        dispatch(getRecommendationByHistory());
+        getData('token').then(resAuth => {
+          dispatch(getUser(resAuth, navigation));
+        });
+        if (user !== 'undefined') {
+          dispatch(getRecommendationByKategori());
+          dispatch(getRecommendationByHistory());
+        }
       }
     });
   };
 
+  //refresh halaman
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -63,6 +72,7 @@ const Untukmu = ({navigation}) => {
     });
   }, []);
 
+  //menampilkan konten lebih banyak
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -117,6 +127,8 @@ const Untukmu = ({navigation}) => {
     }
   }, [navigation]);
 
+  // registerSaveRecommendation();
+
   // const init = async () => {
   //   if (isLogin) {
   //     console.log('running recommendation');
@@ -130,7 +142,10 @@ const Untukmu = ({navigation}) => {
       <View style={styles.background}>
         <Image source={Logo} />
       </View>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {isLogin ? (
           <View>
             {/* Rekomendasi By Kategori */}
@@ -165,12 +180,12 @@ const Untukmu = ({navigation}) => {
                 <ActivityIndicator color={colors.black} style={{margin: 5}} />
               ) : (
                 <View>
-                  {recomByKategori.length > 0 ? (
+                  {recomByKategori !== null ? (
                     <View style={[]}>
                       <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
-                        {recomByKategori.slice(0, 10).map((news, index) => {
+                        {recomByKategori.slice(0, 15).map((news, index) => {
                           return (
                             <KategoriRekomendasi
                               key={index}
@@ -226,7 +241,7 @@ const Untukmu = ({navigation}) => {
                 <ActivityIndicator color={colors.black} style={{margin: 5}} />
               ) : (
                 <View>
-                  {recomByHistory.length > 0 ? (
+                  {recomByHistory !== null ? (
                     <View>
                       <View>
                         {initialGet.map((rekom, index) => {
@@ -280,8 +295,19 @@ const Untukmu = ({navigation}) => {
                       </View>
                     </View>
                   ) : (
-                    <View style={[ms.aiJc('center'), ms.height(windowHeight*40/100)]}>
-                      <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center'), ms.width(windowWidth*50/100),]}>Belum ada rekomendasi</Text>
+                    <View
+                      style={[
+                        ms.aiJc('center'),
+                        ms.height((windowHeight * 40) / 100),
+                      ]}>
+                      <Text
+                        style={[
+                          ms.fzBC(13, '400', colors.black),
+                          ms.txA('center'),
+                          ms.width((windowWidth * 50) / 100),
+                        ]}>
+                        Belum ada rekomendasi
+                      </Text>
                     </View>
                   )}
                 </View>

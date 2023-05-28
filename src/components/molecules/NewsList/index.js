@@ -25,7 +25,7 @@ const NewsList = ({news, onPress, width, height}) => {
       {/* List Berita */}
       <View style={[styles.NewsCard]}>
         <View style={[ms.row, ms.mgT(16), ms.mgB(30)]}>
-          <View style={[ms.width('60%'), ms.height(65), ms.pdL(20)]}>
+          <View style={[ms.width('60%'), ms.height(60), ms.pdL(20)]}>
             <Text
               numberOfLines={3}
               style={[ms.fzBC(12.8, '700', colors.black)]}>

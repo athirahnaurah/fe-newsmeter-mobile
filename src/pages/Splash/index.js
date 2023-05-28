@@ -5,11 +5,13 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { windowHeight, windowWidth } from '../../utils/ms/constant'
 import { getData } from '../../utils'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setLogin } from '../../redux/action'
+import { getUser } from '../../redux/action/login'
 
 const Splash = ({ navigation }) => {
 const dispatch = useDispatch();
+const {user} = useSelector(state => state.globalReducer);
 
     const init = () => {
         getData('authUser').then((resAuthUser) => {
@@ -21,6 +23,16 @@ const dispatch = useDispatch();
                         return navigation.reset({index: 0, routes: [{name: 'Login'}]}) 
                     } else {
                         return navigation.reset({index: 0, routes: [{name: 'MainApp'}]}) 
+                        // getData('authUser').then(resAuthUser => {
+                        //     if (resAuthUser?.data.email) {
+                        //       getData('token').then(resAuth => {
+                        //         dispatch(getUser(resAuth, navigation));
+                        //       });
+                        //       if (user !== 'undefined') {
+                        //         return navigation.reset({index: 0, routes: [{name: 'MainApp'}]}) 
+                        //       }
+                        //     }
+                        //   });
                     }
                   })
             } else {

@@ -1,10 +1,9 @@
 import {Linking, StyleSheet, Text, View} from 'react-native';
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import Router from './router';
 import {Provider, useDispatch} from 'react-redux';
 import store from './redux/store';
-import { setParameterValue } from './redux/action';
 
 const App = () => {
   // const dispatch = useDispatch();
@@ -12,21 +11,24 @@ const App = () => {
     prefixes: ['newsmeter://'],
     config: {
       screens: {
+        MainApp: {
+          path: 'beranda',
+        },
         Registrasi: {
-          path: "register"
+          path: 'register',
         },
         Login: {
-          path: "login"
+          path: 'login',
         },
         MinatKategori: {
-          path: "minatkategori/:email",
+          path: 'minatkategori/:email',
           parse: {
-            email: (email) => `${email}`
-          }
-        }
-      }
-    }
-  }
+            email: email => `${email}`,
+          },
+        },
+      },
+    },
+  };
 
   // const handleDeepLink = async (url) => {
   //   const deeplink = 'newsmeter://minatkategori/:email'
@@ -42,7 +44,6 @@ const App = () => {
   //   const data = parseDeepLink(event.url);
   //   console.log('data: ', data)
   // }
-  
 
   // const parseDeepLink = (url) => {
   //   const params = new URLSearchParams(url.split('?')[1]);

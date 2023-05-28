@@ -19,9 +19,7 @@ import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {ImageDefault, Logo, Point, SportImg} from '../../assets/images';
 import RenderHTML from 'react-native-render-html';
 import { Linking } from 'react-native';
-import { Cheerio, html }  from 'cheerio';
 import { useState } from 'react';
-import cheerio from 'react-native-cheerio/lib/cheerio';
 
 const DetailBerita = ({navigation}) => {
   // const tagsStyles = {

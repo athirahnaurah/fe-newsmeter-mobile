@@ -12,7 +12,7 @@ export const getMedia = (onCallback = res => {}, onError = err => {}) => dispatc
     axios.get(`${ApiConfig}/api/get/list/media`, 
     {headers: ApiHeader})
     .then((res) => {
-        console.log('result', res);
+        // console.log('result', res);
         // dispatch({ type: 'SET_MEDLIST', value: [...res.data]});
         // res.data.forEach((item) => {
         //     dt = [item]

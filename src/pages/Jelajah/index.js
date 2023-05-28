@@ -329,7 +329,7 @@ const Jelajah = ({navigation}) => {
                     <ScrollView
                       horizontal={true}
                       showsHorizontalScrollIndicator={false}>
-                      {medList?.slice(0, 10).map((media, index) => (
+                      {medList?.slice(0, 15).map((media, index) => (
                         <Media
                           key={index}
                           med={media}

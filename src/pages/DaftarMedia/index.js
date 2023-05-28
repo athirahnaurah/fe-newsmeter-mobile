@@ -18,7 +18,7 @@ const DaftarMedia = ({navigation}) => {
     const {medList, med} = useSelector(state => state.mediaReducer);
     const {isLoadingScreen} = useSelector(state => state.globalReducer);
     const [refreshing, setRefreshing] = useState(false);
-    const [i, setI] = useState(10);
+    const [i, setI] = useState(15);
     const initialGet = slice(medList, 0, i);
     const [isCompleted, setIsCompleted] = useState(false);
     
@@ -53,7 +53,7 @@ const DaftarMedia = ({navigation}) => {
   };
 
   const loadMore = () => {
-    setI(i + 10);
+    setI(i + 15);
     console.log('index', i);
     if (i >= medList.length) {
       setIsCompleted(true);
