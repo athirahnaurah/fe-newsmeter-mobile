@@ -36,8 +36,8 @@ const Rekomendasi = ({rekom, onPress}) => {
               </View>
             </View>
             <View style={[ms.row, ms.ai('center'), ms.mgT(3)]}>
-                <Image source={IconValidasi} style={[ms.width(8), ms.height(8)]} />
-                <Text style={[ms.fzBC(9, '500', colors.black)]}> {percentage(rekom?.score)}% mirip dengan bacaanmu.</Text>
+                <Image source={IconValidasi} style={[ms.width(10), ms.height(10)]} />
+                <Text style={[ms.fzBC(10, '500', colors.black)]}> {percentage(rekom?.score)}% mirip dengan bacaanmu.</Text>
             </View>
           </View>
 

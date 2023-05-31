@@ -4,12 +4,13 @@ import ApiHeader from '../../../config/ApiHeader';
 import { setLoadingScreen } from '../global';
 import {Alert} from 'react-native';
 import { storeData, getData } from '../../../utils';
+import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
 
 export const getKategori = (onCallback = res => {}, onError = err => {}) => dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
 
-    axios.get(`${ApiConfig}/api/get/list/kategori`, 
+    axios.get(`http://beta.newsmeter.id/api/get/list/kategori`, 
     {headers: ApiHeader})
     .then((res) => {
         console.log('result', res);
@@ -29,7 +30,7 @@ export const getKategori = (onCallback = res => {}, onError = err => {}) => disp
 
 export const postPreference = (dataPreference, navigation, onCallback = res => {}, onError = err => {}) => dispatch => {
     dispatch(setLoadingScreen(true));
-    axios.post('http://10.0.2.2:5000/preference', dataPreference, { header: ApiHeader })
+    axios.post(`${ApiConfigDeploy}/preference`, dataPreference, { header: ApiHeader })
     .then((res) => {
         storeData('preference', res.data);
         console.log('res preference: ', res);
@@ -55,7 +56,7 @@ export const getPreference = (user, navigation, onCallback=(res)=>{}, onError=(e
     // }]
   
     // console.log('email user: ', users);
-    axios.get('http://10.0.2.2:5000/preference', {
+    axios.get(`${ApiConfigDeploy}/preference`, {
       headers: { 'Authorization': `Bearer ${user} `}
     })
     .then((res) => {

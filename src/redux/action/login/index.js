@@ -22,7 +22,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
   dispatch(setLoadingScreen(true));
   // showToasty('...Memproses')
   axios
-    .post(`http://10.0.2.2:5000/login`, dataLogin, {headers: ApiHeader})
+    .post(`${ApiConfigDeploy}/login`, dataLogin, {headers: ApiHeader})
     .then(res => {
       console.log('response:', res);
       // dispatch({ type: 'SET_REGISTRATION_ON_SUCCESS', value: true});
@@ -39,7 +39,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
       //       );
 
       axios
-        .get(`http://10.0.2.2:5000/user`, {
+        .get(`${ApiConfigDeploy}/user`, {
           headers: {Authorization: `Bearer ${res.data.access_token} `},
         })
         .then(
@@ -51,7 +51,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
             getData('token').then(resAuth => {
               // console.log('token login: ', resAuth);
               axios
-                .get(`http://10.0.2.2:5000/preference`, {
+                .get(`${ApiConfigDeploy}/preference`, {
                   headers: {Authorization: `Bearer ${resAuth} `},
                 })
                 // getData('preference')
@@ -113,36 +113,36 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
 // }
 
 export const getUser =
-  (user, navigation, onCallback = res => {}, onError = err => {}) =>
+  (navigation, onCallback = res => {}, onError = err => {}) =>
   dispatch => {
     // const users = [{
     //   email : email
     // }]
-
-    // console.log('email user: ', users);
+    getData('token').then(token => {
     axios
-      .get('http://10.0.2.2:5000/user', {
-        headers: {Authorization: `Bearer ${user} `},
+      .get(`${ApiConfigDeploy}/user`, {
+        headers: {Authorization: `Bearer ${token} `},
       })
       .then(res => {
-        console.log('res user: ', res);
-        if (res !== 'undefined') {
+        // console.log('res user: ', res.data);
+        if (res.data !== null) {
           dispatch({type: 'SET_USER', value: res.data});
-        } else {
-          Alert.alert(
-            'Sesi Berakhir',
-            'Silakan lakukan login kembali untuk masuk ke dalam aplikasi.',
-          );
-          navigation.reset({index: 0, routes: [{name: 'Login'}]});
-        }
+        } 
+        // else {
+        //   Alert.alert(
+        //     'Sesi Berakhir',
+        //     'Silakan lakukan login kembali untuk masuk ke dalam aplikasi.',
+        //   );
+        //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
+        // }
       })
       .catch(err => {
-        // console.log('error get use', err.msg);
-        Alert.alert(
-          'Sesi Berakhir',
-          'Sesi telah berakhir, silakan lakukan login kembali.',
-        );
-        navigation.reset({index: 0, routes: [{name: 'Login'}]});
+        if(err.message === "User not found" && err.response.status === 404){
+          Alert.alert(
+            'Sesi Berakhir',
+            'Sesi telah berakhir, silakan lakukan login kembali.',
+          );
+          navigation.reset({index: 0, routes: [{name: 'Login'}]});
         // dispatch({type: 'SET_USER', value: err.msg});
         dispatch({type: 'SET_USER', value: null});
         dispatch({type: 'SET_AUTH_USER', value: null});
@@ -161,5 +161,10 @@ export const getUser =
         dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
         dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
         onError(err);
+        }
+        // console.log('error get use', err.msg);
+        
+        
       });
+    })
   };

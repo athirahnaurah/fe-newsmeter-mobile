@@ -5,13 +5,14 @@ import { setLoading, setLoadingScreen } from "../global";
 // import popUpMessage from "../../../utils/PopUpMessage";
 import { useState } from "react";
 import { Alert } from "react-native";
+import ApiConfigDeploy from "../../../config/ApiConfigDeploy";
 
 export const registrasiAction = (dataRegistrasi, onCallback = res => {}, onError = err => {}) => (dispatch) => {
 
     console.log('data registrasi:', dataRegistrasi)
     dispatch(setLoadingScreen(true));
     // showToasty('...Memproses')
-    axios.post(`http://10.0.2.2:5000/registrasi`, dataRegistrasi)
+    axios.post(`${ApiConfigDeploy}register`, dataRegistrasi)
     .then((res) => {
         console.log('response:', res);
         // dispatch({ type: 'SET_REGISTRATION_ON_SUCCESS', value: true});
@@ -23,7 +24,7 @@ export const registrasiAction = (dataRegistrasi, onCallback = res => {}, onError
         // navigation.reset({ index: 0, routes: [{name: 'MinatKategori'}] });
     })
     .catch((err) => {
-        console.log('Error:', err)
+        console.log('Error:', err.message)
         // showMessage('Registrasi Gagal', 'danger')
         Alert.alert(
             'Error', 'Email sudah terdaftar, gunakan email lain atau silahkan login.'

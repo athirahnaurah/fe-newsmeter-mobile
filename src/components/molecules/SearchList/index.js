@@ -12,7 +12,7 @@ const SearchList = ({search, onPress, width, height}) => {
       <View style={[styles.NewsCard]}>
         <View style={[ms.row, ms.mgT(5), ms.mgB(30)]}>
           <View style={[ms.width('60%'), ms.height(65), ms.pdL(20)]}>
-            <Text style={[ms.fzBC(12.8, '700', colors.black)]}>
+            <Text numberOfLines={3} style={[ms.fzBC(12.8, '700', colors.black)]}>
               {search?.title}
             </Text>
             <Text style={[ms.fzBC(11, '400', colors.black)]}>
@@ -42,7 +42,9 @@ const SearchList = ({search, onPress, width, height}) => {
           </View>
         </View>
 
-        <Gap height={1} backgroundColor={colors.grey} />
+        <View style={[ms.mgH(20)]}>
+          <Gap height={1} backgroundColor={colors.grey3}/>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -72,6 +74,6 @@ const styles = StyleSheet.create({
     //   backgroundColor: colors.grey,
     flex: 1,
     justifyContent: 'center',
-    flexDirection: 'row',
+    // flexDirection: 'row',
   },
 });

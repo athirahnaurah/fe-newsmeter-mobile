@@ -13,12 +13,12 @@ import {
 import React, {useState} from 'react';
 import {Gap, Input, Kategori, Media, SearchList} from '../../components';
 import ms from '../../utils/ms';
-import {colors} from '../../utils';
+import {colors, getData} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import KategoriBerita from '../BeritaByKategori';
-import {getKategori, getMedia, getSearchNews} from '../../redux/action';
+import {getKategori, getMedia, getSearchNews, postHistory} from '../../redux/action';
 import {useCallback, useEffect} from 'react';
 import {slice} from 'lodash';
 

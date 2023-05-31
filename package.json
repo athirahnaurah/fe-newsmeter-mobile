@@ -20,8 +20,6 @@
     "moment": "^2.29.4",
     "react": "18.0.0",
     "react-native": "0.69.7",
-    "react-native-background-actions": "^3.0.0",
-    "react-native-background-task": "^0.2.1",
     "react-native-flash-message": "^0.4.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-image-picker": "^5.1.0",

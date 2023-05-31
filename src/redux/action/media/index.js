@@ -3,13 +3,14 @@ import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
 import { setLoadingScreen } from '../global';
 import { useState } from 'react';
+import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
 
 export const getMedia = (onCallback = res => {}, onError = err => {}) => dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
     // const [dt, setData] = useState([]);
     var dt = []
-    axios.get(`${ApiConfig}/api/get/list/media`, 
+    axios.get(`http://beta.newsmeter.id/api/get/list/media`, 
     {headers: ApiHeader})
     .then((res) => {
         // console.log('result', res);

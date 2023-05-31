@@ -8,6 +8,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors, getData} from '../../utils';
@@ -48,15 +49,35 @@ const Beranda = ({navigation}) => {
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
-        getData('token').then(resAuth => {
-          dispatch(getUser(resAuth, navigation));
-        });
+        dispatch(getUser(navigation));
         if (user !== 'undefined') {
           dispatch(setLogin(true));
           dispatch(getNews(newsList));
+        } else {
+          Alert.alert(
+            'Sesi Berakhir',
+            'Sesi telah berakhir, silakan lakukan login kembali.',
+          );
+          navigation.reset({index: 0, routes: [{name: 'Login'}]});
+          dispatch({type: 'SET_USER', value: null});
+          dispatch({type: 'SET_AUTH_USER', value: null});
+          dispatch({type: 'SET_TOKEN', value: null});
+          dispatch({type: 'SET_PREFERENCE', value: null});
+          dispatch({type: 'SET_NEWSLIST', value: null});
+          dispatch({type: 'SET_NEWS', value: null});
+          dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
+          dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
+          dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
+          dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
+          dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
+          dispatch({type: 'SET_SEARCH', value: null});
+          dispatch({type: 'SET_MEDLIST', value: null});
+          dispatch({type: 'SET_MED', value: null});
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
         }
-        dispatch(getNews(newsList));
       }
+      dispatch(getNews(newsList));
     });
   };
 
@@ -120,22 +141,8 @@ const Beranda = ({navigation}) => {
     if (navigation.isFocused) {
       init();
     }
-    // }
-
-    //   const isRunning = BackgroundService.isRunning();
-    //   if(isRunning){
-    //     BackgroundService.stop();
-    //   } else {
-    //     BackgroundService.start(saveRecommendationBackground, options);
-    //   }
-    // }
-    //   return () => {
-    //     BackgroundService.stop();
-    //     // console.log('[Save Recommendation] dihentikan')
-    //   };
   }, [navigation]);
 
-  // console.log('load more', loadMore)
   return (
     <SafeAreaView style={[ms.containerPage]}>
       {/* Header */}
@@ -217,8 +224,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#346CB3',
     alignItems: 'center',
     justifyContent: 'center',
-    width: (windowWidth * 100) / 100,
-    height: (windowHeight * 6) / 100,
+    paddingVertical: 5
+    // width: (windowWidth * 100) / 100,
+    // height: (windowHeight * 6) / 100,
   },
   title: {
     marginVertical: 10,
@@ -255,18 +263,17 @@ const styles = StyleSheet.create({
   // }
 });
 
+// getData('authUser').then(resAuthUser => {
+//   if (resAuthUser?.data.email) {
 
-        // getData('authUser').then(resAuthUser => {
-        //   if (resAuthUser?.data.email) {
+//     dispatch(setLogin(true));
+//     dispatch(getNews(newsList));
 
-        //     dispatch(setLogin(true));
-        //     dispatch(getNews(newsList));
-
-        //     // dispatch(getMedia());
-        //     // dispatch(getKategori());
-        //   } else {
-        //     dispatch(getNews(newsList));
-        //     // dispatch(getMedia());
-        //     // dispatch(getKategori());
-        //   }
-        // });
+//     // dispatch(getMedia());
+//     // dispatch(getKategori());
+//   } else {
+//     dispatch(getNews(newsList));
+//     // dispatch(getMedia());
+//     // dispatch(getKategori());
+//   }
+// });

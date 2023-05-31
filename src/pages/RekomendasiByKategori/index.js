@@ -43,13 +43,13 @@ const RekomendasiByKategori = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
-  // const init = async () => {
-  //   getData('authUser').then(resAuthUser => {
-  //     if (resAuthUser?.data.email) {
-  //       dispatch(getRecommendationByKategori());
-  //     }
-  //   });
-  // };
+  const init = async () => {
+    getData('authUser').then(resAuthUser => {
+      if (resAuthUser?.data.email) {
+        dispatch(getRecommendationByKategori());
+      }
+    });
+  };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -220,11 +220,13 @@ const styles = StyleSheet.create({
     width: (windowWidth * 100) / 100,
     height: (windowHeight * 6) / 100,
     flexDirection: 'row',
+    justifyContent: 'flex-start'
   },
   background: {
     justifyContent: 'center',
-    width: (windowWidth * 70) / 100,
-    height: (windowHeight * 6) / 100,
+    paddingVertical: 5
+    // width: (windowWidth * 70) / 100,
+    // height: (windowHeight * 6) / 100,
   },
   title: {
     marginVertical: 10,

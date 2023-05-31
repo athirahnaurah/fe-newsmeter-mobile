@@ -21,6 +21,11 @@ const Media = ({med, onPress}) => {
       'ayobogor.com': require('../../../assets/icon/media/ayobogor.png'),  
       'beritajatim.com': require('../../../assets/icon/media/beritajatim.png'),  
       'beritasatu.com': require('../../../assets/icon/media/beritasatu.png'),  
+      'bisnis.com': require('../../../assets/icon/media/bisnis.png'),  
+      'cnbcindonesia.com': require('../../../assets/icon/media/cnbcindonesia.png'),  
+      'cnnindonesia.com': require('../../../assets/icon/media/cnnindonesia.png'),  
+      'cyberthreat.id': require('../../../assets/icon/media/cyberthreat.png'),  
+      'detik.com': require('../../../assets/icon/media/detik.png'),  
     }
   
     return mediaArray[med];

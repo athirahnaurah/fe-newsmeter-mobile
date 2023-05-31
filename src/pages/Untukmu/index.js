@@ -8,6 +8,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import ms from '../../utils/ms';
@@ -53,12 +54,32 @@ const Untukmu = ({navigation}) => {
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
-        getData('token').then(resAuth => {
-          dispatch(getUser(resAuth, navigation));
-        });
+        dispatch(getUser(navigation));
         if (user !== 'undefined') {
           dispatch(getRecommendationByKategori());
           dispatch(getRecommendationByHistory());
+        } else {
+          Alert.alert(
+            'Sesi Berakhir',
+            'Sesi telah berakhir, silakan lakukan login kembali.',
+          );
+          navigation.reset({index: 0, routes: [{name: 'Login'}]});
+          dispatch({type: 'SET_USER', value: null});
+          dispatch({type: 'SET_AUTH_USER', value: null});
+          dispatch({type: 'SET_TOKEN', value: null});
+          dispatch({type: 'SET_PREFERENCE', value: null});
+          dispatch({type: 'SET_NEWSLIST', value: null});
+          dispatch({type: 'SET_NEWS', value: null});
+          dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
+          dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
+          dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
+          dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
+          dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
+          dispatch({type: 'SET_SEARCH', value: null});
+          dispatch({type: 'SET_MEDLIST', value: null});
+          dispatch({type: 'SET_MED', value: null});
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
         }
       }
     });
@@ -183,46 +204,65 @@ const Untukmu = ({navigation}) => {
                 <View>
                   {recomByKategori !== null ? (
                     <View style={[]}>
-                      <ScrollView
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}>
-                        {recomByKategori.slice(0, 15).map((news, index) => {
-                          return (
-                            <KategoriRekomendasi
-                              key={index}
-                              news={news}
-                              onPress={() => {
-                                saveHistory(makeHistory(news));
-                                dispatch({type: 'SET_NEWS', value: news});
-                                navigation.navigate('DetailBerita');
-                                // detail rekomendasi
-                              }}
-                            />
-                          );
-                        })}
-                      </ScrollView>
+                      {recomByKategori.length !== 0 ? (
+                        <ScrollView
+                          horizontal={true}
+                          showsHorizontalScrollIndicator={false}>
+                          {recomByKategori.slice(0, 15).map((news, index) => {
+                            return (
+                              <KategoriRekomendasi
+                                key={index}
+                                news={news}
+                                onPress={() => {
+                                  saveHistory(makeHistory(news));
+                                  dispatch({type: 'SET_NEWS', value: news});
+                                  navigation.navigate('DetailBerita');
+                                  // detail rekomendasi
+                                }}
+                              />
+                            );
+                          })}
+                        </ScrollView>
+                      ) : (
+                        <View
+                          style={[
+                            ms.aiJc('center'),
+                            ms.height((windowHeight * 25) / 100),
+                          ]}>
+                          <Text
+                            style={[
+                              ms.fzBC(13, '400', colors.black),
+                              ms.txA('center'),
+                              ms.width((windowWidth * 50) / 100),
+                            ]}>
+                            Tidak ada rekomendasi berita untuk kategori yang
+                            Anda pilih
+                          </Text>
+                        </View>
+                      )}
                     </View>
-                  ) : (
+                  ) : ( null
                     // ketika tidak tidak ada berita pd minat kategori
-                    <View
-                      style={[
-                        ms.aiJc('center'),
-                        ms.height((windowHeight * 25) / 100),
-                      ]}>
-                      <Text
-                        style={[
-                          ms.fzBC(13, '400', colors.black),
-                          ms.txA('center'),
-                          ms.width((windowWidth * 50) / 100),
-                        ]}>
-                        Tidak ada rekomendasi berita untuk kategori yang Anda
-                        pilih
-                      </Text>
-                    </View>
+                    // <View
+                    //   style={[
+                    //     ms.aiJc('center'),
+                    //     ms.height((windowHeight * 25) / 100),
+                    //   ]}>
+                    //   <Text
+                    //     style={[
+                    //       ms.fzBC(13, '400', colors.black),
+                    //       ms.txA('center'),
+                    //       ms.width((windowWidth * 50) / 100),
+                    //     ]}>
+                    //     Tidak ada rekomendasi berita untuk kategori yang Anda
+                    //     pilih
+                    //   </Text>
+                    // </View>
                   )}
                 </View>
               )}
             </View>
+
             <View style={[ms.mgT(40), ms.mgH(20)]}>
               <Gap
                 width={(windowWidth * 90) / 100}
@@ -244,72 +284,93 @@ const Untukmu = ({navigation}) => {
                 <View>
                   {recomByHistory !== null ? (
                     <View>
-                      <View>
-                        {initialGet.map((rekom, index) => {
-                          return (
-                            <Rekomendasi
-                              key={index}
-                              rekom={rekom}
-                              onPress={() => {
-                                dispatch({type: 'SET_NEWS', value: rekom});
-                                navigation.navigate('DetailBerita');
-                              }}
-                            />
-                          );
-                        })}
-                      </View>
+                      {recomByHistory.length !== 0 ? (
+                        <View>
+                          <View>
+                            {initialGet.map((rekom, index) => {
+                              return (
+                                <Rekomendasi
+                                  key={index}
+                                  rekom={rekom}
+                                  onPress={() => {
+                                    dispatch({type: 'SET_NEWS', value: rekom});
+                                    navigation.navigate('DetailBerita');
+                                  }}
+                                />
+                              );
+                            })}
+                          </View>
 
-                      {/* Load more button */}
-                      <View
-                        style={[
-                          ms.width(windowWidth * 100) / 100,
-                          ms.containerPage,
-                          ms.aiJc('center'),
-                          ms.mgT(22),
-                          ms.mgB(10),
-                        ]}>
-                        {isCompleted ? (
-                          <TouchableOpacity
-                            onPress={loadMore}
-                            activeOpacity={0.9}
-                            style={[styles.loadMoreDeactive]}>
-                            <Text style={[ms.fzBC(12, '500', colors.white)]}>
-                              Tampilkan lebih banyak
-                            </Text>
-                          </TouchableOpacity>
-                        ) : (
-                          <TouchableOpacity
-                            onPress={loadMore}
-                            activeOpacity={0.9}
-                            style={[styles.loadMoreActive]}>
-                            <Text style={[ms.fzBC(12, '700', colors.white)]}>
-                              Tampilkan lebih banyak
-                            </Text>
-                            {isLoadingScreen ? (
-                              <ActivityIndicator
-                                color={colors.white}
-                                style={{marginLeft: 5}}
-                              />
-                            ) : null}
-                          </TouchableOpacity>
-                        )}
-                      </View>
+                          {/* Load more button */}
+                          <View
+                            style={[
+                              ms.width(windowWidth * 100) / 100,
+                              ms.containerPage,
+                              ms.aiJc('center'),
+                              ms.mgT(22),
+                              ms.mgB(10),
+                            ]}>
+                            {isCompleted ? (
+                              <TouchableOpacity
+                                onPress={loadMore}
+                                activeOpacity={0.9}
+                                style={[styles.loadMoreDeactive]}>
+                                <Text
+                                  style={[ms.fzBC(12, '500', colors.white)]}>
+                                  Tampilkan lebih banyak
+                                </Text>
+                              </TouchableOpacity>
+                            ) : (
+                              <TouchableOpacity
+                                onPress={loadMore}
+                                activeOpacity={0.9}
+                                style={[styles.loadMoreActive]}>
+                                <Text
+                                  style={[ms.fzBC(12, '700', colors.white)]}>
+                                  Tampilkan lebih banyak
+                                </Text>
+                                {isLoadingScreen ? (
+                                  <ActivityIndicator
+                                    color={colors.white}
+                                    style={{marginLeft: 5}}
+                                  />
+                                ) : null}
+                              </TouchableOpacity>
+                            )}
+                          </View>
+                        </View>
+                      ) : (
+                        <View
+                          style={[
+                            ms.aiJc('center'),
+                            ms.height((windowHeight * 40) / 100),
+                          ]}>
+                          <Text
+                            style={[
+                              ms.fzBC(13, '400', colors.black),
+                              ms.txA('center'),
+                              ms.width((windowWidth * 50) / 100),
+                            ]}>
+                            Belum ada rekomendasi
+                          </Text>
+                        </View>
+                      )}
                     </View>
-                  ) : (
-                    <View
-                      style={[
-                        ms.aiJc('center'),
-                        ms.height((windowHeight * 40) / 100),
-                      ]}>
-                      <Text
-                        style={[
-                          ms.fzBC(13, '400', colors.black),
-                          ms.txA('center'),
-                          ms.width((windowWidth * 50) / 100),
-                        ]}>
-                        Belum ada rekomendasi
-                      </Text>
-                    </View>
+                  ) : ( null
+                    // <View
+                    //   style={[
+                    //     ms.aiJc('center'),
+                    //     ms.height((windowHeight * 40) / 100),
+                    //   ]}>
+                    //   <Text
+                    //     style={[
+                    //       ms.fzBC(13, '400', colors.black),
+                    //       ms.txA('center'),
+                    //       ms.width((windowWidth * 50) / 100),
+                    //     ]}>
+                    //     Belum ada rekomendasi
+                    //   </Text>
+                    // </View>
                   )}
                 </View>
               )}
@@ -348,8 +409,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#346CB3',
     alignItems: 'center',
     justifyContent: 'center',
-    width: (windowWidth * 100) / 100,
-    height: (windowHeight * 6) / 100,
+    paddingVertical: 5
+    // width: (windowWidth * 100) / 100,
+    // height: (windowHeight * 6) / 100,
   },
   nonews: {
     height: (windowHeight * 85) / 100,

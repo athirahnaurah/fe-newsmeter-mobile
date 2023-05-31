@@ -12,7 +12,7 @@ export const getNews =
     dispatch(setLoadingScreen(true));
 
     axios
-      .get(`${ApiConfig}/api/get/news/100`, {headers: ApiHeader})
+      .get(`http://beta.newsmeter.id/api/get/news/100`, {headers: ApiHeader})
       .then(res => {
         // console.log('result', res);
         dispatch({type: 'SET_NEWSLIST', value: [...res.data]});
@@ -36,11 +36,11 @@ export const getNewsByKategori =
 
     // console.log('kategori', kategori);
     axios
-      .get(`${ApiConfig}/api/get/news/kategori/${kategori}/100`, {
+      .get(`http://beta.newsmeter.id/api/get/news/kategori/${kategori}/100`, {
         headers: ApiHeader,
       })
       .then(res => {
-        // console.log('result', res);
+        console.log('result', res.data);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
         // dispatch({ type: 'SET_NEWSLIST', value: [...newsList, ...res.data]});
         dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: [...res.data]});
@@ -63,7 +63,7 @@ export const getNewsByMedia =
 
     // console.log('media', media);
     axios
-      .get(`${ApiConfig}/api/get/news/media/${media}/100`, {headers: ApiHeader})
+      .get(`http://beta.newsmeter.id/api/get/news/media/${media}/100`, {headers: ApiHeader})
       .then(res => {
         // console.log('result', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
@@ -88,7 +88,7 @@ export const getSearchNews =
     dispatch(setLoadingScreen(true));
 
     axios
-      .get(`${ApiConfig}/api/search/news/${search}/7`, {headers: ApiHeader})
+      .get(`http://beta.newsmeter.id/api/search/news/${search}/7`, {headers: ApiHeader})
       .then(res => {
         // console.log('res search', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
@@ -115,7 +115,7 @@ export const getSearchNews =
 export const postHistory = dataNews => dispatch => {
   getData('token').then(resAuth => {
     axios
-      .post('http://10.0.2.2:5000/history', dataNews, {
+      .post(`${ApiConfigDeploy}/history`, dataNews, {
         headers: {Authorization: `Bearer ${resAuth}`},
       })
       .then(res => {
@@ -134,7 +134,7 @@ export const getRecommendationByKategori =
     // let preferences = ['Ekonomi', 'Politik', 'Nasional'];
     getData('token').then(resAuth => {
       axios
-        .get(`http://10.0.2.2:5000/preference`, {
+        .get(`${ApiConfigDeploy}/preference`, {
           headers: {Authorization: `Bearer ${resAuth}`},
         })
         .then(res => {
@@ -144,7 +144,7 @@ export const getRecommendationByKategori =
           for (let preference of res.data) {
             // console.log('preference', preference);
             axios
-              .get(`${ApiConfig}/api/get/news/kategori/${preference}/50`, {
+              .get(`http://beta.newsmeter.id/api/get/news/kategori/${preference}/50`, {
                 headers: ApiHeader,
               })
               .then(result => {
@@ -227,7 +227,7 @@ export const getRecommendationByHistory =
 
     getData('token').then(resAuth => {
       axios
-        .get(`http://10.0.2.2:5000/get_recommendation`, {
+        .get(`${ApiConfigDeploy}/get_recommendation`, {
           headers: {Authorization: `Bearer ${resAuth}`},
         })
         .then(res => {
@@ -249,7 +249,7 @@ export const saveRecommendation = (onCallback = res => {}, onError = err => {}) 
 dispatch =>{
   getData('token').then(resAuth => {
   axios
-    .get('http://10.0.2.2:5000/save_recommendation', {
+    .get(`${ApiConfigDeploy}/save_recommendation`, {
       headers: {Authorization: `Bearer ${resAuth}`},
     })
     .then(response => {
