@@ -53,29 +53,31 @@ const Beranda = ({navigation}) => {
         if (user !== 'undefined') {
           dispatch(setLogin(true));
           dispatch(getNews(newsList));
-        } else {
-          Alert.alert(
-            'Sesi Berakhir',
-            'Sesi telah berakhir, silakan lakukan login kembali.',
-          );
-          navigation.reset({index: 0, routes: [{name: 'Login'}]});
-          dispatch({type: 'SET_USER', value: null});
-          dispatch({type: 'SET_AUTH_USER', value: null});
-          dispatch({type: 'SET_TOKEN', value: null});
-          dispatch({type: 'SET_PREFERENCE', value: null});
-          dispatch({type: 'SET_NEWSLIST', value: null});
-          dispatch({type: 'SET_NEWS', value: null});
-          dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
-          dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
-          dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
-          dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
-          dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
-          dispatch({type: 'SET_SEARCH', value: null});
-          dispatch({type: 'SET_MEDLIST', value: null});
-          dispatch({type: 'SET_MED', value: null});
-          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
-          dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
-        }
+        } 
+        // else {
+        //   Alert.alert(
+        //     'Sesi Berakhir',
+        //     'Sesi telah berakhir, silakan lakukan login kembali.',
+        //   );
+        //   AsyncStorage.clear();
+        //   dispatch({type: 'SET_USER', value: null});
+        //   dispatch({type: 'SET_AUTH_USER', value: null});
+        //   dispatch({type: 'SET_TOKEN', value: null});
+        //   dispatch({type: 'SET_PREFERENCE', value: null});
+        //   dispatch({type: 'SET_NEWSLIST', value: null});
+        //   dispatch({type: 'SET_NEWS', value: null});
+        //   dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
+        //   dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
+        //   dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
+        //   dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
+        //   dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
+        //   dispatch({type: 'SET_SEARCH', value: null});
+        //   dispatch({type: 'SET_MEDLIST', value: null});
+        //   dispatch({type: 'SET_MED', value: null});
+        //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
+        //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
+        //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
+        // }
       }
       dispatch(getNews(newsList));
     });
@@ -147,7 +149,7 @@ const Beranda = ({navigation}) => {
     <SafeAreaView style={[ms.containerPage]}>
       {/* Header */}
       <View style={styles.background}>
-        <Image source={Logo} />
+        <Image source={Logo} style={styles.logo}/>
       </View>
       {/* Title Terbaru */}
       <View style={styles.title}>
@@ -224,9 +226,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#346CB3',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 5
-    // width: (windowWidth * 100) / 100,
-    // height: (windowHeight * 6) / 100,
+    // paddingVertical: 5,
+    width: (windowWidth * 100) / 100,
+    height: (windowHeight * 6) / 100,
   },
   title: {
     marginVertical: 10,
@@ -252,7 +254,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
   // NewsCard:{
   //   width: windowWidth * 100 /100,
   //   height: windowHeight * 18 /100,

@@ -119,52 +119,78 @@ export const getUser =
     //   email : email
     // }]
     getData('token').then(token => {
-    axios
-      .get(`${ApiConfigDeploy}/user`, {
-        headers: {Authorization: `Bearer ${token} `},
-      })
-      .then(res => {
-        // console.log('res user: ', res.data);
-        if (res.data !== null) {
-          dispatch({type: 'SET_USER', value: res.data});
-        } 
-        // else {
-        //   Alert.alert(
-        //     'Sesi Berakhir',
-        //     'Silakan lakukan login kembali untuk masuk ke dalam aplikasi.',
-        //   );
-        //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
-        // }
-      })
-      .catch(err => {
-        if(err.message === "User not found" && err.response.status === 404){
+      axios
+        .get(`${ApiConfigDeploy}/user`, {
+          headers: {Authorization: `Bearer ${token} `},
+        })
+        .then(res => {
+          // console.log('res user: ', res.data);
+          // if (res.data !== null) {
+            dispatch({type: 'SET_USER', value: res.data});
+          // }
+          // if (res.data.message == "User not found") {
+          //   // Alert.alert(
+          //   //   'Sesi Berakhir',
+          //   //   'Sesi telah berakhir, silakan lakukan login kembali.',
+          //   // );
+          //   // dispatch({type: 'SET_USER', value: err.msg});
+          //   dispatch({type: 'SET_USER', value: null});
+          //   dispatch({type: 'SET_AUTH_USER', value: null});
+          //   dispatch({type: 'SET_TOKEN', value: null});
+          //   dispatch({type: 'SET_PREFERENCE', value: null});
+          //   dispatch({type: 'SET_NEWSLIST', value: null});
+          //   dispatch({type: 'SET_NEWS', value: null});
+          //   dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
+          //   dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
+          //   dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
+          //   dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
+          //   dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
+          //   dispatch({type: 'SET_SEARCH', value: null});
+          //   dispatch({type: 'SET_MEDLIST', value: null});
+          //   dispatch({type: 'SET_MED', value: null});
+          //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
+          //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
+          //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
+          // }
+
+          // else {
+          //   Alert.alert(
+          //     'Sesi Berakhir',
+          //     'Silakan lakukan login kembali untuk masuk ke dalam aplikasi.',
+          //   );
+          //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
+          // }
+        })
+        .catch(err => {
+          // if(err.message === "User not found" && err.response.status === 404){
+            dispatch({type: 'SET_USER', value: err.data});
+          
+          onError(err);
+
           Alert.alert(
             'Sesi Berakhir',
             'Sesi telah berakhir, silakan lakukan login kembali.',
           );
+          // dispatch({type: 'SET_USER', value: err.msg});
+          dispatch({type: 'SET_USER', value: null});
+          dispatch({type: 'SET_AUTH_USER', value: null});
+          dispatch({type: 'SET_TOKEN', value: null});
+          dispatch({type: 'SET_PREFERENCE', value: null});
+          dispatch({type: 'SET_NEWSLIST', value: null});
+          dispatch({type: 'SET_NEWS', value: null});
+          dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
+          dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
+          dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
+          dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
+          dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
+          dispatch({type: 'SET_SEARCH', value: null});
+          dispatch({type: 'SET_MEDLIST', value: null});
+          dispatch({type: 'SET_MED', value: null});
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
+          dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
           navigation.reset({index: 0, routes: [{name: 'Login'}]});
-        // dispatch({type: 'SET_USER', value: err.msg});
-        dispatch({type: 'SET_USER', value: null});
-        dispatch({type: 'SET_AUTH_USER', value: null});
-        dispatch({type: 'SET_TOKEN', value: null});
-        dispatch({type: 'SET_PREFERENCE', value: null});
-        dispatch({type: 'SET_NEWSLIST', value: null});
-        dispatch({type: 'SET_NEWS', value: null});
-        dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
-        dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
-        dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
-        dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
-        dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
-        dispatch({type: 'SET_SEARCH', value: null});
-        dispatch({type: 'SET_MEDLIST', value: null});
-        dispatch({type: 'SET_MED', value: null});
-        dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
-        dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
-        onError(err);
-        }
-        // console.log('error get use', err.msg);
-        
-        
-      });
-    })
+          // }
+          // console.log('error get use', err.msg);
+        });
+    });
   };

@@ -232,16 +232,16 @@ const styles = StyleSheet.create({
     width: (windowWidth * 100) / 100,
     height: (windowHeight * 6) / 100,
     flexDirection: 'row',
-    justifyContent: 'flex-start'
+    // justifyContent: 'flex-start'
   },
   back: {
     width: (windowWidth * 35) / 100,
   },
   background: {
     justifyContent: 'center',
-    paddingVertical: 5
-    // width: (windowWidth * 70) / 100,
-    // height: (windowHeight * 6) / 100,
+    // paddingVertical: 5,
+    width: (windowWidth * 70) / 100,
+    height: (windowHeight * 6) / 100,
   },
   logo: {
     height: (windowHeight * 6) / 100,

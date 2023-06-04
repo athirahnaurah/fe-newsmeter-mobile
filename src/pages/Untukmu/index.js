@@ -58,29 +58,7 @@ const Untukmu = ({navigation}) => {
         if (user !== 'undefined') {
           dispatch(getRecommendationByKategori());
           dispatch(getRecommendationByHistory());
-        } else {
-          Alert.alert(
-            'Sesi Berakhir',
-            'Sesi telah berakhir, silakan lakukan login kembali.',
-          );
-          navigation.reset({index: 0, routes: [{name: 'Login'}]});
-          dispatch({type: 'SET_USER', value: null});
-          dispatch({type: 'SET_AUTH_USER', value: null});
-          dispatch({type: 'SET_TOKEN', value: null});
-          dispatch({type: 'SET_PREFERENCE', value: null});
-          dispatch({type: 'SET_NEWSLIST', value: null});
-          dispatch({type: 'SET_NEWS', value: null});
-          dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
-          dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
-          dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
-          dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
-          dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
-          dispatch({type: 'SET_SEARCH', value: null});
-          dispatch({type: 'SET_MEDLIST', value: null});
-          dispatch({type: 'SET_MED', value: null});
-          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
-          dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
-        }
+         } 
       }
     });
   };
@@ -241,23 +219,23 @@ const Untukmu = ({navigation}) => {
                         </View>
                       )}
                     </View>
-                  ) : ( null
+                  ) : ( 
                     // ketika tidak tidak ada berita pd minat kategori
-                    // <View
-                    //   style={[
-                    //     ms.aiJc('center'),
-                    //     ms.height((windowHeight * 25) / 100),
-                    //   ]}>
-                    //   <Text
-                    //     style={[
-                    //       ms.fzBC(13, '400', colors.black),
-                    //       ms.txA('center'),
-                    //       ms.width((windowWidth * 50) / 100),
-                    //     ]}>
-                    //     Tidak ada rekomendasi berita untuk kategori yang Anda
-                    //     pilih
-                    //   </Text>
-                    // </View>
+                    <View
+                      style={[
+                        ms.aiJc('center'),
+                        ms.height((windowHeight * 25) / 100),
+                      ]}>
+                      <Text
+                        style={[
+                          ms.fzBC(13, '400', colors.black),
+                          ms.txA('center'),
+                          ms.width((windowWidth * 50) / 100),
+                        ]}>
+                        Tidak ada rekomendasi berita untuk kategori yang Anda
+                        pilih
+                      </Text>
+                    </View>
                   )}
                 </View>
               )}
@@ -293,6 +271,7 @@ const Untukmu = ({navigation}) => {
                                   key={index}
                                   rekom={rekom}
                                   onPress={() => {
+                                    saveHistory(makeHistory(rekom));
                                     dispatch({type: 'SET_NEWS', value: rekom});
                                     navigation.navigate('DetailBerita');
                                   }}
@@ -356,21 +335,21 @@ const Untukmu = ({navigation}) => {
                         </View>
                       )}
                     </View>
-                  ) : ( null
-                    // <View
-                    //   style={[
-                    //     ms.aiJc('center'),
-                    //     ms.height((windowHeight * 40) / 100),
-                    //   ]}>
-                    //   <Text
-                    //     style={[
-                    //       ms.fzBC(13, '400', colors.black),
-                    //       ms.txA('center'),
-                    //       ms.width((windowWidth * 50) / 100),
-                    //     ]}>
-                    //     Belum ada rekomendasi
-                    //   </Text>
-                    // </View>
+                  ) : (
+                    <View
+                      style={[
+                        ms.aiJc('center'),
+                        ms.height((windowHeight * 40) / 100),
+                      ]}>
+                      <Text
+                        style={[
+                          ms.fzBC(13, '400', colors.black),
+                          ms.txA('center'),
+                          ms.width((windowWidth * 50) / 100),
+                        ]}>
+                        Belum ada rekomendasi
+                      </Text>
+                    </View>
                   )}
                 </View>
               )}

@@ -14,8 +14,6 @@ import {
   MinatKategori,
   BeritaByKategori,
   BeritaByMedia,
-  DetailBeritaByKategori,
-  DetailBeritaByMedia,
   DaftarMedia,
   DetailSearch,
   RekomendasiByKategori,
@@ -115,16 +113,6 @@ const Router = () => {
       <Stack.Screen
         name="DetailBerita"
         component={DetailBerita}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="DetailBeritaByKategori"
-        component={DetailBeritaByKategori}
-        options={{headerShown: false}}
-      />
-      <Stack.Screen
-        name="DetailBeritaByMedia"
-        component={DetailBeritaByMedia}
         options={{headerShown: false}}
       />
       <Stack.Screen
