@@ -5,9 +5,10 @@ import {colors} from '../../../utils';
 import {IconValidasi, ImageDefault, Point} from '../../../assets';
 import {Gap} from '../../atoms';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { windowWidth } from '../../../utils/ms/constant';
+import {windowWidth} from '../../../utils/ms/constant';
+import Icon2 from 'react-native-vector-icons/Entypo';
 
-const Rekomendasi = ({rekom, onPress}) => {
+const Rekomendasi = ({theme, rekom, onPress}) => {
   const percentage = score => {
     return (score * 100).toFixed(0);
   };
@@ -19,25 +20,46 @@ const Rekomendasi = ({rekom, onPress}) => {
           <View style={[ms.width('60%'), ms.height(67), ms.pdL(20)]}>
             <Text
               numberOfLines={2}
-              style={[ms.fzBC(12.8, '700', colors.black)]}>
+              style={[
+                theme === 'dark'
+                  ? ms.fzBC(12.8, '700', colors.white)
+                  : ms.fzBC(12.8, '700', colors.black),
+              ]}>
               {rekom?.title}
             </Text>
-            <Text style={[ms.fzBC(11, '400', colors.black)]}>
+            <Text
+              style={[
+                theme === 'dark'
+                  ? ms.fzBC(11, '400', colors.white)
+                  : ms.fzBC(11, '400', colors.black),
+              ]}>
               {rekom?.media}
             </Text>
 
             <View style={[ms.row, ms.mgT(5)]}>
               <View style={[]}>
-                <Text style={[ms.fzBC(10, '500', colors.blue)]}>
+                <Text
+                  style={[
+                    theme === 'dark'
+                      ? ms.fzBC(10, '500', colors.blue_dark)
+                      : ms.fzBC(10, '500', colors.blue),
+                  ]}>
                   {rekom?.kategori}
                 </Text>
               </View>
               <View style={[ms.width('100%'), ms.row]}>
-                <Image
-                  source={Point}
-                  style={[ms.width(2), ms.height(2), ms.mgT(7), ms.mgH(5)]}
+                <Icon2
+                  name="dot-single"
+                  size={12}
+                  color={theme === 'dark' ? colors.white : colors.black}
+                  style={[ms.mgH(3)]}
                 />
-                <Text style={[ms.fzBC(10, '400', colors.black)]}>
+                <Text
+                  style={[
+                    theme === 'dark'
+                      ? ms.fzBC(10, '400', colors.white)
+                      : ms.fzBC(10, '400', colors.black),
+                  ]}>
                   {rekom?.date}
                 </Text>
               </View>
@@ -49,7 +71,12 @@ const Rekomendasi = ({rekom, onPress}) => {
                 color={colors.green}
                 style={[ms.width((windowWidth * 4.5) / 100)]}
               />
-              <Text style={[ms.fzBC(12, '500', colors.black)]}>
+              <Text
+                style={[
+                  theme === 'dark'
+                    ? ms.fzBC(12, '500', colors.white)
+                    : ms.fzBC(12, '500', colors.black),
+                ]}>
                 {' '}
                 {percentage(rekom?.score)}% mirip dengan bacaanmu.
               </Text>
@@ -74,7 +101,10 @@ const Rekomendasi = ({rekom, onPress}) => {
         </View>
 
         <View style={[ms.mgH(20), ms.mgT(3)]}>
-          <Gap height={1} backgroundColor={colors.grey3} />
+          <Gap
+            height={1}
+            backgroundColor={theme === 'dark' ? colors.white : colors.grey}
+          />
         </View>
       </View>
     </TouchableOpacity>

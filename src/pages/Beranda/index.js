@@ -8,7 +8,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
-  Alert,
+  useColorScheme
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors, getData} from '../../utils';
@@ -33,6 +33,8 @@ import {getUser} from '../../redux/action/login';
 // import {saveRecommendationBackground, options} from '../../../index';
 
 const Beranda = ({navigation}) => {
+  const colorScheme = useColorScheme();
+
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.globalReducer);
   const {newsList} = useSelector(state => state.newsReducer);
@@ -54,30 +56,6 @@ const Beranda = ({navigation}) => {
           dispatch(setLogin(true));
           dispatch(getNews(newsList));
         } 
-        // else {
-        //   Alert.alert(
-        //     'Sesi Berakhir',
-        //     'Sesi telah berakhir, silakan lakukan login kembali.',
-        //   );
-        //   AsyncStorage.clear();
-        //   dispatch({type: 'SET_USER', value: null});
-        //   dispatch({type: 'SET_AUTH_USER', value: null});
-        //   dispatch({type: 'SET_TOKEN', value: null});
-        //   dispatch({type: 'SET_PREFERENCE', value: null});
-        //   dispatch({type: 'SET_NEWSLIST', value: null});
-        //   dispatch({type: 'SET_NEWS', value: null});
-        //   dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
-        //   dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
-        //   dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
-        //   dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
-        //   dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
-        //   dispatch({type: 'SET_SEARCH', value: null});
-        //   dispatch({type: 'SET_MEDLIST', value: null});
-        //   dispatch({type: 'SET_MED', value: null});
-        //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
-        //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
-        //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
-        // }
       }
       dispatch(getNews(newsList));
     });
@@ -142,25 +120,29 @@ const Beranda = ({navigation}) => {
   useEffect(() => {
     if (navigation.isFocused) {
       init();
+      console.log(colorScheme);
     }
-  }, [navigation]);
+  }, [navigation. colorScheme]);
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView style={[colorScheme === 'dark' ? styles.containerPageD : ms.containerPage]}>
       {/* Header */}
       <View style={styles.background}>
         <Image source={Logo} style={styles.logo}/>
       </View>
       {/* Title Terbaru */}
       <View style={styles.title}>
-        <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>TERBARU</Text>
+        <Text style={[
+          colorScheme === 'dark' ?
+          ms.fzBCLh(18, '900', colors.white, 22) :
+          ms.fzBCLh(18, '900', colors.black, 22)]}>TERBARU</Text>
       </View>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         {isLoadingScreen ? (
-          <ActivityIndicator color={colors.black} style={{margin: 5}} />
+          <ActivityIndicator color={colorScheme === 'dark' ? colors.white : colors.black} style={{margin: 5}} />
         ) : (
           <View style={[]}>
             {initialGet.map((news, index) => {
@@ -168,6 +150,7 @@ const Beranda = ({navigation}) => {
                 <NewsList
                   key={index}
                   news={news}
+                  theme={colorScheme}
                   // width={'60%'}
                   // height={65}
                   onPress={() => {
@@ -181,16 +164,16 @@ const Beranda = ({navigation}) => {
             <View
               style={[
                 ms.width(windowWidth * 100) / 100,
-                ms.containerPage,
                 ms.aiJc('center'),
                 ms.mgT(22),
                 ms.mgB(10),
+                colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
               ]}>
               {isCompleted ? (
                 <TouchableOpacity
                   onPress={loadMore}
                   activeOpacity={0.9}
-                  style={[styles.loadMoreDeactive]}>
+                  style={[colorScheme === 'dark' ? styles.loadMoreDeactiveD : styles.loadMoreDeactive]}>
                   <Text style={[ms.fzBC(12, '500', colors.white)]}>
                     Tampilkan lebih banyak
                   </Text>
@@ -222,8 +205,12 @@ const Beranda = ({navigation}) => {
 export default Beranda;
 
 const styles = StyleSheet.create({
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  },
   background: {
-    backgroundColor: '#346CB3',
+    backgroundColor: colors.blue,
     alignItems: 'center',
     justifyContent: 'center',
     // paddingVertical: 5,
@@ -251,6 +238,16 @@ const styles = StyleSheet.create({
     marginVertical: 15,
     borderRadius: 8,
     backgroundColor: colors.grey3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadMoreDeactiveD: {
+    width: (windowWidth * 50) / 100,
+    height: (windowHeight * 4) / 100,
+    // padding: 10,
+    marginVertical: 15,
+    borderRadius: 8,
+    backgroundColor: colors.grey_dark,
     alignItems: 'center',
     justifyContent: 'center',
   },

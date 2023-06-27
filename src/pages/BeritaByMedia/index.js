@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
   TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import React from 'react';
 import {useEffect, useState} from 'react';
@@ -23,6 +24,8 @@ import NewsList from '../../components/molecules/NewsList';
 import {getNewsByMedia, postHistory} from '../../redux/action';
 
 const BeritaByMedia = ({navigation}) => {
+  const colorScheme = useColorScheme();
+
   const dispatch = useDispatch();
   const {bymedia} = useSelector(state => state.newsReducer);
   const {med} = useSelector(state => state.mediaReducer);
@@ -105,11 +108,15 @@ const BeritaByMedia = ({navigation}) => {
   useEffect(() => {
     if (navigation.isFocused) {
       init();
+      console.log(colorScheme);
     }
-  }, [navigation]);
+  }, [navigation, colorScheme]);
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView
+      style={[
+        colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
+      ]}>
       {/* Header */}
       <View style={styles.container}>
         <TouchableOpacity
@@ -132,7 +139,14 @@ const BeritaByMedia = ({navigation}) => {
 
       {/* Title Terbaru */}
       <View style={styles.title}>
-        <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>{med}</Text>
+        <Text
+          style={[
+            colorScheme === 'dark'
+              ? ms.fzBCLh(18, '900', colors.white, 22)
+              : ms.fzBCLh(18, '900', colors.black, 22),
+          ]}>
+          {med}
+        </Text>
       </View>
 
       {/* List Berita By Kategori */}
@@ -142,7 +156,10 @@ const BeritaByMedia = ({navigation}) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         {isLoadingScreen ? (
-          <ActivityIndicator color={colors.black} style={{margin: 5}} />
+          <ActivityIndicator
+            color={colorScheme === 'dark' ? colors.white : colors.black}
+            style={{margin: 5}}
+          />
         ) : (
           <View>
             {bymedia !== null ? (
@@ -154,6 +171,7 @@ const BeritaByMedia = ({navigation}) => {
                         <NewsList
                           key={index}
                           news={news}
+                          theme={colorScheme}
                           // width={'60%'}
                           // height={65}
                           onPress={() => {
@@ -167,8 +185,10 @@ const BeritaByMedia = ({navigation}) => {
 
                     <View
                       style={[
+                        colorScheme === 'dark'
+                          ? styles.containerPageD
+                          : ms.containerPage,
                         ms.width(windowWidth * 100) / 100,
-                        ms.containerPage,
                         ms.aiJc('center'),
                         ms.mgT(22),
                         ms.mgB(10),
@@ -177,7 +197,11 @@ const BeritaByMedia = ({navigation}) => {
                         <TouchableOpacity
                           onPress={loadMore}
                           activeOpacity={0.9}
-                          style={[styles.loadMoreDeactive]}>
+                          style={[
+                            colorScheme === 'dark'
+                              ? styles.loadMoreDeactiveD
+                              : styles.loadMoreDeactive,
+                          ]}>
                           <Text style={[ms.fzBC(12, '500', colors.white)]}>
                             Tampilkan lebih banyak
                           </Text>
@@ -195,10 +219,15 @@ const BeritaByMedia = ({navigation}) => {
                     </View>
                   </View>
                 ) : (
-                  <View style={[styles.nonews]}>
+                  <View
+                    style={[
+                      colorScheme === 'dark' ? styles.nonewsD : styles.nonews,
+                    ]}>
                     <Text
                       style={[
-                        ms.fzBC(13, '400', colors.black),
+                        colorScheme === 'dark'
+                          ? ms.fzBC(13, '400', colors.white)
+                          : ms.fzBC(13, '400', colors.black),
                         ms.txA('center'),
                       ]}>
                       Maaf, Tidak ada berita untuk media yang dipilih.
@@ -207,9 +236,17 @@ const BeritaByMedia = ({navigation}) => {
                 )}
               </View>
             ) : (
-              <View style={[styles.nonews]}>
+              <View
+                style={[
+                  colorScheme === 'dark' ? styles.nonewsD : styles.nonews,
+                ]}>
                 <Text
-                  style={[ms.fzBC(13, '400', colors.black), ms.txA('center')]}>
+                  style={[
+                    colorScheme === 'dark'
+                      ? ms.fzBC(13, '400', colors.white)
+                      : ms.fzBC(13, '400', colors.black),
+                    ms.txA('center'),
+                  ]}>
                   Maaf, Tidak ada berita untuk media yang dipilih.
                 </Text>
               </View>
@@ -271,6 +308,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loadMoreDeactiveD: {
+    width: (windowWidth * 50) / 100,
+    height: (windowHeight * 4) / 100,
+    // padding: 10,
+    marginVertical: 15,
+    borderRadius: 8,
+    backgroundColor: colors.grey_dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   nonews: {
     height: (windowHeight * 85) / 100,
     fontSize: 12,
@@ -278,10 +325,17 @@ const styles = StyleSheet.create({
     color: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // left: 0,
-    // bottom: 0
+  },
+  nonewsD: {
+    height: (windowHeight * 85) / 100,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
   },
 });

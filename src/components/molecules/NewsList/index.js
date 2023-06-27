@@ -4,14 +4,16 @@ import {colors, windowHeight, windowWidth} from '../../../utils';
 import ms from '../../../utils/ms';
 import {Gap} from '../../atoms';
 import {ImageDefault, Point} from '../../../assets';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import {useState} from 'react';
+import {useEffect} from 'react';
+import Icon from 'react-native-vector-icons/Entypo';
 
-const NewsList = ({news, onPress, width, height}) => {
-
-  {/* Condition while there's no image in var img */}
+const NewsList = ({theme, news, onPress, width, height}) => {
+  {
+    /* Condition while there's no image in var img */
+  }
   // const [imgNull, setImgNull] = useState(news?.image);
-  
+
   // const stateNull = () => {
   //   setImgNull(null);
   // }
@@ -28,25 +30,46 @@ const NewsList = ({news, onPress, width, height}) => {
           <View style={[ms.width('60%'), ms.height(60), ms.pdL(20)]}>
             <Text
               numberOfLines={3}
-              style={[ms.fzBC(12.8, '700', colors.black)]}>
+              style={[
+                theme === 'dark'
+                  ? ms.fzBC(12.8, '700', colors.white)
+                  : ms.fzBC(12.8, '700', colors.black),
+              ]}>
               {news?.title}
             </Text>
-            <Text style={[ms.fzBC(11, '400', colors.black)]}>
+            <Text
+              style={[
+                theme === 'dark'
+                  ? ms.fzBC(11, '400', colors.white)
+                  : ms.fzBC(11, '400', colors.black),
+              ]}>
               {news?.media}
             </Text>
 
             <View style={[ms.row, ms.mgT(5)]}>
               <View style={[]}>
-                <Text style={[ms.fzBC(10, '500', colors.blue)]}>
+                <Text
+                  style={[
+                    theme === 'dark'
+                      ? ms.fzBC(10, '500', colors.blue_dark)
+                      : ms.fzBC(10, '500', colors.blue),
+                  ]}>
                   {news?.kategori}
                 </Text>
               </View>
               <View style={[ms.width('100%'), ms.row]}>
-                <Image
-                  source={Point}
-                  style={[ms.width(2), ms.height(2), ms.mgT(7), ms.mgH(5)]}
+                <Icon
+                  name='dot-single'
+                  size={12}
+                  color={theme === 'dark' ? colors.white : colors.black}
+                  style={[ ms.mgH(3)]}
                 />
-                <Text style={[ms.fzBC(10, '400', colors.black)]}>
+                <Text
+                  style={[
+                    theme === 'dark'
+                      ? ms.fzBC(10, '400', colors.white)
+                      : ms.fzBC(10, '400', colors.black),
+                  ]}>
                   {news?.date}
                 </Text>
               </View>
@@ -55,18 +78,18 @@ const NewsList = ({news, onPress, width, height}) => {
 
           {news?.image !== null ? (
             <View style={[ms.width('40%'), ms.ai('center')]}>
-            <Image
-              source={{uri: news?.image}}
-              style={[ms.width('75%'), ms.height('100%')]}
-            />
-          </View>
+              <Image
+                source={{uri: news?.image}}
+                style={[ms.width('75%'), ms.height('100%')]}
+              />
+            </View>
           ) : (
             <View style={[ms.width('40%'), ms.ai('center')]}>
-            <Image
-              source={ImageDefault}
-              style={[ms.width('75%'), ms.height('100%')]}
-            />
-          </View>
+              <Image
+                source={ImageDefault}
+                style={[ms.width('75%'), ms.height('100%')]}
+              />
+            </View>
           )}
 
           {/* Condition while there's no image in var img */}
@@ -85,13 +108,15 @@ const NewsList = ({news, onPress, width, height}) => {
             />
           </View>
           )} */}
-          
-
         </View>
         <View style={[ms.mgH(20)]}>
-          <Gap height={1} backgroundColor={colors.grey3}/>
+          <Gap
+            height={1}
+            backgroundColor={
+              theme === 'dark' ? colors.white : colors.grey
+            }
+          />
         </View>
-
       </View>
     </TouchableOpacity>
   );

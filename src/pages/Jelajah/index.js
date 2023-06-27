@@ -9,6 +9,7 @@ import {
   RefreshControl,
   Image,
   ActivityIndicator,
+  useColorScheme,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Gap, Input, Kategori, Media, SearchList} from '../../components';
@@ -18,11 +19,18 @@ import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import KategoriBerita from '../BeritaByKategori';
-import {getKategori, getMedia, getSearchNews, postHistory} from '../../redux/action';
+import {
+  getKategori,
+  getMedia,
+  getSearchNews,
+  postHistory,
+} from '../../redux/action';
 import {useCallback, useEffect} from 'react';
 import {slice} from 'lodash';
 
 const Jelajah = ({navigation}) => {
+  const colorScheme = useColorScheme();
+
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
   const {mediaList, medList} = useSelector(state => state.mediaReducer);
@@ -32,7 +40,9 @@ const Jelajah = ({navigation}) => {
   const [searchText, setSearchText] = useState('');
   const [searchTimer, setSearchTimer] = useState(null);
   const [isAvail, setisAvail] = useState(false);
-  const {isLoadingScreen, searchValue} = useSelector(state => state.globalReducer);
+  const {isLoadingScreen, searchValue} = useSelector(
+    state => state.globalReducer,
+  );
 
   const [i, setI] = useState(15);
   const initialGet = slice(newsListSearch, 0, i);
@@ -99,13 +109,12 @@ const Jelajah = ({navigation}) => {
     }
   };
 
-  const onSearch = async text => {
-  };
+  const onSearch = async text => {};
 
   const init = async () => {
     await dispatch(getMedia());
     await dispatch(getKategori());
-  }
+  };
   // console.log('kategori', kategoriList);
 
   const imageSelect = kategori => {
@@ -183,28 +192,39 @@ const Jelajah = ({navigation}) => {
   useEffect(() => {
     if (navigation.isFocused) {
       init();
+      console.log(colorScheme);
     }
-  }, [navigation]);
+  }, [navigation, colorScheme]);
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView
+      style={[
+        colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
+      ]}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         {/* Search Bar */}
-        <View style={[styles.cardInput]}>
+        <View
+          style={[
+            colorScheme === 'dark' ? styles.cardInputD : styles.cardInput,
+          ]}>
           <Icon
             style={[
               ms.pdL(10),
               ms.ai('center'),
-              ms.fzBC(13, '400', colors.grey),
               ms.width((windowWidth * 6) / 100),
+              colorScheme === 'dark'
+                ? ms.fzBC(13, '400', colors.white)
+                : ms.fzBC(13, '400', colors.grey),
             ]}
             name="search"
           />
           <TextInput
-            style={[styles.textInput]}
+            style={[
+              colorScheme === 'dark' ? styles.textInputD : styles.textInput,
+            ]}
             placeholder="Cari Judul Berita"
             onChangeText={value => {
               if (searchTimer) {
@@ -233,7 +253,14 @@ const Jelajah = ({navigation}) => {
               setI(10);
               navigation.navigate('Jelajah');
             }}>
-            <Icon style={[ms.fzBC(20, '400', colors.grey)]} name="close" />
+            <Icon
+              style={[
+                colorScheme === 'dark'
+                  ? ms.fzBC(20, '400', colors.white)
+                  : ms.fzBC(20, '400', colors.grey),
+              ]}
+              name="close"
+            />
           </TouchableOpacity>
         </View>
 
@@ -243,19 +270,29 @@ const Jelajah = ({navigation}) => {
         {!isAvail ? (
           <View>
             {isLoadingScreen ? (
-              <ActivityIndicator color={colors.black} style={{margin: 5}} />
+              <ActivityIndicator
+                color={colorScheme === 'dark' ? colors.white : colors.black}
+                style={{margin: 5}}
+              />
             ) : (
               <View>
                 {/* Kategori */}
                 <View>
                   <View style={[ms.row, ms.ai('center'), ms.mgB(15)]}>
                     <Text
-                      style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
+                      style={[
+                        colorScheme === 'dark'
+                          ? ms.fzBC(18, '700', colors.white)
+                          : ms.fzBC(18, '700', colors.black),
+                        ms.pdH(20),
+                      ]}>
                       Kategori
                     </Text>
                     <Gap
                       height={2}
-                      backgroundColor={colors.grey3}
+                      backgroundColor={
+                        colorScheme === 'dark' ? colors.white : colors.grey3
+                      }
                       width={(windowWidth * 65) / 100}
                     />
                   </View>
@@ -277,6 +314,8 @@ const Jelajah = ({navigation}) => {
                         style={[
                           kategoriparam == isclicked
                             ? styles.activebox
+                            : colorScheme === 'dark'
+                            ? styles.inactiveboxD
                             : styles?.inactivebox,
                         ]}>
                         <View>
@@ -291,6 +330,8 @@ const Jelajah = ({navigation}) => {
                           style={[
                             kategoriparam == isclicked
                               ? ms.fzBC(13, '650', colors.white)
+                              : colorScheme === 'dark'
+                              ? ms.fzBC(13, '650', colors.white)
                               : ms.fzBC(13, '650', colors.greyDark),
                           ]}>
                           {kategoriparam}
@@ -304,7 +345,12 @@ const Jelajah = ({navigation}) => {
                 <View style={[styles.cardMedia]}>
                   <View style={[ms.row, ms.ai('flex-end'), ms.mgB(15)]}>
                     <Text
-                      style={[ms.fzBC(18, '700', colors.black), ms.pdH(20)]}>
+                      style={[
+                        colorScheme === 'dark'
+                          ? ms.fzBC(18, '700', colors.white)
+                          : ms.fzBC(18, '700', colors.black),
+                        ms.pdH(20),
+                      ]}>
                       Media
                     </Text>
                     <View style={[ms.col]}>
@@ -313,13 +359,20 @@ const Jelajah = ({navigation}) => {
                         onPress={() => {
                           navigation.navigate('DaftarMedia');
                         }}>
-                        <Text style={[ms.fzBC(12, '400', colors.grey)]}>
+                        <Text
+                          style={[
+                            colorScheme === 'dark'
+                              ? ms.fzBC(12, '400', colors.white)
+                              : ms.fzBC(12, '400', colors.grey),
+                          ]}>
                           Lihat Semua
                         </Text>
                       </TouchableOpacity>
                       <Gap
                         height={2}
-                        backgroundColor={colors.grey3}
+                        backgroundColor={
+                          colorScheme === 'dark' ? colors.white : colors.grey3
+                        }
                         width={(windowWidth * 70) / 100}
                       />
                     </View>
@@ -333,6 +386,7 @@ const Jelajah = ({navigation}) => {
                         <Media
                           key={index}
                           med={media}
+                          theme={colorScheme}
                           onPress={() => {
                             onClickMedia(media);
                             dispatch({type: 'SET_MED', value: media});
@@ -349,65 +403,86 @@ const Jelajah = ({navigation}) => {
         ) : (
           <View>
             {isLoadingScreen ? (
-              <ActivityIndicator color={colors.black} style={{margin: 5}} />
+              <ActivityIndicator
+                color={colorScheme === 'dark' ? colors.white : colors.black}
+                style={{margin: 5}}
+              />
             ) : (
               <View style={[]}>
                 {searchValue ? (
                   <View>
-                {initialGet?.map((search, index) => {
-                  return (
-                    <SearchList
-                      key={index}
-                      search={search}
-                      onPress={() => {
-                        saveHistory(makeHistory(search));
-                        dispatch({type: 'SET_SEARCH', value: search});
-                        navigation.navigate('DetailSearch');
-                      }}
-                    />
-                  );
-                })}
+                    {initialGet?.map((search, index) => {
+                      return (
+                        <SearchList
+                          key={index}
+                          search={search}
+                          theme={colorScheme}
+                          onPress={() => {
+                            saveHistory(makeHistory(search));
+                            dispatch({type: 'SET_SEARCH', value: search});
+                            navigation.navigate('DetailSearch');
+                          }}
+                        />
+                      );
+                    })}
 
-                <View
-                  style={[
-                    ms.width(windowWidth * 100) / 100,
-                    ms.containerPage,
-                    ms.aiJc('center'),
-                  ]}>
-                  {!isCompleted ? (
-                    <TouchableOpacity
-                      onPress={loadMore}
-                      activeOpacity={0.9}
-                      style={[styles.loadMoreActive]}>
-                      <Text style={[ms.fzBC(12, '500', colors.white)]}>
-                        Tampilkan lebih banyak
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={loadMore}
-                      activeOpacity={0.9}
-                      style={[styles.loadMoreDeactive]}>
-                      <Text style={[ms.fzBC(12, '700', colors.white)]}>
-                        Tampilkan lebih banyak
-                      </Text>
-                      {/* {isLoadingScreen ? (
+                    <View
+                      style={[
+                        colorScheme === 'dark'
+                          ? styles.containerPageD
+                          : ms.containerPage,
+                        ms.width(windowWidth * 100) / 100,
+
+                        ms.aiJc('center'),
+                      ]}>
+                      {!isCompleted ? (
+                        <TouchableOpacity
+                          onPress={loadMore}
+                          activeOpacity={0.9}
+                          style={[styles.loadMoreActive]}>
+                          <Text style={[ms.fzBC(12, '500', colors.white)]}>
+                            Tampilkan lebih banyak
+                          </Text>
+                        </TouchableOpacity>
+                      ) : (
+                        <TouchableOpacity
+                          onPress={loadMore}
+                          activeOpacity={0.9}
+                          style={[
+                            colorScheme === 'dark'
+                              ? styles.loadMoreDeactiveD
+                              : styles.loadMoreDeactive,
+                          ]}>
+                          <Text style={[ms.fzBC(12, '700', colors.white)]}>
+                            Tampilkan lebih banyak
+                          </Text>
+                          {/* {isLoadingScreen ? (
                         <ActivityIndicator
                           color={colors.white}
                           style={{marginLeft: 5}}
                         />
                       ) : null} */}
-                    </TouchableOpacity>
-                  )}
-                </View>
+                        </TouchableOpacity>
+                      )}
+                    </View>
                   </View>
                 ) : (
-                  <View style={[styles.nonews]}>
-                    <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center')]}>Maaf, hasil pencarian tidak ditemukan. Silahkan coba kata kunci yang berbeda.</Text>
+                  <View
+                    style={[
+                      colorScheme === 'dark' ? styles.nonewsD : styles.nonews,
+                    ]}>
+                    <Text
+                      style={[
+                        colorScheme === 'dark' ?
+                        ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black),
+                        ms.txA('center'),
+                      ]}>
+                      Maaf, hasil pencarian tidak ditemukan. Silahkan coba kata
+                      kunci yang berbeda.
+                    </Text>
                   </View>
                 )}
                 {/* add condition if there's no news */}
-                
               </View>
             )}
           </View>
@@ -430,10 +505,28 @@ const styles = StyleSheet.create({
     height: (windowHeight * 5) / 100,
     width: (windowWidth * 90) / 100,
   },
+  cardInputD: {
+    marginHorizontal: 20,
+    marginVertical: 20,
+    backgroundColor: colors.grey_dark,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: (windowHeight * 5) / 100,
+    width: (windowWidth * 90) / 100,
+  },
   textInput: {
     fontSize: 13,
     fontWeight: '400',
     color: colors.black,
+    padding: 5,
+    alignItems: 'center',
+    width: (windowWidth * 75) / 100,
+  },
+  textInputD: {
+    fontSize: 13,
+    fontWeight: '400',
+    color: colors.white,
     padding: 5,
     alignItems: 'center',
     width: (windowWidth * 75) / 100,
@@ -456,6 +549,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
     backgroundColor: colors.lightblue,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
+  inactiveboxD: {
+    width: (windowWidth * 39) / 100,
+    height: (windowHeight * 8) / 100,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: colors.grey_dark,
     borderRadius: 10,
     justifyContent: 'center',
   },
@@ -489,6 +592,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loadMoreDeactiveD: {
+    width: (windowWidth * 50) / 100,
+    height: (windowHeight * 4) / 100,
+    // padding: 10,
+    marginVertical: 15,
+    borderRadius: 8,
+    backgroundColor: colors.grey_dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   nonews: {
     height: (windowHeight * 85) / 100,
     fontSize: 12,
@@ -496,6 +609,18 @@ const styles = StyleSheet.create({
     color: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  nonewsD: {
+    height: (windowHeight * 85) / 100,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
   },
 });
 

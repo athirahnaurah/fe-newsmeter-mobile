@@ -8,3 +8,4 @@ export const WARNA_WARNING = '#DAA520';
 
 export const windowWidth = Dimensions.get('window').width;
 export const windowHeight = Dimensions.get('window').height;
+export const isLandscape = windowWidth > windowHeight;

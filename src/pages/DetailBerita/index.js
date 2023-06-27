@@ -9,10 +9,12 @@ import {
   useWindowDimensions,
   Button,
   Alert,
+  useColorScheme
 } from 'react-native';
 import React, { useCallback, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Icon2 from 'react-native-vector-icons/Entypo';
 import ms from '../../utils/ms';
 import {colors} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
@@ -38,6 +40,11 @@ const DetailBerita = ({navigation}) => {
   //     />
   //   ) 
   // } 
+  const colorScheme = useColorScheme();
+  useEffect(() => {
+    console.log(colorScheme);
+  }, [colorScheme]);
+
   const [htmlData, setHtmlData] = useState('');
   const {news} = useSelector(state => state.newsReducer);
   const {width : contentWidth} = ms.width((windowWidth * 90) / 100);
@@ -47,6 +54,9 @@ const DetailBerita = ({navigation}) => {
   }
   const renderers = {
     img: removeImg,
+  }
+  const baseStyle = {
+    color : colorScheme === 'dark' ? colors.white : colors.grey_dark
   }
   const source = {
     html: news?.content
@@ -66,12 +76,12 @@ const DetailBerita = ({navigation}) => {
       }
     }, [url]);
   
-    return <TouchableOpacity onPress={handlePress}><Text style={[ms.fzBC(12, '400', colors.blue), ms.width((windowWidth * 75) / 100),]}> {news?.original}</Text></TouchableOpacity>;
+    return <TouchableOpacity onPress={handlePress}><Text style={[colorScheme === 'dark' ? ms.fzBC(12, '500', colors.blue_dark) : ms.fzBC(12, '500', colors.blue), ms.width((windowWidth * 75) / 100),]}> {news?.original}</Text></TouchableOpacity>;
   };
 
   return (
 
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView style={[colorScheme === 'dark' ? styles.containerPageD : ms.containerPage]}>
       <ScrollView>
         {/* Header */}
         <View style={styles.container}>
@@ -105,20 +115,32 @@ const DetailBerita = ({navigation}) => {
               ms.mgT(12),
               ms.pdH(20),
             ]}>
-            <Text style={[ms.fzBCLh(18, '700', colors.black, 19)]}>
+            <Text style={[
+              colorScheme === 'dark' ?
+              ms.fzBCLh(18, '700', colors.white, 19) :
+              ms.fzBCLh(18, '700', colors.black, 19)]}>
               {news?.title}
             </Text>
           </View>
 
           <View style={[ms.row, ms.mgT(10)]}>
               <View style={[ms.mgL(20),]}>
-                <Text style={[ms.fzBC(12, '500', colors.blue)]}>
+                <Text style={[
+                  colorScheme === 'dark' ?
+                  ms.fzBC(12, '500', colors.blue_dark) : ms.fzBC(12, '500', colors.blue)]}>
                   {news?.kategori}
                 </Text>
               </View>
             <View style={[ms.width((windowWidth * 50) / 100), ms.row]}>
-                <Image source={Point} style={[ms.mgT(7), ms.mgH(10)]} />
-                <Text style={[ms.fzBC(12, '400', colors.black)]}>
+            <Icon2
+                  name='dot-single'
+                  size={12}
+                  color={colorScheme === 'dark' ? colors.white : colors.black}
+                  style={[ ms.mgH(3)]}
+                />
+                <Text style={[
+                  colorScheme === 'dark' ?
+                  ms.fzBC(12, '400', colors.white) : ms.fzBC(12, '400', colors.black)]}>
                   {news?.date}
                 </Text>
               </View>
@@ -152,8 +174,7 @@ const DetailBerita = ({navigation}) => {
           )}
 
           <View style={[ms.width((windowWidth * 90) / 100), ms.jc('center')]}>
-            <RenderHTML source={source} contentWidth={contentWidth} renderers={renderers} />
-        
+            <RenderHTML source={source} contentWidth={contentWidth} renderers={renderers} baseStyle={baseStyle} />
           </View>
         </View>
 
@@ -168,7 +189,9 @@ const DetailBerita = ({navigation}) => {
             ms.height((windowHeight * 10) / 100),
 
           ]}>
-          <Text style={[ms.fzBC(12, '400', colors.black)]}>Sumber : </Text>
+          <Text style={[
+            colorScheme === 'dark' ?
+            ms.fzBC(12, '500', colors.white) : ms.fzBC(12, '500', colors.grey_dark)]}>Sumber : </Text>
           <OpenURLButton url={news?.original}>link</OpenURLButton>
         </View>
       </ScrollView>
@@ -197,4 +220,8 @@ const styles = StyleSheet.create({
   back: {
     width: (windowWidth * 35) / 100,
   },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  }
 });

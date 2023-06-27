@@ -1,36 +1,51 @@
-import {SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, RefreshControl, ActivityIndicator} from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  RefreshControl,
+  ActivityIndicator,
+  useColorScheme,
+} from 'react-native';
 import React from 'react';
-import { Logo } from '../../assets';
+import {Logo} from '../../assets';
 import ms from '../../utils/ms';
-import { colors } from '../../utils';
+import {colors} from '../../utils';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { windowHeight, windowWidth } from '../../utils/ms/constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { slice } from 'lodash';
-import { useCallback } from 'react';
-import { useEffect } from 'react';
-import { getMedia } from '../../redux/action';
-import { ListMedia, MediaList } from '../../components';
+import {windowHeight, windowWidth} from '../../utils/ms/constant';
+import {useDispatch, useSelector} from 'react-redux';
+import {useState} from 'react';
+import {slice} from 'lodash';
+import {useCallback} from 'react';
+import {useEffect} from 'react';
+import {getMedia} from '../../redux/action';
+import {ListMedia, MediaList} from '../../components';
 
 const DaftarMedia = ({navigation}) => {
-    const dispatch = useDispatch();
-    const {medList, med} = useSelector(state => state.mediaReducer);
-    const {isLoadingScreen} = useSelector(state => state.globalReducer);
-    const [refreshing, setRefreshing] = useState(false);
-    const [i, setI] = useState(15);
-    const initialGet = slice(medList, 0, i);
-    const [isCompleted, setIsCompleted] = useState(false);
-    
-    // console?.log('med: ', media);
+  const colorScheme = useColorScheme();
+  useEffect(() => {
+    console.log(colorScheme);
+  }, [colorScheme]);
+  const dispatch = useDispatch();
+  const {medList, med} = useSelector(state => state.mediaReducer);
+  const {isLoadingScreen} = useSelector(state => state.globalReducer);
+  const [refreshing, setRefreshing] = useState(false);
+  const [i, setI] = useState(15);
+  const initialGet = slice(medList, 0, i);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-    const data = [];
+  // console?.log('med: ', media);
 
-    const mediamap = (dt) => {
-      for(let i; i < dt.length; i++){
-        return dt[i]
-      }
+  const data = [];
+
+  const mediamap = dt => {
+    for (let i; i < dt.length; i++) {
+      return dt[i];
     }
+  };
 
   const init = async () => {
     // await dispatch(getMedia());
@@ -61,14 +76,12 @@ const DaftarMedia = ({navigation}) => {
       setIsCompleted(false);
     }
   };
-  useEffect(() => {
-    if (navigation.isFocused) {
-      init();
-    }
-  }, [navigation]);
 
-    return (
-    <SafeAreaView style={[ms.containerPage]}>
+  return (
+    <SafeAreaView
+      style={[
+        colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
+      ]}>
       {/* Header */}
       <View style={styles.container}>
         <TouchableOpacity
@@ -90,7 +103,12 @@ const DaftarMedia = ({navigation}) => {
       </View>
 
       <View style={styles.title}>
-        <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>
+        <Text
+          style={[
+            colorScheme === 'dark'
+              ? ms.fzBCLh(18, '900', colors.white, 22)
+              : ms.fzBCLh(18, '900', colors.black, 22),
+          ]}>
           Media
         </Text>
       </View>
@@ -100,59 +118,68 @@ const DaftarMedia = ({navigation}) => {
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-          
         {isLoadingScreen ? (
-          <ActivityIndicator color={colors.black} style={{margin: 5}} />
+          <ActivityIndicator
+            color={colorScheme === 'dark' ? colors.white : colors.black}
+            style={{margin: 5}}
+          />
         ) : (
           <View style={[]}>
             {/* <ListMedia /> */}
-          {initialGet.map((med, index) => 
-            <ListMedia 
+            {initialGet.map((med, index) => (
+              <ListMedia
                 key={index}
                 med={med}
+                theme={colorScheme}
                 // width={'60%'}
                 // height={65}
                 onPress={() => {
                   dispatch({type: 'SET_MED', value: med});
                   navigation.navigate('BeritaByMedia');
                 }}
-            />
-          )}
-          <View
-            style={[
-              ms.width(windowWidth * 100) / 100,
-              ms.containerPage,
-              ms.aiJc('center'),
-              ms.mgT(20),
-              ms.mgB(10)
-            ]}>
-            {isCompleted ? (
-              <TouchableOpacity
-                onPress={loadMore}
-                activeOpacity={0.9}
-                style={[styles.loadMoreDeactive]}>
-                <Text style={[ms.fzBC(12, '500', colors.white)]}>
-                  Tampilkan lebih banyak
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity
-                onPress={loadMore}
-                activeOpacity={0.9}
-                style={[styles.loadMoreActive]}>
-                <Text style={[ms.fzBC(12, '700', colors.white)]}>
-                  Tampilkan lebih banyak
-                </Text>
-                {isLoadingScreen ? (
-                  <ActivityIndicator
-                    color={colors.white}
-                    style={{marginLeft: 5}}
-                  />
-                ) : null}
-              </TouchableOpacity>
-            )}
+              />
+            ))}
+            <View
+              style={[
+                colorScheme === 'dark'
+                  ? styles.containerPageD
+                  : ms.containerPage,
+                ms.width(windowWidth * 100) / 100,
+                ms.aiJc('center'),
+                ms.mgT(20),
+                ms.mgB(10),
+              ]}>
+              {isCompleted ? (
+                <TouchableOpacity
+                  onPress={loadMore}
+                  activeOpacity={0.9}
+                  style={[
+                    colorScheme === 'dark'
+                      ? styles.loadMoreDeactiveD
+                      : styles.loadMoreDeactive,
+                  ]}>
+                  <Text style={[ms.fzBC(12, '500', colors.white)]}>
+                    Tampilkan lebih banyak
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={loadMore}
+                  activeOpacity={0.9}
+                  style={[styles.loadMoreActive]}>
+                  <Text style={[ms.fzBC(12, '700', colors.white)]}>
+                    Tampilkan lebih banyak
+                  </Text>
+                  {isLoadingScreen ? (
+                    <ActivityIndicator
+                      color={colors.white}
+                      style={{marginLeft: 5}}
+                    />
+                  ) : null}
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -162,34 +189,34 @@ const DaftarMedia = ({navigation}) => {
 export default DaftarMedia;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#346CB3',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: (windowWidth * 100) / 100,
-        height: (windowHeight * 6) / 100,
-        flexDirection: 'row',
-        justifyContent: 'flex-start'
-      },
-      back: {
-        width: (windowWidth * 35) / 100,
-      },
-      background: {
-        justifyContent: 'center',
-        paddingVertical: 5
-        // width: (windowWidth * 70) / 100,
-        // height: (windowHeight * 6) / 100,
-      },
-      logo: {
-        height: (windowHeight * 6) / 100,
-        width: (windowWidth * 35) / 100,
-      },
-      title: {
-        height: (windowHeight * 3) / 100,
-        marginVertical: 10,
-        marginLeft: 20,
-      },
-      
+  container: {
+    backgroundColor: '#346CB3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: (windowWidth * 100) / 100,
+    height: (windowHeight * 6) / 100,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  back: {
+    width: (windowWidth * 35) / 100,
+  },
+  background: {
+    justifyContent: 'center',
+    paddingVertical: 5,
+    // width: (windowWidth * 70) / 100,
+    // height: (windowHeight * 6) / 100,
+  },
+  logo: {
+    height: (windowHeight * 6) / 100,
+    width: (windowWidth * 35) / 100,
+  },
+  title: {
+    height: (windowHeight * 3) / 100,
+    marginVertical: 10,
+    marginLeft: 20,
+  },
+
   loadMoreActive: {
     width: (windowWidth * 50) / 100,
     height: (windowHeight * 4) / 100,
@@ -210,6 +237,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loadMoreDeactiveD: {
+    width: (windowWidth * 50) / 100,
+    height: (windowHeight * 4) / 100,
+    // padding: 10,
+    marginVertical: 15,
+    borderRadius: 8,
+    backgroundColor: colors.grey_dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   nonews: {
     height: (windowHeight * 85) / 100,
     fontSize: 12,
@@ -217,10 +254,17 @@ const styles = StyleSheet.create({
     color: colors.black,
     alignItems: 'center',
     justifyContent: 'center',
-    // position: 'absolute',
-    // top: 0,
-    // right: 0,
-    // left: 0,
-    // bottom: 0
+  },
+  nonewsD: {
+    height: (windowHeight * 85) / 100,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
   },
 });

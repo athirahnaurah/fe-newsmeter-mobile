@@ -18,5 +18,11 @@ export const colors = {
   danger: '#bb2124',
   blueLight: '#F4F6FA',
   green: '#00CD48',
-  yellow: '#FFA80C'
+  yellow: '#FFA80C',
+
+  // dark theme :
+  blue_dark : '#3BBBFF',
+  grey_dark : '#575555',
+  black_dark : '#131313',
+  red_dark : '#EF5E5E'
 };

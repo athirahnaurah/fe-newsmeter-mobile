@@ -5,7 +5,7 @@ import { windowHeight, windowWidth } from '../../../utils/ms/constant'
 import { CNN, IconEkonomi } from '../../../assets'
 import { colors } from '../../../utils'
 
-const Media = ({med, onPress}) => {
+const Media = ({theme, med, onPress}) => {
   // console.log('media', med);
 
   imageSelect = med => {
@@ -40,7 +40,7 @@ const Media = ({med, onPress}) => {
             {/* <Image source={med?.img}  style={[ms.width(50), ms.height(50)]}/> */}
         </View>
         <View style={[ms.width(windowWidth*15)/100, ms.pdT(10)]}>
-            <Text style={[ms.fzBC(12, '400', colors.black)]}>{med}</Text>
+            <Text style={[theme === 'dark' ? ms.fzBC(12, '400', colors.white) : ms.fzBC(12, '400', colors.black)]}>{med}</Text>
         </View>
       </TouchableOpacity>
     </View>

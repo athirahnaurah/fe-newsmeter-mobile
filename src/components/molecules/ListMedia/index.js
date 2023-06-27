@@ -6,7 +6,7 @@ import ms from '../../../utils/ms';
 import { colors } from '../../../utils';
 import { Gap } from '../../atoms';
 
-const ListMedia = ({med, onPress, navigation}) => {
+const ListMedia = ({theme, med, onPress, navigation}) => {
   const dispatch = useDispatch();
   const {mediaList} = useSelector(state => state.mediaReducer);
   const [datas, setDatas] = useState();
@@ -78,7 +78,7 @@ const ListMedia = ({med, onPress, navigation}) => {
       'jpnn.com': require('../../../assets/icon/media/jpnn.png'),  
       'jurnas.com': require('../../../assets/icon/media/jurnas.png'),  
       'katadata.co.id': require('../../../assets/icon/media/katadata.png'),  
-      'lokadata.co': require('../../../assets/icon/media/lokadata.png'),  
+      'lokadata.id': require('../../../assets/icon/media/lokadata.png'),  
       'kabartangsel.com': require('../../../assets/icon/media/kabartangsel.png'),  
       'kompas.com': require('../../../assets/icon/media/kompas.png'),  
       'kontan.co.id': require('../../../assets/icon/media/kontan.png'),  
@@ -133,14 +133,14 @@ const ListMedia = ({med, onPress, navigation}) => {
   };
 
   return (
-    <View style={[ms.containerPage, ms.mgH(20), ms.mgT(12)]}>
+    <View style={[theme === 'dark' ? styles.containerPageD : ms.containerPage, ms.mgH(20), ms.mgT(12)]}>
       <TouchableOpacity onPress={onPress} style={[ms.row, ms.ai('center'),]}>
         <Image source={imageSelect(med)} style={[ms.width(24), ms.height(24), ms.mgR(10)]}/>
-        <Text style={[ms.fzBC(14, '400', colors.black)]}>{med}</Text>
+        <Text style={[theme === 'dark' ? ms.fzBC(14, '400', colors.white) : ms.fzBC(14, '400', colors.black)]}>{med}</Text>
       </TouchableOpacity>
 
       <View style={[ms.mgH(5), ms.pdT(15)]}>
-          <Gap height={1} backgroundColor={colors.grey3}/>
+          <Gap height={1} backgroundColor={theme === 'dark' ? colors.white : colors.grey3}/>
         </View>
     </View>
   );
@@ -148,4 +148,9 @@ const ListMedia = ({med, onPress, navigation}) => {
 
 export default ListMedia;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  }
+});

@@ -12,7 +12,7 @@ export const registrasiAction = (dataRegistrasi, onCallback = res => {}, onError
     console.log('data registrasi:', dataRegistrasi)
     dispatch(setLoadingScreen(true));
     // showToasty('...Memproses')
-    axios.post(`${ApiConfigDeploy}register`, dataRegistrasi)
+    axios.post(`${ApiConfigDeploy}/register`, dataRegistrasi)
     .then((res) => {
         console.log('response:', res);
         // dispatch({ type: 'SET_REGISTRATION_ON_SUCCESS', value: true});
@@ -26,9 +26,16 @@ export const registrasiAction = (dataRegistrasi, onCallback = res => {}, onError
     .catch((err) => {
         console.log('Error:', err.message)
         // showMessage('Registrasi Gagal', 'danger')
-        Alert.alert(
-            'Error', 'Email sudah terdaftar, gunakan email lain atau silahkan login.'
-        );
+        if(err.response.status === 404){
+            Alert.alert(
+                'Error', 'Email sudah terdaftar, gunakan email lain atau silahkan login.'
+            );
+        } else {
+            Alert.alert(
+                'Error', 'Terjadi kesalahan server.'
+            );
+        }
+        
     })
     .finally(() => {
         dispatch(setLoadingScreen(false));

@@ -8,8 +8,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  useColorScheme
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ms from '../../utils/ms';
 import {colors, showToast, showToasty} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
@@ -29,6 +30,11 @@ import {registrasiAction} from '../../redux/action';
 // import popUpMessage from '../../utils/PopUpMessage'
 
 const Registrasi = ({navigation}) => {
+  const colorScheme = useColorScheme();
+  useEffect(() =>{
+    console.log(colorScheme);
+  }, [colorScheme])
+
   const dispatch = useDispatch();
   // const {registrationSuccess} = useSelector(state => state.globalReducer);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
@@ -99,7 +105,7 @@ const Registrasi = ({navigation}) => {
       confirmPassword: '',
     });
     
-    await dispatch(registrasiAction(dataRegistrasi));
+    // await dispatch(registrasiAction(dataRegistrasi));
 
 
    
@@ -116,7 +122,7 @@ const Registrasi = ({navigation}) => {
   // console.log('input', input)
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView style={[colorScheme === 'dark' ? styles.containerPageD : ms.containerPage]}>
       <Loader isVisible={isLoadingScreen}/>
       <ScrollView>
         
@@ -129,19 +135,23 @@ const Registrasi = ({navigation}) => {
               <View style={[ms.jc('center')]}>
                 <Text
                   style={[
-                    ms.fzBC(16, '700', colors.black),
                     ms.pdL(20),
                     ms.mgB(15),
+                    colorScheme === 'dark' ?
+                    ms.fzBC(16, '700', colors.white) :
+                    ms.fzBC(16, '700', colors.black)
                   ]}>
                   {' '}
                   Buat Akun Newsmeter
                 </Text>
 
                 <Input
+                  height={(windowHeight * 12) / 100}
                   label="Email"
                   placeholder="Masukkan email"
                   error={errors.email}
                   value={input.email}
+                  theme={colorScheme}
                   onFocus={() => {
                     onHandleError(null, 'email')
                   }}
@@ -151,10 +161,12 @@ const Registrasi = ({navigation}) => {
                 />
 
                 <Input
+                height={(windowHeight * 12) / 100}
                   label="Nama Lengkap"
                   placeholder="Masukkan nama lengkap"
                   error={errors.name}
                   value={input.name}
+                  theme={colorScheme}
                   onFocus={() => {
                     onHandleError(null, 'name')
                   }}
@@ -164,11 +176,13 @@ const Registrasi = ({navigation}) => {
                 />
 
                 <Input
+                height={(windowHeight * 12) / 100}
                   label="Kata Sandi"
                   placeholder="Masukkan kata sandi"
                   password
                   error={errors.password}
                   value={input.password}
+                  theme={colorScheme}
                   onFocus={() => {
                     onHandleError(null, 'password')
                   }}
@@ -178,11 +192,13 @@ const Registrasi = ({navigation}) => {
                 />
 
                 <Input
+                height={(windowHeight * 12) / 100}
                   label="Konfirmasi Kata Sandi"
                   placeholder="Masukkan kata sandi"
                   password
                   error={errors.confirmPassword}
                   value={input.confirmPassword}
+                  theme={colorScheme}
                   onFocus={() => {
                     onHandleError(null, 'confirmPassword')
                   }}
@@ -198,7 +214,7 @@ const Registrasi = ({navigation}) => {
               } */}
 
               {/* Button Masuk */}
-              <View style={[ms.pdH(16), ms.mgT(15)]}>
+              <View style={[ms.pdH(16), ms.mgT(15), ms.height((windowHeight * 12) / 100)]}>
                 <MainButton
                   label="Daftar"
                   width={(windowWidth * 89) / 100}
@@ -210,22 +226,28 @@ const Registrasi = ({navigation}) => {
             </View>
 
             {/* Redirect Registrasi */}
-            <View style={[ms.height((windowHeight * 7) / 100)]}>
+            <View style={[]}>
               <Gap
                 width={(windowWidth * 100) / 100}
                 height={1}
-                backgroundColor={colors.grey}
+                backgroundColor={colorScheme === 'dark' ? colors.white : colors.grey}
               />
 
-              <View style={[ms.row, ms.aiJc('center'), ms.mgT(20)]}>
-                <Text style={[ms.fzBC(11, '500', colors.grey)]}>
+              <View style={[ms.row, ms.aiJc('center'), ms.height((windowHeight * 6) / 100)]}>
+                <Text style={[
+                  colorScheme === 'dark' ?
+                  ms.fzBC(11, '500', colors.white) :
+                  ms.fzBC(11, '500', colors.grey)]}>
                   Sudah punya akun?{' '}
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Login');
                   }}>
-                  <Text style={[ms.fzBCLh(11, '500', colors.blue, 12)]}>
+                  <Text style={[
+                    colorScheme === 'dark' ?
+                    ms.fzBCLh(11, '500', colors.blue_dark, 12) :
+                    ms.fzBCLh(11, '500', colors.blue, 12)]}>
                     Login
                   </Text>
                 </TouchableOpacity>
@@ -256,4 +278,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
   },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  }
 });

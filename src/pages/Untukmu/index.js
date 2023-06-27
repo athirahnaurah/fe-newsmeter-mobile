@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   RefreshControl,
   Alert,
+  useColorScheme,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import ms from '../../utils/ms';
@@ -32,6 +33,7 @@ const Untukmu = ({navigation}) => {
   // const {recomByKategori} = useSelector(state => state.newsReducer);
   // const {newsList} = useSelector(state => state.newsReducer);
   // const {isLogin} = useSelector(state => state.globalReducer);
+  const colorScheme = useColorScheme();
 
   const dispatch = useDispatch();
   const {recomByKategori} = useSelector(state => state.newsReducer);
@@ -58,7 +60,7 @@ const Untukmu = ({navigation}) => {
         if (user !== 'undefined') {
           dispatch(getRecommendationByKategori());
           dispatch(getRecommendationByHistory());
-         } 
+        }
       }
     });
   };
@@ -124,20 +126,12 @@ const Untukmu = ({navigation}) => {
   useEffect(() => {
     if (navigation.isFocused) {
       init();
+      console.log(colorScheme);
     }
-  }, [navigation]);
-
-  // registerSaveRecommendation();
-
-  // const init = async () => {
-  //   if (isLogin) {
-  //     console.log('running recommendation');
-  //     dispatch(getRecommendationByKategori());
-  //   }
-  // };
+  }, [navigation, colorScheme]);
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView style={[colorScheme === 'dark' ? styles.containerPageD : ms.containerPage]}>
       {/* Header */}
       <View style={styles.background}>
         <Image source={Logo} />
@@ -155,8 +149,10 @@ const Untukmu = ({navigation}) => {
                 ms.width(windowWidth * 100) / 100,
                 ms.height(windowHeight * 20) / 100,
               ]}>
-              <View style={[ms.row, ms.ai('flex-end'), ms.mgB(15)]}>
-                <Text style={[ms.fzBC(16, '600', colors.black), ms.pdH(20)]}>
+              <View style={[ms.row, ms.ai('flex-end'), ms.mgB(15), ms.height(windowHeight * 5) / 100,]}>
+                <Text style={[
+                  colorScheme === 'dark' ?
+                  ms.fzBC(16, '600', colors.white) : ms.fzBC(16, '600', colors.black), ms.pdH(20)]}>
                   Minat Kategori
                 </Text>
                 <View style={[ms.col]}>
@@ -165,23 +161,25 @@ const Untukmu = ({navigation}) => {
                     onPress={() => {
                       navigation.navigate('RekomendasiByKategori');
                     }}>
-                    <Text style={[ms.fzBC(12, '400', colors.grey), ms.mgT(20)]}>
+                    <Text style={[
+                      colorScheme === 'dark' ?
+                      ms.fzBC(12, '400', colors.white) : ms.fzBC(12, '400', colors.grey), ms.mgT(20)]}>
                       Lihat Semua
                     </Text>
                   </TouchableOpacity>
                   <Gap
                     height={1}
-                    backgroundColor={colors.grey3}
+                    backgroundColor={colorScheme === 'dark' ? colors.white : colors.grey3}
                     width={(windowWidth * 60) / 100}
                   />
                 </View>
               </View>
               {isLoadingScreen ? (
-                <ActivityIndicator color={colors.black} style={{margin: 5}} />
+                <ActivityIndicator color={colorScheme === 'dark' ? colors.white : colors.black} style={{margin: 5}} />
               ) : (
                 <View>
                   {recomByKategori !== null ? (
-                    <View style={[]}>
+                    <View style={[ms.height(windowHeight * 10)/100]}>
                       {recomByKategori.length !== 0 ? (
                         <ScrollView
                           horizontal={true}
@@ -191,6 +189,7 @@ const Untukmu = ({navigation}) => {
                               <KategoriRekomendasi
                                 key={index}
                                 news={news}
+                                theme={colorScheme}
                                 onPress={() => {
                                   saveHistory(makeHistory(news));
                                   dispatch({type: 'SET_NEWS', value: news});
@@ -209,7 +208,8 @@ const Untukmu = ({navigation}) => {
                           ]}>
                           <Text
                             style={[
-                              ms.fzBC(13, '400', colors.black),
+                              colorScheme === 'dark' ? 
+                              ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black),
                               ms.txA('center'),
                               ms.width((windowWidth * 50) / 100),
                             ]}>
@@ -219,7 +219,7 @@ const Untukmu = ({navigation}) => {
                         </View>
                       )}
                     </View>
-                  ) : ( 
+                  ) : (
                     // ketika tidak tidak ada berita pd minat kategori
                     <View
                       style={[
@@ -228,7 +228,8 @@ const Untukmu = ({navigation}) => {
                       ]}>
                       <Text
                         style={[
-                          ms.fzBC(13, '400', colors.black),
+                          colorScheme === 'dark' ?
+                          ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black),
                           ms.txA('center'),
                           ms.width((windowWidth * 50) / 100),
                         ]}>
@@ -241,23 +242,23 @@ const Untukmu = ({navigation}) => {
               )}
             </View>
 
-            <View style={[ms.mgT(40), ms.mgH(20)]}>
+            <View style={[ms.pdT(45), ms.mgH(20), ms.height(windowHeight * 5)/100]}>
               <Gap
                 width={(windowWidth * 90) / 100}
                 height={2}
-                backgroundColor={colors.grey3}
+                backgroundColor={colorScheme === 'dark' ? colors.white : colors.grey3}
               />
             </View>
 
             {/* Rekomendasi By History */}
             <View>
               <View style={[ms.mgH(20), ms.mgT(10)]}>
-                <Text style={[ms.fzBC(17, '700', colors.black)]}>
+                <Text style={[colorScheme === 'dark' ? ms.fzBC(17, '700', colors.white) : ms.fzBC(17, '700', colors.black)]}>
                   Berita Untukmu
                 </Text>
               </View>
               {isLoadingScreen ? (
-                <ActivityIndicator color={colors.black} style={{margin: 5}} />
+                <ActivityIndicator color={colorScheme === 'dark' ? colors.white : colors.black} style={{margin: 5}} />
               ) : (
                 <View>
                   {recomByHistory !== null ? (
@@ -270,6 +271,7 @@ const Untukmu = ({navigation}) => {
                                 <Rekomendasi
                                   key={index}
                                   rekom={rekom}
+                                  theme={colorScheme}
                                   onPress={() => {
                                     saveHistory(makeHistory(rekom));
                                     dispatch({type: 'SET_NEWS', value: rekom});
@@ -283,8 +285,9 @@ const Untukmu = ({navigation}) => {
                           {/* Load more button */}
                           <View
                             style={[
+                              colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
                               ms.width(windowWidth * 100) / 100,
-                              ms.containerPage,
+                              
                               ms.aiJc('center'),
                               ms.mgT(22),
                               ms.mgB(10),
@@ -293,7 +296,7 @@ const Untukmu = ({navigation}) => {
                               <TouchableOpacity
                                 onPress={loadMore}
                                 activeOpacity={0.9}
-                                style={[styles.loadMoreDeactive]}>
+                                style={[colorScheme === 'dark' ? styles.loadMoreDeactiveD : styles.loadMoreDeactive]}>
                                 <Text
                                   style={[ms.fzBC(12, '500', colors.white)]}>
                                   Tampilkan lebih banyak
@@ -326,7 +329,8 @@ const Untukmu = ({navigation}) => {
                           ]}>
                           <Text
                             style={[
-                              ms.fzBC(13, '400', colors.black),
+                              colorScheme === 'dark' ?
+                              ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black),
                               ms.txA('center'),
                               ms.width((windowWidth * 50) / 100),
                             ]}>
@@ -343,7 +347,8 @@ const Untukmu = ({navigation}) => {
                       ]}>
                       <Text
                         style={[
-                          ms.fzBC(13, '400', colors.black),
+                          colorScheme === 'dark' ?
+                          ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black),
                           ms.txA('center'),
                           ms.width((windowWidth * 50) / 100),
                         ]}>
@@ -358,7 +363,7 @@ const Untukmu = ({navigation}) => {
         ) : (
           // ketika user belum melakukan login
           <View style={[styles.nonews]}>
-            <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center')]}>
+            <Text style={[colorScheme === 'dark' ? ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black), ms.txA('center')]}>
               Tidak ada rekomendasi berita untukmu
             </Text>
             <TouchableOpacity
@@ -366,7 +371,7 @@ const Untukmu = ({navigation}) => {
               onPress={() => {
                 navigation.navigate('Login');
               }}>
-              <Text style={[ms.fzBC(13, '400', colors.blue), ms.txA('center')]}>
+              <Text style={[colorScheme === 'dark' ? ms.fzBC(13, '400', colors.blue_dark) : ms.fzBC(13, '400', colors.blue), ms.txA('center')]}>
                 Masuk
               </Text>
             </TouchableOpacity>
@@ -388,7 +393,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#346CB3',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 5
+    paddingVertical: 5,
     // width: (windowWidth * 100) / 100,
     // height: (windowHeight * 6) / 100,
   },
@@ -397,6 +402,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '500',
     color: colors.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nonewsD: {
+    height: (windowHeight * 85) / 100,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -420,4 +433,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loadMoreDeactiveD: {
+    width: (windowWidth * 50) / 100,
+    height: (windowHeight * 4) / 100,
+    // padding: 10,
+    marginVertical: 15,
+    borderRadius: 8,
+    backgroundColor: colors.grey_dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  }
 });

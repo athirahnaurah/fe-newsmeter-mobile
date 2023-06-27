@@ -5,15 +5,15 @@ import {colors} from '../../../utils';
 import {windowHeight, windowWidth} from '../../../utils/ms/constant';
 import {Gap} from '../../atoms';
 import {ImageDefault, Point} from '../../../assets';
+import Icon from 'react-native-vector-icons/Entypo';
 
-const KategoriRekomendasi = ({news, onPress}) => {
+const KategoriRekomendasi = ({theme, news, onPress}) => {
   return (
     <View
       style={[
         ms.width(windowWidth * 100) / 100,
-        ms.height(windowHeight * 30) / 100,
-
-        styles.card,
+        // ms.height(windowHeight * 40) / 100,
+        theme === 'dark' ? styles.cardD : styles.card,
       ]}>
       <TouchableOpacity style={[ms.jc('center')]} onPress={onPress}>
         {news?.image !== null ? (
@@ -45,25 +45,52 @@ const KategoriRekomendasi = ({news, onPress}) => {
             ms.pdT(10),
             ms.jc('center'),
           ]}>
-          <Text numberOfLines={2} style={[ms.fzBC(12, '700', colors.black)]}>
+          <Text
+            numberOfLines={2}
+            style={[
+              theme === 'dark'
+                ? ms.fzBC(12, '700', colors.white)
+                : ms.fzBC(12, '700', colors.black),
+            ]}>
             {news?.title}
           </Text>
         </View>
         <View style={[ms.pdT(2)]}>
-          <Text style={[ms.fzBC(10, '400', colors.black)]}>{news?.media}</Text>
+          <Text
+            style={[
+              theme === 'dark'
+                ? ms.fzBC(10, '400', colors.white)
+                : ms.fzBC(10, '400', colors.black),
+            ]}>
+            {news?.media}
+          </Text>
         </View>
         <View style={[ms.row, ms.mgT(3)]}>
           <View style={[ms.mgL()]}>
-            <Text style={[ms.fzBC(11, '500', colors.blue)]}>
+            <Text
+              style={[
+                theme === 'dark'
+                  ? ms.fzBC(11, '500', colors.blue_dark)
+                  : ms.fzBC(11, '500', colors.blue),
+              ]}>
               {news?.kategori}
             </Text>
           </View>
           <View style={[ms.width((windowWidth * 30) / 100), ms.row]}>
-            <Image
-              source={Point}
-              style={[ms.width(2.5), ms.height(2.5), ms.mgT(6), ms.mgH(5)]}
+            <Icon
+              name="dot-single"
+              size={12}
+              color={theme === 'dark' ? colors.white : colors.black}
+              style={[ms.mgH(3)]}
             />
-            <Text style={[ms.fzBC(11, '400', colors.black)]}>{news?.date}</Text>
+            <Text
+              style={[
+                theme === 'dark'
+                  ? ms.fzBC(11, '400', colors.white)
+                  : ms.fzBC(11, '400', colors.black),
+              ]}>
+              {news?.date}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -81,6 +108,22 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 5,
     shadowColor: colors.black,
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 10,
+    elevation: 3,
+    margin: 5,
+  },
+  cardD: {
+    // marginBottom: 20,
+    marginLeft: 20,
+    padding: 5,
+    backgroundColor: colors.grey_dark,
+    borderRadius: 5,
+    shadowColor: colors.grey3,
     shadowOffset: {
       width: 0,
       height: 8,

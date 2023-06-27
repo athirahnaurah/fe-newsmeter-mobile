@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from 'react-native';
 import React from 'react';
 import {Profile} from '../../assets';
@@ -22,6 +23,8 @@ import {setLogin} from '../../redux/action';
 import {Linking} from 'react-native';
 
 const Profil = ({navigation}) => {
+  const colorScheme = useColorScheme();
+
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.globalReducer);
   const {isLogin} = useSelector(state => state.globalReducer);
@@ -37,43 +40,11 @@ const Profil = ({navigation}) => {
       if (resAuthUser?.data.email) {
         dispatch(getUser(navigation));
       }
-      // if (user == 'undefined') {
-      //   Alert.alert(
-      //     'Sesi Berakhir',
-      //     'Sesi telah berakhir, silakan lakukan login kembali.',
-      //   );
-      //   AsyncStorage.clear();
-      //   dispatch({type: 'SET_USER', value: null});
-      //   dispatch({type: 'SET_AUTH_USER', value: null});
-      //   dispatch({type: 'SET_TOKEN', value: null});
-      //   dispatch({type: 'SET_PREFERENCE', value: null});
-      //   dispatch({type: 'SET_NEWSLIST', value: null});
-      //   dispatch({type: 'SET_NEWS', value: null});
-      //   dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
-      //   dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
-      //   dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
-      //   dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
-      //   dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
-      //   dispatch({type: 'SET_SEARCH', value: null});
-      //   dispatch({type: 'SET_MEDLIST', value: null});
-      //   dispatch({type: 'SET_MED', value: null});
-      //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
-      //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
-      //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
-      // }
     });
-    // getData('authUser').then(resAuthUser => {
-    //   if (resAuthUser?.data.email) {
-    //     getData('token').then(resAuth => {
-    //       dispatch(getUser(resAuthUser?.data.email, resAuth));
-    //     });
-    //   }
-    // });
   };
 
   const onLogout = async () => {
     AsyncStorage.clear();
-    // navigation.navigate('Splash')
     navigation.reset({index: 0, routes: [{name: 'Splash'}]});
     dispatch({type: 'SET_USER', value: null});
     dispatch({type: 'SET_AUTH_USER', value: null});
@@ -96,26 +67,20 @@ const Profil = ({navigation}) => {
     getData('authUser').then(resAuthUser => {
       console.log('user : ', resAuthUser);
     });
-    // await BackgroundService.stop();
-    // console.log('[Save Recommendation] dibatalkan',)
-    // dispatch(logoutAction(navigation));
-    // getData('authUser').then(resAuthUser => {
-    //   if(resAuthUser?.data.email){
-    //     dispatch(logoutAction(navigation));
-    //   }})
   };
-
-  // getData('authUser').then(resAuth => {
-  // });
 
   useEffect(() => {
     if (navigation.isFocused) {
       init();
+      console.log(colorScheme);
     }
-  }, [navigation]);
+  }, [navigation, colorScheme]);
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView
+      style={[
+        colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
+      ]}>
       <ScrollView>
         {isLogin ? (
           <View
@@ -126,10 +91,21 @@ const Profil = ({navigation}) => {
               ms.mgT(),
             ]}>
             <Image source={Profile} />
-            <Text style={[ms.fzBC(12, '400', colors.black), ms.mgT(10)]}>
+            <Text
+              style={[
+                colorScheme === 'dark'
+                  ? ms.fzBC(13, '400', colors.white)
+                  : ms.fzBC(13, '400', colors.black),
+                ms.mgT(10),
+              ]}>
               {user?.name}
             </Text>
-            <Text style={[ms.fzBC(10, '400', colors.black)]}>
+            <Text
+              style={[
+                colorScheme === 'dark'
+                  ? ms.fzBC(11, '400', colors.white)
+                  : ms.fzBC(11, '400', colors.black),
+              ]}>
               {user?.email}
             </Text>
           </View>
@@ -142,10 +118,23 @@ const Profil = ({navigation}) => {
               ms.mgT(),
             ]}>
             <Image source={Profile} />
-            <Text style={[ms.fzBC(12, '400', colors.black), ms.mgT(10)]}>
+            <Text
+              style={[
+                colorScheme === 'dark'
+                  ? ms.fzBC(12, '400', colors.white)
+                  : ms.fzBC(12, '400', colors.black),
+                ms.mgT(10),
+              ]}>
               -
             </Text>
-            <Text style={[ms.fzBC(10, '400', colors.black)]}>-</Text>
+            <Text
+              style={[
+                colorScheme === 'dark'
+                  ? ms.fzBC(10, '400', colors.white)
+                  : ms.fzBC(10, '400', colors.black),
+              ]}>
+              -
+            </Text>
           </View>
         )}
 
@@ -163,12 +152,14 @@ const Profil = ({navigation}) => {
             <Icon
               name="search-circle-outline"
               size={20}
-              color={colors.black}
+              color={colorScheme === 'dark' ? colors.white : colors.black}
               style={[ms.width((windowWidth * 8) / 100)]}
             />
             <Text
               style={[
-                ms.fzBC(12, '400', colors.black),
+                colorScheme === 'dark'
+                  ? ms.fzBC(12, '400', colors.white)
+                  : ms.fzBC(12, '400', colors.black),
                 ms.width((windowWidth * 78) / 100),
               ]}>
               Kunjungi Website
@@ -176,7 +167,7 @@ const Profil = ({navigation}) => {
             <Icon
               name="chevron-forward"
               size={18}
-              color={colors.black}
+              color={colorScheme === 'dark' ? colors.white : colors.black}
               style={[ms.width((windowWidth * 12) / 100), ms.pdR(20)]}
             />
           </TouchableOpacity>
@@ -190,12 +181,14 @@ const Profil = ({navigation}) => {
               <Icon
                 name="exit-outline"
                 size={20}
-                color={colors.black}
+                color={colorScheme === 'dark' ? colors.white : colors.black}
                 style={[ms.width((windowWidth * 8) / 100)]}
               />
               <Text
                 style={[
-                  ms.fzBC(12, '400', colors.black),
+                  colorScheme === 'dark'
+                    ? ms.fzBC(12, '400', colors.white)
+                    : ms.fzBC(12, '400', colors.black),
                   ms.width((windowWidth * 78) / 100),
                 ]}>
                 Keluar
@@ -203,7 +196,7 @@ const Profil = ({navigation}) => {
               <Icon
                 name="chevron-forward"
                 size={18}
-                color={colors.black}
+                color={colorScheme === 'dark' ? colors.white : colors.black}
                 style={[ms.width((windowWidth * 12) / 100), ms.pdR(20)]}
               />
             </TouchableOpacity>
@@ -216,12 +209,14 @@ const Profil = ({navigation}) => {
               <Icon
                 name="enter-outline"
                 size={20}
-                color={colors.black}
+                color={colorScheme === 'dark' ? colors.white : colors.black}
                 style={[ms.width((windowWidth * 8) / 100)]}
               />
               <Text
                 style={[
-                  ms.fzBC(12, '400', colors.black),
+                  colorScheme === 'dark'
+                    ? ms.fzBC(12, '400', colors.white)
+                    : ms.fzBC(12, '400', colors.black),
                   ms.width((windowWidth * 78) / 100),
                 ]}>
                 Masuk
@@ -229,7 +224,7 @@ const Profil = ({navigation}) => {
               <Icon
                 name="chevron-forward"
                 size={18}
-                color={colors.black}
+                color={colorScheme === 'dark' ? colors.white : colors.black}
                 style={[ms.width((windowWidth * 12) / 100), ms.pdR(20)]}
               />
             </TouchableOpacity>
@@ -242,4 +237,9 @@ const Profil = ({navigation}) => {
 
 export default Profil;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  },
+});

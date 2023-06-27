@@ -8,6 +8,7 @@ import {
   Image,
   ActivityIndicator,
   RefreshControl,
+  useColorScheme,
 } from 'react-native';
 import React, {useState} from 'react';
 import {colors, getData} from '../../utils';
@@ -31,6 +32,11 @@ import {useCallback} from 'react';
 import {slice} from 'lodash';
 
 const RekomendasiByKategori = ({navigation}) => {
+  const colorScheme = useColorScheme();
+  useEffect(() => {
+    console.log(colorScheme);
+  }, [colorScheme]);
+
   const dispatch = useDispatch();
   const {recomByKategori} = useSelector(state => state.newsReducer);
   const {isLoadingScreen, isLogin} = useSelector(state => state.globalReducer);
@@ -115,7 +121,10 @@ const RekomendasiByKategori = ({navigation}) => {
 
   // console.log('load more', loadMore)
   return (
-    <SafeAreaView style={[ms.containerPage]}>
+    <SafeAreaView
+      style={[
+        colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
+      ]}>
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
@@ -136,7 +145,12 @@ const RekomendasiByKategori = ({navigation}) => {
       </View>
       {/* Title Terbaru */}
       <View style={styles.title}>
-        <Text style={[ms.fzBCLh(18, '900', colors.black, 22)]}>
+        <Text
+          style={[
+            colorScheme === 'dark'
+              ? ms.fzBCLh(18, '900', colors.white, 22)
+              : ms.fzBCLh(18, '900', colors.black, 22),
+          ]}>
           Minat Kategori
         </Text>
       </View>
@@ -147,14 +161,15 @@ const RekomendasiByKategori = ({navigation}) => {
         {/* {isLoadingScreen ? (
           <ActivityIndicator color={colors.black} style={{margin: 5}} />
         ) : ( */}
-          <View>
-            {recomByKategori.length > 0 ? (
-              <View>
+        <View>
+          {recomByKategori.length > 0 ? (
+            <View>
               {initialGet.map((news, index) => {
                 return (
                   <NewsList
                     key={index}
                     news={news}
+                    theme={colorScheme}
                     // width={'60%'}
                     // height={65}
                     onPress={() => {
@@ -167,15 +182,23 @@ const RekomendasiByKategori = ({navigation}) => {
               })}
               <View
                 style={[
+                  colorScheme === 'dark'
+                    ? styles.containerPageD
+                    : ms.containerPage,
                   ms.width(windowWidth * 100) / 100,
-                  ms.containerPage,
+                  ms.mgT(22),
+                  ms.mgB(10),
                   ms.aiJc('center'),
                 ]}>
                 {isCompleted ? (
                   <TouchableOpacity
                     onPress={loadMore}
                     activeOpacity={0.9}
-                    style={[styles.loadMoreDeactive]}>
+                    style={[
+                      colorScheme === 'dark'
+                        ? styles.loadMoreDeactiveD
+                        : styles.loadMoreDeactive,
+                    ]}>
                     <Text style={[ms.fzBC(12, '500', colors.white)]}>
                       Tampilkan lebih banyak
                     </Text>
@@ -190,7 +213,9 @@ const RekomendasiByKategori = ({navigation}) => {
                     </Text>
                     {isLoadingScreen ? (
                       <ActivityIndicator
-                        color={colors.white}
+                        color={
+                          colorScheme === 'dark' ? colors.white : colors.white
+                        }
                         style={{marginLeft: 5}}
                       />
                     ) : null}
@@ -198,12 +223,22 @@ const RekomendasiByKategori = ({navigation}) => {
                 )}
               </View>
             </View>
-            ) : (
-              <View style={[ms.aiJc('center'), ms.height(windowHeight*75/100)]}>
-                  <Text style={[ms.fzBC(13, '400', colors.black), ms.txA('center'), ms.width(windowWidth*50/100),]}>Tidak ada rekomendasi berita untuk kategori yang Anda pilih</Text>
-                </View>
-            )}
-          </View>
+          ) : (
+            <View
+              style={[ms.aiJc('center'), ms.height((windowHeight * 75) / 100)]}>
+              <Text
+                style={[
+                  colorScheme === 'dark'
+                    ? ms.fzBC(13, '400', colors.white)
+                    : ms.fzBC(13, '400', colors.black),
+                  ms.txA('center'),
+                  ms.width((windowWidth * 50) / 100),
+                ]}>
+                Tidak ada rekomendasi berita untuk kategori yang Anda pilih
+              </Text>
+            </View>
+          )}
+        </View>
         {/* )} */}
       </ScrollView>
     </SafeAreaView>
@@ -255,6 +290,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  loadMoreDeactiveD: {
+    width: (windowWidth * 50) / 100,
+    height: (windowHeight * 4) / 100,
+    // padding: 10,
+    marginVertical: 15,
+    borderRadius: 8,
+    backgroundColor: colors.grey_dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   nonews: {
     height: (windowHeight * 85) / 100,
     fontSize: 12,
@@ -263,7 +308,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  nonewsD: {
+    height: (windowHeight * 85) / 100,
+    fontSize: 12,
+    fontWeight: '500',
+    color: colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
+  },
   // NewsCard:{
   //   width: windowWidth * 100 /100,
   //   height: windowHeight * 18 /100,

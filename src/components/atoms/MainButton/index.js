@@ -15,6 +15,7 @@ const MainButton = ({
   fontWeight = '700',
   color = colors.white,
   margin = 5,
+  alignItem = 'center',
   borderColor = colors.blue,
   borderRadius = 12,
   borderWidth = 0.5,
@@ -31,6 +32,7 @@ const MainButton = ({
         ms.bdR(borderRadius),
         ms.aiJc(),
         ms.bdC(borderColor),
+        ms.ai(alignItem)
       ]}
       {...props}
       activeOpacity={0.5}>
