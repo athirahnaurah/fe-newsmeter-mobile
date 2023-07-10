@@ -28,11 +28,9 @@ import {
 import {slice} from 'lodash';
 import {getUser} from '../../redux/action/login';
 
+// Recommendation Page
+
 const Untukmu = ({navigation}) => {
-  // const dispatch = useDispatch();
-  // const {recomByKategori} = useSelector(state => state.newsReducer);
-  // const {newsList} = useSelector(state => state.newsReducer);
-  // const {isLogin} = useSelector(state => state.globalReducer);
   const colorScheme = useColorScheme();
 
   const dispatch = useDispatch();
@@ -52,7 +50,7 @@ const Untukmu = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
-  //inisiasi function crud
+  // Initialize req. API
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -65,7 +63,7 @@ const Untukmu = ({navigation}) => {
     });
   };
 
-  //refresh halaman
+  // Reload page
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -74,7 +72,7 @@ const Untukmu = ({navigation}) => {
     });
   }, []);
 
-  //menampilkan konten lebih banyak
+  // Load more
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -85,7 +83,7 @@ const Untukmu = ({navigation}) => {
     }
   };
 
-  //membuat data riwayat
+  // Create news history
   const makeHistory = news => {
     let date = new Date(Date.now());
     let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -111,7 +109,7 @@ const Untukmu = ({navigation}) => {
     return dataHistory;
   };
 
-  //menyimpan data riwayat
+  // Save news history
   const saveHistory = dataHistory => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {

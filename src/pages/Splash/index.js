@@ -1,13 +1,12 @@
-import {ImageBackground, StyleSheet, Text, View, Image} from 'react-native';
+import {StyleSheet, View, Image} from 'react-native';
 import React, {useEffect} from 'react';
-import {Logo, NewsmeterLogo} from '../../assets/images';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {windowHeight, windowWidth} from '../../utils/ms/constant';
+import {Logo} from '../../assets/images';
 import {getData} from '../../utils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLogin} from '../../redux/action';
-import {getUser} from '../../redux/action/login';
+
+// Splash Screen
 
 const Splash = ({navigation}) => {
   const dispatch = useDispatch();

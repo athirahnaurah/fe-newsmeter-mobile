@@ -23,9 +23,10 @@ import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import NewsList from '../../components/molecules/NewsList';
 import {getNewsByMedia, postHistory} from '../../redux/action';
 
+// News By Media Page
+
 const BeritaByMedia = ({navigation}) => {
   const colorScheme = useColorScheme();
-
   const dispatch = useDispatch();
   const {bymedia} = useSelector(state => state.newsReducer);
   const {med} = useSelector(state => state.mediaReducer);
@@ -37,6 +38,7 @@ const BeritaByMedia = ({navigation}) => {
 
   console?.log('med: ', bymedia);
 
+  // Initialize req. API
   const init = async () => {
     await dispatch(getNewsByMedia(med));
   };
@@ -45,6 +47,7 @@ const BeritaByMedia = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
+  // Reload page
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -53,10 +56,12 @@ const BeritaByMedia = ({navigation}) => {
     });
   }, []);
 
+  // Capitalize the first letter 
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  // Load more 
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -67,7 +72,7 @@ const BeritaByMedia = ({navigation}) => {
     }
   };
 
-  //membuat data riwayat
+  // Create news history
   const makeHistory = news => {
     let date = new Date(Date.now());
     let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -93,7 +98,7 @@ const BeritaByMedia = ({navigation}) => {
     return dataHistory;
   };
 
-  //menyimpan data riwayat
+  // Save news history
   const saveHistory = dataHistory => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {

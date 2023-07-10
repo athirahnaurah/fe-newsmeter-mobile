@@ -8,7 +8,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {windowWidth} from '../../../utils/ms/constant';
 import Icon2 from 'react-native-vector-icons/Entypo';
 
+// Component news list for recommendation by history result
+
 const Rekomendasi = ({theme, rekom, onPress}) => {
+  // calculate score persentage
   const percentage = score => {
     return (score * 100).toFixed(0);
   };
@@ -82,7 +85,8 @@ const Rekomendasi = ({theme, rekom, onPress}) => {
               </Text>
             </View>
           </View>
-
+          
+          {/* News image is not null */}
           {rekom?.image !== null ? (
             <View style={[ms.width('40%'), ms.ai('center')]}>
               <Image
@@ -91,6 +95,7 @@ const Rekomendasi = ({theme, rekom, onPress}) => {
               />
             </View>
           ) : (
+            // News image is null
             <View style={[ms.width('40%'), ms.ai('center')]}>
               <Image
                 source={ImageDefault}

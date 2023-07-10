@@ -1,35 +1,12 @@
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {useState} from 'react';
 import ms from '../../../utils/ms';
 import { colors } from '../../../utils';
 import { Gap } from '../../atoms';
 
-const ListMedia = ({theme, med, onPress, navigation}) => {
-  const dispatch = useDispatch();
-  const {mediaList} = useSelector(state => state.mediaReducer);
-  const [datas, setDatas] = useState();
-  const [isclicked, setClicked] = useState('');
+const ListMedia = ({theme, med, onPress}) => {
 
-  let array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   console.log('list media', med);
-
-  // const result = (med) => {
-  // let arrData = []
-
-  //   for(let i=0 ; i < med.length; i++){
-  //     // dispatch({ type: 'SET_MED', value: {...res.data[i]}});
-  //     console.log('index result', i);
-  //     console.log('result media', med[i]);
-  //     // data = med[i]
-  //     arrData.push(med[i])
-  //   }
-
-  //   return arrData
-  // }
-
-  // setDatas(result(medList));
 
   imageSelect = med => {
   
@@ -154,3 +131,19 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+  // const result = (med) => {
+  // let arrData = []
+
+  //   for(let i=0 ; i < med.length; i++){
+  //     // dispatch({ type: 'SET_MED', value: {...res.data[i]}});
+  //     console.log('index result', i);
+  //     console.log('result media', med[i]);
+  //     // data = med[i]
+  //     arrData.push(med[i])
+  //   }
+
+  //   return arrData
+  // }
+
+  // setDatas(result(medList));

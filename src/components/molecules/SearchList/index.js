@@ -1,12 +1,13 @@
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import React from 'react';
-import {colors, windowHeight, windowWidth} from '../../../utils';
+import {colors} from '../../../utils';
 import ms from '../../../utils/ms';
 import {Gap} from '../../atoms';
-import {Point} from '../../../assets';
 import Icon from 'react-native-vector-icons/Entypo';
 
-const SearchList = ({theme, search, onPress, width, height}) => {
+// Component news list for search result
+
+const SearchList = ({theme, search, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress}>
       {/* List Berita */}
@@ -61,6 +62,7 @@ const SearchList = ({theme, search, onPress, width, height}) => {
             </View>
           </View>
 
+          {/* News image is not null */}
           {search?.image !== null ? (
             <View style={[ms.width('40%'), ms.ai('center')]}>
               <Image
@@ -69,6 +71,7 @@ const SearchList = ({theme, search, onPress, width, height}) => {
               />
             </View>
           ) : (
+            // News image is null
             <View style={[ms.width('40%'), ms.ai('center')]}>
               <Image
                 source={ImageDefault}
@@ -88,21 +91,6 @@ const SearchList = ({theme, search, onPress, width, height}) => {
     </TouchableOpacity>
   );
 };
-
-{
-  /* <View style={[styles.NewsCard]}>
-          <View style={[ms.row, ms.pdV(17)]}>
-            <View style={[ms.width(windowWidth * 50 / 100), ms.height(windowHeight * 35 /100), ms.pdL(20)]}>
-            <Text style={[ms.fzBC(12.8 , '700', colors.black)]}>{news?.title}</Text>
-            <Text style={[ms.fzBC(12.8 , '400', colors.black)]}>{news?.media}</Text>
-            </View>
-
-            <View style={[ms.width(windowWidth * 50 /100), ms.height(windowHeight * 20 /100), ms.ai('center')]}>
-              <Image source={news?.img} style={[ms.width(windowWidth * 40 /100), ms.height(windowHeight * 13 /100)]}/>
-            </View>
-          </View>
-        </View> */
-}
 
 export default SearchList;
 

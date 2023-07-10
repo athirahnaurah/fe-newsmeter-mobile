@@ -28,9 +28,10 @@ import {
 import {useCallback, useEffect} from 'react';
 import {slice} from 'lodash';
 
+// Explore Page
+
 const Jelajah = ({navigation}) => {
   const colorScheme = useColorScheme();
-
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
   const {mediaList, medList} = useSelector(state => state.mediaReducer);
@@ -48,7 +49,7 @@ const Jelajah = ({navigation}) => {
   const initialGet = slice(newsListSearch, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  // Capital First Letter
+  // Capitalize the First Letter
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -84,21 +85,9 @@ const Jelajah = ({navigation}) => {
       // await dispatch(getSearchNews(''));
       setisAvail(false);
     }
-
-    // console.log('setsearchtext', text)
-
-    // dispatch({type: 'SET_SEARCH_DATA', value: searchResult});
-
-    // if(text !== ''){
-    //   init(text)
-    //   // dispatch({type: 'SET_SEARCH_DATA', value: text});
-    // } else {
-    //   // dispatch({type: 'SET_SEARCH_DATA', value: ''});
-    //   init(text)
-    // }
   };
 
-  // Load More Button
+  // Load More 
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -109,12 +98,12 @@ const Jelajah = ({navigation}) => {
     }
   };
 
-  const onSearch = async text => {};
-
+  // Initialize req. API
   const init = async () => {
     await dispatch(getMedia());
     await dispatch(getKategori());
   };
+
   // console.log('kategori', kategoriList);
 
   const imageSelect = kategori => {
@@ -143,6 +132,7 @@ const Jelajah = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
+  // Reload Page
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -151,7 +141,7 @@ const Jelajah = ({navigation}) => {
     });
   }, []);
 
-  //membuat data riwayat
+  // Create news history
   const makeHistory = news => {
     let date = new Date(Date.now());
     let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -177,7 +167,7 @@ const Jelajah = ({navigation}) => {
     return dataHistory;
   };
 
-  //menyimpan data riwayat
+  // Save news history
   const saveHistory = dataHistory => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {

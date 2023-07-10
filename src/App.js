@@ -20,12 +20,24 @@ const App = () => {
         Login: {
           path: 'login',
         },
+        DetailBerita: {
+          path: 'detailberita/:paramID',
+          parse: {
+            paramID: paramID => `${paramID}`,
+          },
+        },
         MinatKategori: {
           path: 'minatkategori/:email',
           parse: {
             email: email => `${email}`,
           },
         },
+        ResetPassword: {
+          path: 'resetpassword/:email',
+          parse: {
+            email: email => `${email}`,
+          }
+        }
       },
     },
   };

@@ -23,6 +23,8 @@ import {useEffect, useState} from 'react';
 import NewsList from '../../components/molecules/NewsList';
 import {slice} from 'lodash';
 
+// News By Category Page
+
 const BeritaByKategori = ({navigation}) => {
   const colorScheme = useColorScheme();
 

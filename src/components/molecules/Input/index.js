@@ -32,15 +32,24 @@ const Input = ({
           theme === 'dark' ? styles.cardInputD : styles.cardInput,
           {
             borderColor: error
-              ? theme === 'dark' ? colors.red_dark : colors.red
+              ? theme === 'dark'
+                ? colors.red_dark
+                : colors.red
               : isFocused
-              ? theme === 'dark' ? colors.blue_dark : colors.blue
-              : theme === 'dark' ? colors.grey_dark : colors.lightblue
+              ? theme === 'dark'
+                ? colors.blue_dark
+                : colors.blue
+              : theme === 'dark'
+              ? colors.grey_dark
+              : colors.lightblue,
           },
         ]}>
         <TextInput
           secureTextEntry={hidePassword}
-          style={[theme === 'dark' ? styles.labelD : styles.label, ms.width((windowWidth * 80) / 100) ]}
+          style={[
+            theme === 'dark' ? styles.labelD : styles.label,
+            ms.width((windowWidth * 80) / 100),
+          ]}
           autoCorrect={false}
           onFocus={() => {
             onFocus();
@@ -51,6 +60,7 @@ const Input = ({
           }}
           {...props}
         />
+        {/* field password */}
         {password && (
           <TouchableOpacity
             style={[]}
@@ -63,12 +73,13 @@ const Input = ({
                 theme === 'dark'
                   ? ms.fzBC(14, '400', colors.white)
                   : ms.fzBC(14, '400', colors.grey),
-                ms.pdR(20)
+                ms.pdR(20),
               ]}
             />
           </TouchableOpacity>
         )}
       </View>
+      {/* error validation */}
       {error && (
         <Text
           style={[

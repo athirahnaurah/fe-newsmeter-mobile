@@ -4,9 +4,10 @@ import Input from "./Input";
 import Kategori from "./Kategori";
 import Media from "./Media";
 import Rekomendasi from "./Rekomendasi";
-import InputCheck from "./InputCheck";
 import ListMedia from "./ListMedia";
 import SearchList from "./SearchList";
+import NewsDetail from "./NewsDetail";
+import NewsList from "./NewsList";
 
 export{
     BottomNavigator,
@@ -15,7 +16,8 @@ export{
     Kategori,
     Media,
     Rekomendasi,
-    InputCheck,
     ListMedia,
-    SearchList
+    SearchList,
+    NewsList,
+    NewsDetail
 }

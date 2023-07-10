@@ -22,19 +22,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setLogin} from '../../redux/action';
 import {Linking} from 'react-native';
 
+// Profile Page
+
 const Profil = ({navigation}) => {
   const colorScheme = useColorScheme();
-
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.globalReducer);
   const {isLogin} = useSelector(state => state.globalReducer);
   console.log('user: ', user);
 
   const goToWeb = () => {
-    const url = 'https://newsmeter.id/'; // Ganti dengan URL tujuan Anda
+    const url = 'https://newsmeter.id/'; // web newsmeter
     Linking.openURL(url);
   };
 
+  // Initialize req. API
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -43,6 +45,7 @@ const Profil = ({navigation}) => {
     });
   };
 
+  // Logout function
   const onLogout = async () => {
     AsyncStorage.clear();
     navigation.reset({index: 0, routes: [{name: 'Splash'}]});

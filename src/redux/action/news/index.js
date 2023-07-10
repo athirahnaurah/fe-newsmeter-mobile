@@ -1,10 +1,16 @@
 import axios from 'axios';
 import ApiConfig from '../../../config/ApiConfig';
 import ApiHeader from '../../../config/ApiHeader';
-import {setLoadingScreen, setLoadingValue, setPreferenceValue, setSearch} from '../global';
+import {
+  setLoadingScreen,
+  setLoadingValue,
+  setPreferenceValue,
+  setSearch,
+} from '../global';
 import {getData} from '../../../utils';
 import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
 
+// Get newest news
 export const getNews =
   (onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -12,7 +18,7 @@ export const getNews =
     dispatch(setLoadingScreen(true));
 
     axios
-      .get(`http://beta.newsmeter.id/api/get/news/100`, {headers: ApiHeader})
+      .get(`${ApiConfig}/api/get/news/100`, {headers: ApiHeader})
       .then(res => {
         // console.log('result', res);
         dispatch({type: 'SET_NEWSLIST', value: [...res.data]});
@@ -28,6 +34,31 @@ export const getNews =
       });
   };
 
+// Get news by id
+export const getNewsById =
+  (id, onCallback = res => {}, onError = err => {}) =>
+  dispatch => {
+    console.log('id :', id);
+    dispatch(setLoadingScreen(true));
+
+    axios
+      .get(`http://beta.newsmeter.id/api/news/${id}`, {headers: ApiHeader})
+      .then(res => {
+        console.log('result news by id', res);
+        dispatch({type: 'SET_NEWS_BY_ID', value: res.data});
+        // dispatch({type: 'SET_NEWSLIST_GLOBAL', value: [...res.data]});
+        // onCallback(res.data)
+      })
+      .catch(err => {
+        console.log('error', err);
+        onError(err);
+      })
+      .finally(() => {
+        dispatch(setLoadingScreen(false));
+      });
+  };
+
+// get news by category
 export const getNewsByKategori =
   (kategori, onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -36,7 +67,7 @@ export const getNewsByKategori =
 
     // console.log('kategori', kategori);
     axios
-      .get(`http://beta.newsmeter.id/api/get/news/kategori/${kategori}/100`, {
+      .get(`${ApiConfig}/api/get/news/kategori/${kategori}/100`, {
         headers: ApiHeader,
       })
       .then(res => {
@@ -55,6 +86,7 @@ export const getNewsByKategori =
       });
   };
 
+// Get news by media
 export const getNewsByMedia =
   (media, onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -63,7 +95,7 @@ export const getNewsByMedia =
 
     // console.log('media', media);
     axios
-      .get(`http://beta.newsmeter.id/api/get/news/media/${media}/100`, {headers: ApiHeader})
+      .get(`${ApiConfig}/api/get/news/media/${media}/100`, {headers: ApiHeader})
       .then(res => {
         // console.log('result', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
@@ -80,6 +112,7 @@ export const getNewsByMedia =
       });
   };
 
+// Get search news
 export const getSearchNews =
   (search, onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -88,7 +121,7 @@ export const getSearchNews =
     dispatch(setLoadingScreen(true));
 
     axios
-      .get(`http://beta.newsmeter.id/api/search/news/${search}/7`, {headers: ApiHeader})
+      .get(`${ApiConfig}/api/search/news/${search}/7`, {headers: ApiHeader})
       .then(res => {
         // console.log('res search', res);
         // dispatch({ type: 'SET_POST', value: [...res.data] })
@@ -111,7 +144,7 @@ export const getSearchNews =
       });
   };
 
-// post data history ke database
+// Post data history ke database
 export const postHistory = dataNews => dispatch => {
   getData('token').then(resAuth => {
     axios
@@ -127,6 +160,7 @@ export const postHistory = dataNews => dispatch => {
   });
 };
 
+// Get recommendation by category
 export const getRecommendationByKategori =
   (onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -144,9 +178,12 @@ export const getRecommendationByKategori =
           for (let preference of res.data) {
             // console.log('preference', preference);
             axios
-              .get(`http://beta.newsmeter.id/api/get/news/kategori/${preference}/50`, {
-                headers: ApiHeader,
-              })
+              .get(
+                `http://beta.newsmeter.id/api/get/news/kategori/${preference}/50`,
+                {
+                  headers: ApiHeader,
+                },
+              )
               .then(result => {
                 // console.log('get news');
                 result.data.forEach(
@@ -199,13 +236,14 @@ export const getRecommendationByKategori =
         })
         .catch(err => {
           console.log('Error:', err);
-        })
-        // .finally(() => {
-        //   dispatch(setLoadingScreen(false));
-        // });
+        });
+      // .finally(() => {
+      //   dispatch(setLoadingScreen(false));
+      // });
     });
   };
 
+// Convert time stamp
 const convertTimestamp = dateString => {
   const parts = dateString.split(' ');
   const dateParts = parts[0].split('-');
@@ -220,6 +258,7 @@ const convertTimestamp = dateString => {
   return timestamp;
 };
 
+// Get recommendation by history
 export const getRecommendationByHistory =
   (onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -232,8 +271,10 @@ export const getRecommendationByHistory =
         })
         .then(res => {
           // console.log('result recommendation by history: ', res);
-          dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: [...res.data]});
-
+          dispatch({
+            type: 'SET_NEWS_RECOMMEND_BY_HISTORY',
+            value: [...res.data],
+          });
         })
         .catch(err => {
           console.log('error get recom: ', err);
@@ -245,22 +286,24 @@ export const getRecommendationByHistory =
     });
   };
 
-export const saveRecommendation = (onCallback = res => {}, onError = err => {}) =>
-dispatch =>{
-  getData('token').then(resAuth => {
-  axios
-    .get(`${ApiConfigDeploy}/save_recommendation`, {
-      headers: {Authorization: `Bearer ${resAuth}`},
-    })
-    .then(response => {
-        console.log('Proses berhasil dipicu di server:', response);
-    })
-    .catch(error => {
-      // Tangani error yang terjadi saat mengirim permintaan
-      console.log(
-        'Terjadi kesalahan saat mengirim permintaan ke server:',
-        error,
-      );
+// Save recommendation
+export const saveRecommendation =
+  (onCallback = res => {}, onError = err => {}) =>
+  dispatch => {
+    getData('token').then(resAuth => {
+      axios
+        .get(`${ApiConfigDeploy}/save_recommendation`, {
+          headers: {Authorization: `Bearer ${resAuth}`},
+        })
+        .then(response => {
+          console.log('Proses berhasil dipicu di server:', response);
+        })
+        .catch(error => {
+          // Tangani error yang terjadi saat mengirim permintaan
+          console.log(
+            'Terjadi kesalahan saat mengirim permintaan ke server:',
+            error,
+          );
+        });
     });
-  })
-}
+  };

@@ -2,7 +2,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import ms from '../../../utils/ms'
 import { windowHeight, windowWidth } from '../../../utils/ms/constant'
-import { CNN, IconEkonomi } from '../../../assets'
 import { colors } from '../../../utils'
 
 const Media = ({theme, med, onPress}) => {

@@ -29,12 +29,11 @@ import Loading from '../../components/molecules/Loading';
 import {useCallback} from 'react';
 import {slice} from 'lodash';
 import {getUser} from '../../redux/action/login';
-// import BackgroundService from 'react-native-background-actions';
-// import {saveRecommendationBackground, options} from '../../../index';
+
+// Home page
 
 const Beranda = ({navigation}) => {
   const colorScheme = useColorScheme();
-
   const dispatch = useDispatch();
   const {user} = useSelector(state => state.globalReducer);
   const {newsList} = useSelector(state => state.newsReducer);
@@ -43,11 +42,11 @@ const Beranda = ({navigation}) => {
   const [i, setI] = useState(15);
   const initialGet = slice(newsList, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
-
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
+  // initialize request API
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -61,6 +60,7 @@ const Beranda = ({navigation}) => {
     });
   };
 
+  // Reload page
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -69,6 +69,7 @@ const Beranda = ({navigation}) => {
     });
   }, []);
 
+  // Load more 
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -79,7 +80,7 @@ const Beranda = ({navigation}) => {
     }
   };
 
-  //membuat data riwayat
+  // Create news history
   const makeHistory = news => {
     let date = new Date(Date.now());
     let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -105,7 +106,7 @@ const Beranda = ({navigation}) => {
     return dataHistory;
   };
 
-  //menyimpan data riwayat
+  // Save news history
   const saveHistory = dataHistory => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -155,8 +156,9 @@ const Beranda = ({navigation}) => {
                   // height={65}
                   onPress={() => {
                     saveHistory(makeHistory(news));
-                    dispatch({type: 'SET_NEWS', value: news});
-                    navigation.navigate('DetailBerita');
+                    // dispatch({type: 'SET_NEWS', value: news});
+                    const newsID = news._id;
+                    navigation.navigate('DetailBerita', {newsID});
                   }}
                 />
               );

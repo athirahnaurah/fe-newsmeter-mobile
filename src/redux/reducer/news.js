@@ -10,6 +10,7 @@ const initStateNewsList = {
   newsListSearch: [],
   search: {},
   recomByKategori: [],
+  newsbyid: {},
 };
 
 export const newsReducer = (state = initStateNewsList, action) => {
@@ -65,6 +66,12 @@ export const newsReducer = (state = initStateNewsList, action) => {
     return {
       ...state,
       recomByKategori: action.value,
+    };
+  }
+  if (action.type === 'SET_NEWS_BY_ID') {
+    return {
+      ...state,
+      newsbyid: action.value,
     };
   }
   return state;

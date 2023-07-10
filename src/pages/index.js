@@ -12,6 +12,8 @@ import BeritaByMedia from "./BeritaByMedia";
 import DaftarMedia from "./DaftarMedia";
 import DetailSearch from "./DetailSearch";
 import RekomendasiByKategori from './RekomendasiByKategori';
+import ForgotPassword from "./ForgotPassword";
+import ResetPassword from "./ResetPassword";
 
 export{
     Beranda,
@@ -28,4 +30,6 @@ export{
     DaftarMedia,
     DetailSearch,
     RekomendasiByKategori,
+    ForgotPassword,
+    ResetPassword
 }

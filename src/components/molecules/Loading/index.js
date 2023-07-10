@@ -7,29 +7,20 @@ const Loading = ({position= 'absolute',backgroundColor='rgba(0,0,0,0.1)', size='
     return (
       <View style={styles.container(position, backgroundColor,height)}>
           <View style={styles.modal}>
-            {/* {
-              icon == "RippleLoader" && (
-                <RippleLoader size={40} color={colors?.primary}/>   
-              )
-            } */}
             {
               !icon && (
                 <ActivityIndicator size={size} color={colors.primary} />
               )
             }
-             {/* <Image source={IconCatG} style={styles.modal}/> */}
-             {/* <Image source={IconLoading4G} style={styles.modal}/> */}
-             {/* <Image source={IconLoading4G} style={styles.modal}/> */}
-              {/* <IconLoadingC size={40}/> */}
+            <Text>Memuat...</Text>
+
           </View>
-          {/* <Text>Memuat...</Text> */}
       </View>
     );
   };
   
   export default Loading;
-  // const windowWidth = Dimensions.get('window').width;
-  // const windowHeight = Dimensions.get('window').height;
+  
   const styles = StyleSheet.create({
     container: (position, backgroundColor, height)=>({
       

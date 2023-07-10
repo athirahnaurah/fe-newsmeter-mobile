@@ -1,6 +1,4 @@
 import {
-  ActivityIndicator,
-  Alert,
   Keyboard,
   SafeAreaView,
   ScrollView,
@@ -12,22 +10,17 @@ import {
 } from 'react-native';
 import React, { useEffect } from 'react';
 import ms from '../../utils/ms';
-import {colors, showToast, showToasty} from '../../utils';
+import {colors} from '../../utils';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
-import {TextInput} from 'react-native-gesture-handler';
 import {
   Gap,
   Input,
-  InputCheck,
   Loader,
   MainButton,
-  PopUpMessage,
 } from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {useState} from 'react';
-// import { showMessage } from 'react-native-flash-message'
 import {registrasiAction} from '../../redux/action';
-// import popUpMessage from '../../utils/PopUpMessage'
 
 const Registrasi = ({navigation}) => {
   const colorScheme = useColorScheme();
@@ -48,10 +41,7 @@ const Registrasi = ({navigation}) => {
 
   const [errors, setErrors] = useState({});
 
-  // const [isValid, setIsvalid] = useState(true);
-
-  // const [popup, setPopup] = useState(true);
-
+  // Input validation
   const onValidate = async () => {
     Keyboard.dismiss();
     let isValid = true;
@@ -91,6 +81,7 @@ const Registrasi = ({navigation}) => {
     }
   };
 
+  // Registration function
   const onRegister = async () => {
     let dataRegistrasi = {
           name: input?.name,
@@ -105,9 +96,7 @@ const Registrasi = ({navigation}) => {
       confirmPassword: '',
     });
     
-    // await dispatch(registrasiAction(dataRegistrasi));
-
-
+    await dispatch(registrasiAction(dataRegistrasi));
    
   }
   

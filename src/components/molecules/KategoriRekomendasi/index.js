@@ -3,12 +3,12 @@ import React from 'react';
 import ms from '../../../utils/ms';
 import {colors} from '../../../utils';
 import {windowHeight, windowWidth} from '../../../utils/ms/constant';
-import {Gap} from '../../atoms';
-import {ImageDefault, Point} from '../../../assets';
+import {ImageDefault} from '../../../assets';
 import Icon from 'react-native-vector-icons/Entypo';
 
 const KategoriRekomendasi = ({theme, news, onPress}) => {
-  return (
+  return ( 
+    // Container
     <View
       style={[
         ms.width(windowWidth * 100) / 100,
@@ -16,6 +16,7 @@ const KategoriRekomendasi = ({theme, news, onPress}) => {
         theme === 'dark' ? styles.cardD : styles.card,
       ]}>
       <TouchableOpacity style={[ms.jc('center')]} onPress={onPress}>
+        {/* News image is not null */}
         {news?.image !== null ? (
           <View style={[ms.ai('center')]}>
             <Image
@@ -27,6 +28,7 @@ const KategoriRekomendasi = ({theme, news, onPress}) => {
             />
           </View>
         ) : (
+          // News image is null 
           <View style={[ms.ai('center')]}>
             <Image
               source={ImageDefault}
@@ -38,6 +40,7 @@ const KategoriRekomendasi = ({theme, news, onPress}) => {
           </View>
         )}
 
+        {/* News Information */}
         <View
           style={[
             ms.width(180),

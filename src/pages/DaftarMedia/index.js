@@ -24,13 +24,15 @@ import {useEffect} from 'react';
 import {getMedia} from '../../redux/action';
 import {ListMedia, MediaList} from '../../components';
 
+// Media List Page
+
 const DaftarMedia = ({navigation}) => {
   const colorScheme = useColorScheme();
   useEffect(() => {
     console.log(colorScheme);
   }, [colorScheme]);
   const dispatch = useDispatch();
-  const {medList, med} = useSelector(state => state.mediaReducer);
+  const {medList} = useSelector(state => state.mediaReducer);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
   const [refreshing, setRefreshing] = useState(false);
   const [i, setI] = useState(15);
@@ -38,14 +40,6 @@ const DaftarMedia = ({navigation}) => {
   const [isCompleted, setIsCompleted] = useState(false);
 
   // console?.log('med: ', media);
-
-  const data = [];
-
-  const mediamap = dt => {
-    for (let i; i < dt.length; i++) {
-      return dt[i];
-    }
-  };
 
   const init = async () => {
     // await dispatch(getMedia());
@@ -55,6 +49,7 @@ const DaftarMedia = ({navigation}) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
+  // Reload page
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -63,10 +58,12 @@ const DaftarMedia = ({navigation}) => {
     });
   }, []);
 
+  // Capitalize the first letter
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  // Load more
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);

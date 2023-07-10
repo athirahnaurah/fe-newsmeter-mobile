@@ -31,12 +31,10 @@ import Loading from '../../components/molecules/Loading';
 import {useCallback} from 'react';
 import {slice} from 'lodash';
 
+// Recommendation By Categories Page
+
 const RekomendasiByKategori = ({navigation}) => {
   const colorScheme = useColorScheme();
-  useEffect(() => {
-    console.log(colorScheme);
-  }, [colorScheme]);
-
   const dispatch = useDispatch();
   const {recomByKategori} = useSelector(state => state.newsReducer);
   const {isLoadingScreen, isLogin} = useSelector(state => state.globalReducer);
@@ -45,10 +43,15 @@ const RekomendasiByKategori = ({navigation}) => {
   const initialGet = slice(recomByKategori, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  useEffect(() => {
+    console.log(colorScheme);
+  }, [colorScheme]);
+
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
 
+  // Initialize req. API
   const init = async () => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -57,6 +60,7 @@ const RekomendasiByKategori = ({navigation}) => {
     });
   };
 
+  // Reload page
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(3000).then(() => {
@@ -65,6 +69,7 @@ const RekomendasiByKategori = ({navigation}) => {
     });
   }, []);
 
+  // Load more
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -75,7 +80,7 @@ const RekomendasiByKategori = ({navigation}) => {
     }
   };
 
-  //membuat data riwayat
+  // Create news history
   const makeHistory = news => {
     let date = new Date(Date.now());
     let dateString = `${date.getFullYear()}-${(date.getMonth() + 1)
@@ -101,7 +106,7 @@ const RekomendasiByKategori = ({navigation}) => {
     return dataHistory;
   };
 
-  //menyimpan data riwayat
+  // Save news history
   const saveHistory = dataHistory => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -112,12 +117,6 @@ const RekomendasiByKategori = ({navigation}) => {
       }
     });
   };
-
-  // useEffect(() => {
-  //   if (navigation.isFocused) {
-  //     init();
-  //   }
-  // }, [navigation]);
 
   // console.log('load more', loadMore)
   return (

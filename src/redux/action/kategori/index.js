@@ -6,6 +6,7 @@ import {Alert} from 'react-native';
 import { storeData, getData } from '../../../utils';
 import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
 
+// Get category
 export const getKategori = (onCallback = res => {}, onError = err => {}) => dispatch => {
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
@@ -28,6 +29,7 @@ export const getKategori = (onCallback = res => {}, onError = err => {}) => disp
       });
   };
 
+// Post Preference
 export const postPreference = (dataPreference, navigation, onCallback = res => {}, onError = err => {}) => dispatch => {
     dispatch(setLoadingScreen(true));
     axios.post(`${ApiConfigDeploy}/preference`, dataPreference, { header: ApiHeader })
@@ -49,6 +51,7 @@ export const postPreference = (dataPreference, navigation, onCallback = res => {
     })
 }
 
+// Get Preference
 export const getPreference = (user, navigation, onCallback=(res)=>{}, onError=(err)=>{}) => (dispatch) => {
 
     // const users = [{

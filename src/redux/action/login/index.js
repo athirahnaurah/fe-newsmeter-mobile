@@ -16,7 +16,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {getPreference} from '../kategori';
 import {get} from 'lodash';
 import ApiConfigDeploy from '../../../config/ApiConfigDeploy';
+import ApiConfigLocal from '../../../config/ApiConfigLocal';
 
+// Login
 export const loginAction = (dataLogin, navigation) => dispatch => {
   console.log('data login:', dataLogin);
   dispatch(setLoadingScreen(true));
@@ -45,7 +47,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
         .then(
           resUser => {
             const authUser = resUser;
-            // console.log('response auth user: ', authUser);
+            console.log('response auth user: ', authUser);
             storeData('authUser', authUser);
 
             getData('token').then(resAuth => {
@@ -59,7 +61,8 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
                   storeData('preference', resP.data);
                   // console.log('preference login: ', resP.data);
                   if (resP.data.length !== 0) {
-                    Alert.alert('Login', 'Login berhasil.');
+                    // Alert.alert('Login', 'Login berhasil.');
+                    showToasty(`Login Berhasil`, 'success');
                     navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
                   } else {
                     navigation.reset({
@@ -112,6 +115,7 @@ export const loginAction = (dataLogin, navigation) => dispatch => {
 //   })
 // }
 
+// Get User
 export const getUser =
   (navigation, onCallback = res => {}, onError = err => {}) =>
   dispatch => {
@@ -126,45 +130,12 @@ export const getUser =
         .then(res => {
           // console.log('res user: ', res.data);
           // if (res.data !== null) {
-            dispatch({type: 'SET_USER', value: res.data});
-          // }
-          // if (res.data.message == "User not found") {
-          //   // Alert.alert(
-          //   //   'Sesi Berakhir',
-          //   //   'Sesi telah berakhir, silakan lakukan login kembali.',
-          //   // );
-          //   // dispatch({type: 'SET_USER', value: err.msg});
-          //   dispatch({type: 'SET_USER', value: null});
-          //   dispatch({type: 'SET_AUTH_USER', value: null});
-          //   dispatch({type: 'SET_TOKEN', value: null});
-          //   dispatch({type: 'SET_PREFERENCE', value: null});
-          //   dispatch({type: 'SET_NEWSLIST', value: null});
-          //   dispatch({type: 'SET_NEWS', value: null});
-          //   dispatch({type: 'SET_NEWSLIST_BY_KATEGORI', value: null});
-          //   dispatch({type: 'SET_NEWS_BY_KATEGORI', value: null});
-          //   dispatch({type: 'SET_NEWSLIST_BY_MEDIA', value: null});
-          //   dispatch({type: 'SET_NEWS_BY_MEDIA', value: null});
-          //   dispatch({type: 'SET_NEWSLIST_SEARCH', value: null});
-          //   dispatch({type: 'SET_SEARCH', value: null});
-          //   dispatch({type: 'SET_MEDLIST', value: null});
-          //   dispatch({type: 'SET_MED', value: null});
-          //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_HISTORY', value: null});
-          //   dispatch({type: 'SET_NEWS_RECOMMEND_BY_KATEGORI', value: null});
-          //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
-          // }
-
-          // else {
-          //   Alert.alert(
-          //     'Sesi Berakhir',
-          //     'Silakan lakukan login kembali untuk masuk ke dalam aplikasi.',
-          //   );
-          //   navigation.reset({index: 0, routes: [{name: 'Login'}]});
-          // }
+          dispatch({type: 'SET_USER', value: res.data});
         })
         .catch(err => {
           // if(err.message === "User not found" && err.response.status === 404){
-            dispatch({type: 'SET_USER', value: err.data});
-          
+          dispatch({type: 'SET_USER', value: err.data});
+
           onError(err);
 
           Alert.alert(
@@ -194,3 +165,71 @@ export const getUser =
         });
     });
   };
+
+// Forgot Password
+export const forgotPassAction = dataPass => dispatch => {
+  // console.log(typeof(dataPass));
+  console.log('data password:', dataPass);
+  dispatch(setLoadingScreen(true));
+  // showToasty('...Memproses')
+  axios
+    .post(`${ApiConfigLocal}/forgot_password`, dataPass)
+    .then(res => {
+      console.log('response:', res);
+      Alert.alert(
+        'Atur Ulang Kata Sandi',
+        'Silahkan periksa email untuk atur ulang kata sandi akun Anda.',
+      );
+      // navigation.reset({ index: 0, routes: [{name: 'MinatKategori'}] });
+    })
+    .catch(err => {
+      console.log('Error:', err);
+      // showMessage('Registrasi Gagal', 'danger')
+      // if(err.response.status === 404){
+      //     Alert.alert(
+      //         'Error', 'Email sudah terdaftar, gunakan email lain atau silahkan login.'
+      //     );
+      // } else {
+      Alert.alert('Error', 'Terjadi kesalahan server.');
+      // }
+    })
+    .finally(() => {
+      dispatch(setLoadingScreen(false));
+    });
+};
+
+// Reset Password
+export const resetPassAction = (dataPass, navigation) => dispatch => {
+  // console.log(typeof(dataPass));
+  console.log('data password:', dataPass);
+  dispatch(setLoadingScreen(true));
+  // showToasty('...Memproses')
+  getData('token').then(token => {
+    console.log(token);
+    axios
+      .post(`${ApiConfigLocal}/reset_password`, dataPass)
+      .then(res => {
+        console.log('response:', res);
+        // Alert.alert(
+        //   'Atur Ulang Kata Sandi',
+        //   'Silahkan periksa email untuk atur ulang kata sandi akun Anda.',
+        showToasty(`Atur ulang kata sandi berhasil`, 'success');
+        // );
+        navigation.reset({index: 0, routes: [{name: 'Login'}]});
+      })
+      .catch(err => {
+        console.log('Error:', err);
+        // showMessage('Registrasi Gagal', 'danger')
+        // if(err.response.status === 404){
+        //     Alert.alert(
+        //         'Error', 'Email sudah terdaftar, gunakan email lain atau silahkan login.'
+        //     );
+        // } else {
+        Alert.alert('Error', 'Terjadi kesalahan server.');
+        // }
+      })
+      .finally(() => {
+        dispatch(setLoadingScreen(false));
+      });
+  });
+};

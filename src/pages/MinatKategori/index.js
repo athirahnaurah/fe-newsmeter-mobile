@@ -1,48 +1,60 @@
-import {Image, Linking, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ms from '../../utils/ms';
 import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {colors, getData} from '../../utils';
-import {Kategori, Loader, MainButton} from '../../components';
+import {Loader, MainButton} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import {getKategori, postPreference, setParameterValue} from '../../redux/action';
-import { event } from 'react-native-reanimated';
-import { Alert } from 'react-native';
+import {
+  getKategori,
+  postPreference,
+} from '../../redux/action';
+import {Alert} from 'react-native';
 
 const MAX_CATEGORY = 3;
 
+// Choose Preference
 const MinatKategori = ({route, navigation}) => {
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
-  const {parameterValue} = useSelector(state => state.globalReducer);
   const [isclicked, setClicked] = useState([]);
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
   const [emailValue, setEmailValue] = useState('');
+
   // console.log('kategoriList: ', kategoriList);
   // console.log('param val: ', parameterValue);
 
+  // Initialize req. API
   const init = async () => {
     await dispatch(getKategori());
 
     getData('authUser').then(resAuthUser => {
-      if(resAuthUser?.data.email){
-        setEmailValue(resAuthUser?.data.email) 
+      if (resAuthUser?.data.email) {
+        setEmailValue(resAuthUser?.data.email);
       } else {
-         setEmailValue(route.params.email)
+        setEmailValue(route.params.email);
       }
-    })
+    });
   };
-  
+
   const onHandleChange = (text, input) => {
-    setInput((prevState) => ({...prevState, [input]: text}))
-  }
+    setInput(prevState => ({...prevState, [input]: text}));
+  };
 
-  const onClickKategori = (kategori) => {
-    if(isclicked.includes(kategori)){
-      setClicked(isclicked.filter((k) => k !== kategori));
-    } else if (isclicked.length < MAX_CATEGORY){
-      setClicked([...isclicked, kategori])
-
+  // Click category
+  const onClickKategori = kategori => {
+    if (isclicked.includes(kategori)) {
+      setClicked(isclicked.filter(k => k !== kategori));
+    } else if (isclicked.length < MAX_CATEGORY) {
+      setClicked([...isclicked, kategori]);
     }
     console.log('minat kategori: ', isclicked);
     // if (kategori == kategoriList) {
@@ -55,25 +67,26 @@ const MinatKategori = ({route, navigation}) => {
     // setClicked(kategori)
   };
 
+  // Click next button
   const onClickNext = async () => {
     // console.log('kategori dipilih: ', isclicked);
-    if (isclicked.length === 0){
+    if (isclicked.length === 0) {
       Alert.alert(
         'Anda belum memilih minat bacaan',
         'Silahkan pilih 1 hingga 3 kategori untuk memberikan rekomendasi bacaan yang Anda minati.',
-    );
+      );
     } else {
       let dataPreference = {
         email: emailValue,
         preference: isclicked,
       };
-  
+
       console.log('data preference: ', dataPreference);
       // setClicked([]);
-  
+
       await dispatch(postPreference(dataPreference, navigation));
     }
-  }
+  };
 
   const imageSelect = kategori => {
     const kategoriArray = {
@@ -97,44 +110,15 @@ const MinatKategori = ({route, navigation}) => {
     return kategoriArray[kategori];
   };
 
-  
-
-  // const parseDeepLink = (url) => {
-  //   const params = new URLSearchParams(url.split(':')[1]);
-  //   const email = params.get('email');
-  //   console.log('email to: ', email)
-  //   return {email};
-  // }
-
-  // const handleDeepLink = async (event) => {
-  //   // const data = parseDeepLink(event.url)
-  //   // const params = new URLSearchParams(event.url.split(':')[1]);
-  //   // const email = params.get('email');
-  //   const deeplink = event.url;
-  //   const email = deeplink.substring(deeplink.indexOf(':') + 18);
-  //   const emailValue = JSON.stringify(email);
-  //   dispatch(setParameterValue(emailValue));
-  //   console.log('data: ', emailValue);
-
-  // };
-
-  // const getDeepLink = () => {
-  //   const item = navigation.getParam('email', {});
-
-  //   return console.log('item: ', item)
-  // }
-
   useEffect(() => {
     if (navigation.isFocused) {
-      init();
-      
+      init(); 
     }
-    
   }, [navigation]);
 
   return (
     <SafeAreaView style={[ms.containerPage]}>
-      <Loader isVisible={isLoadingScreen}/>
+      <Loader isVisible={isLoadingScreen} />
       <ScrollView>
         {/* Header */}
         <View
@@ -166,8 +150,6 @@ const MinatKategori = ({route, navigation}) => {
                   source={imageSelect(kategoriparam)}
                   style={[ms.width(20), ms.height(20)]}
                 />
-                {/* <Image source={require('../../assets/icon/kategori/'+kategoriparam+'.png')} style={[ms.width(20), ms.height(20)]}/> */}
-                {/* <Image source={kategori?.img} style={[ms.width(20), ms.height(20)]} /> */}
               </View>
               <Text
                 style={[
@@ -185,8 +167,14 @@ const MinatKategori = ({route, navigation}) => {
           <MainButton
             label="Berikutnya"
             // width={(windowWidth * 40) / 100}
-            style={[isclicked.length == 0 ? styles.inactiveButton : styles.activeButton]}
-            onPress={()=>{onClickNext()}}
+            style={[
+              isclicked.length == 0
+                ? styles.inactiveButton
+                : styles.activeButton,
+            ]}
+            onPress={() => {
+              onClickNext();
+            }}
             // onPress={() => navigation.navigate('Login')}
           />
         </View>
@@ -236,29 +224,29 @@ const styles = StyleSheet.create({
   activeButton: {
     width: (windowWidth * 40) / 100,
     height: 40,
-    fontSize : 12,
-    fontWeight : '700',
-    color : colors.white,
-    margin : 5,
-    borderColor : colors.blue,
-    borderRadius : 12,
-    borderWidth : 0.5,
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.white,
+    margin: 5,
+    borderColor: colors.blue,
+    borderRadius: 12,
+    borderWidth: 0.5,
     backgroundColor: colors.blue,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   inactiveButton: {
     width: (windowWidth * 40) / 100,
     height: 40,
-    fontSize : 12,
-    fontWeight : '700',
-    color : colors.blue,
-    margin : 5,
-    borderColor : colors.grey3,
-    borderRadius : 12,
-    borderWidth : 0.5,
-    backgroundColor : colors.grey3,
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.blue,
+    margin: 5,
+    borderColor: colors.grey3,
+    borderRadius: 12,
+    borderWidth: 0.5,
+    backgroundColor: colors.grey3,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

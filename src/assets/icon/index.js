@@ -116,8 +116,9 @@ import IconTribunNews from './media/tribunnews.png';
 import IconTvoneNews from './media/tvonenews.png';
 import IconVivaNews from './media/vivanews.png';
 import IconWartaEkonomi from './media/wartaekonomi.png';
-import Icon from './media/wartaekonomi.png';
-
+import IconTwitter from './logo_twitter.png';
+import IconInstagram from './logo_instagram.png';
+import IconWhatsapp from './logo_whatsapp.png';
 export {
   IconProfil,
   IconProfilOutline,
@@ -234,5 +235,8 @@ export {
   IconVivaNews,
   IconWartaEkonomi,
   Iconkatadata,
-  IconCNNIndonesia
+  IconCNNIndonesia,
+  IconInstagram,
+  IconTwitter, 
+  IconWhatsapp
 };

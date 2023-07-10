@@ -1,12 +1,12 @@
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import React from 'react';
-import {colors, windowHeight, windowWidth} from '../../../utils';
+import {colors} from '../../../utils';
 import ms from '../../../utils/ms';
 import {Gap} from '../../atoms';
 import {ImageDefault, Point} from '../../../assets';
-import {useState} from 'react';
-import {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
+
+// Component news list in general
 
 const NewsList = ({theme, news, onPress, width, height}) => {
   {
@@ -57,12 +57,13 @@ const NewsList = ({theme, news, onPress, width, height}) => {
                   {news?.kategori}
                 </Text>
               </View>
+
               <View style={[ms.width('100%'), ms.row]}>
                 <Icon
-                  name='dot-single'
+                  name="dot-single"
                   size={12}
                   color={theme === 'dark' ? colors.white : colors.black}
-                  style={[ ms.mgH(3)]}
+                  style={[ms.mgH(3)]}
                 />
                 <Text
                   style={[
@@ -75,7 +76,8 @@ const NewsList = ({theme, news, onPress, width, height}) => {
               </View>
             </View>
           </View>
-
+          
+          {/* News image is not null */}
           {news?.image !== null ? (
             <View style={[ms.width('40%'), ms.ai('center')]}>
               <Image
@@ -84,6 +86,7 @@ const NewsList = ({theme, news, onPress, width, height}) => {
               />
             </View>
           ) : (
+            // News image is null
             <View style={[ms.width('40%'), ms.ai('center')]}>
               <Image
                 source={ImageDefault}
@@ -91,30 +94,11 @@ const NewsList = ({theme, news, onPress, width, height}) => {
               />
             </View>
           )}
-
-          {/* Condition while there's no image in var img */}
-          {/* {imgNull !== null ? (
-            <View style={[ms.width('40%'), ms.ai('center')]}>
-            <Image
-              source={{uri: news?.image}}
-              style={[ms.width('75%'), ms.height('100%')]}
-            />
-          </View>
-          ) : (
-            <View style={[ms.width('40%'), ms.ai('center')]}>
-            <Image
-              source={ImageDefault}
-              style={[ms.width('75%'), ms.height('100%')]}
-            />
-          </View>
-          )} */}
         </View>
         <View style={[ms.mgH(20)]}>
           <Gap
             height={1}
-            backgroundColor={
-              theme === 'dark' ? colors.white : colors.grey
-            }
+            backgroundColor={theme === 'dark' ? colors.white : colors.grey}
           />
         </View>
       </View>
@@ -122,20 +106,6 @@ const NewsList = ({theme, news, onPress, width, height}) => {
   );
 };
 
-{
-  /* <View style={[styles.NewsCard]}>
-          <View style={[ms.row, ms.pdV(17)]}>
-            <View style={[ms.width(windowWidth * 50 / 100), ms.height(windowHeight * 35 /100), ms.pdL(20)]}>
-            <Text style={[ms.fzBC(12.8 , '700', colors.black)]}>{news?.title}</Text>
-            <Text style={[ms.fzBC(12.8 , '400', colors.black)]}>{news?.media}</Text>
-            </View>
-
-            <View style={[ms.width(windowWidth * 50 /100), ms.height(windowHeight * 20 /100), ms.ai('center')]}>
-              <Image source={news?.img} style={[ms.width(windowWidth * 40 /100), ms.height(windowHeight * 13 /100)]}/>
-            </View>
-          </View>
-        </View> */
-}
 
 export default NewsList;
 
