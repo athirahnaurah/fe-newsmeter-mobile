@@ -16,6 +16,7 @@ import Share from 'react-native-share';
 import RenderHTML from 'react-native-render-html';
 import {useCallback} from 'react';
 import {Linking} from 'react-native';
+import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 
 const NewsDetail = ({news, theme}) => {
   const {width: contentWidth} = ms.width((windowWidth * 90) / 100);
@@ -72,15 +73,61 @@ const NewsDetail = ({news, theme}) => {
   };
 
   // share button
+  const shareFunc = async (id) => {
+    console.log("ID: ", id);
+    try {
+      const result = await Share.share({
+        message: "Check out this recipe!",
+        url: `newsmeter://mo.news/detailberita/${id}`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          alert('share');
+
+        }
+      } else if (result.action === Share.dismissedAction) {
+        alert('dismiss');
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'test message',
+        url: 'newsmeter://mo.news/detailberita/${news._id}'
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const openDeepLink = (url) => {
+    Linking.openURL(url)
+  };
+
   const customShare = async (id) => {
-    const deepLink = `newsmeter://detailberita/${id}`;
+    const deepLink = `newsmeter://mo.news/detailberita/${id}`;
+    
     const shareOptions = {
       message: news?.title,
-      imageUrl: news?.image,
-      url: deepLink,
-      // type: 'image/png',
-      // url: news?.image,
-      
+      // imageUrl: news?.image,
+      // social: Share.Social.WHATSAPP,
+      url: `https://beta.newsmeter.id/news/${id}`
     };
 
     try {
@@ -89,6 +136,7 @@ const NewsDetail = ({news, theme}) => {
       console.log('Error : ', err);
     }
   };
+  
   return (
     <ScrollView>
       {/* Title */}
@@ -236,14 +284,26 @@ const NewsDetail = ({news, theme}) => {
           ms.height((windowHeight * 8) / 100),
           ms.mgB(32),
         ]}>
-        <TouchableOpacity style={[ms.row, ms.bdC(colors.greyDark), ms.bdW(1), ms.pd(5)]} onPress={()=>{customShare(news?._id)}}>
+        <TouchableOpacity
+          style={[ms.row, ms.bdC(colors.greyDark), ms.bdW(1), ms.pd(5)]}
+          onPress={() => {
+            customShare(news._id);
+            // onShare()
+          }}>
           <Icon3
             name="share"
             size={22}
             color={theme === 'dark' ? colors.white : colors.grey_dark}
             style={[]}
           />
-          <Text style={[ms.fzBC(14, '400', colors.black)]}>| Bagikan</Text>
+          <Text
+            style={[
+              theme === 'dark'
+              ? ms.fzBC(14, '400', colors.white)
+              : ms.fzBC(14, '400', colors.grey_dark),
+            ]}>
+            | Bagikan
+          </Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -277,30 +337,40 @@ const styles = StyleSheet.create({
   },
 });
 
-{/* <View style={[ms.row]}> */}
+{
+  /* <View style={[ms.row]}> */
+}
 
-          {/* 
+{
+  /* 
       <TouchableOpacity style={[]} onPress={() => {}}>
         <Image
           source={IconTwitter}
           color={theme === 'dark' ? colors.white : colors.green}
           style={[ms.mgH(3), ms.wh(25), ms.jc('center')]}
         />
-      </TouchableOpacity> */}
+      </TouchableOpacity> */
+}
 
-          {/* <TouchableOpacity style={[]} onPress={() => {}}>
+{
+  /* <TouchableOpacity style={[]} onPress={() => {}}>
       <Image
         source={IconInstagram}
         color={theme === 'dark' ? colors.white : colors.green}
         style={[ms.mgH(3), ms.wh(25), ms.jc('center')]}
       />
-    </TouchableOpacity> */}
+    </TouchableOpacity> */
+}
 
-          {/* <TouchableOpacity style={[]} onPress={() => {}}>
+{
+  /* <TouchableOpacity style={[]} onPress={() => {}}>
       <Image
         source={IconWhatsapp}
         color={theme === 'dark' ? colors.white : colors.green}
         style={[ms.mgH(3), ms.wh(25), ms.jc('center')]}
       />
-    </TouchableOpacity> */}
-          {/* </View> */}
+    </TouchableOpacity> */
+}
+{
+  /* </View> */
+}

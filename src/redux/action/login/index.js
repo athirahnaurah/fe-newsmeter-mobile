@@ -173,7 +173,7 @@ export const forgotPassAction = dataPass => dispatch => {
   dispatch(setLoadingScreen(true));
   // showToasty('...Memproses')
   axios
-    .post(`${ApiConfigLocal}/forgot_password`, dataPass)
+    .post(`${ApiConfigDeploy}/forgot_password`, dataPass)
     .then(res => {
       console.log('response:', res);
       Alert.alert(
@@ -207,7 +207,7 @@ export const resetPassAction = (dataPass, navigation) => dispatch => {
   getData('token').then(token => {
     console.log(token);
     axios
-      .post(`${ApiConfigLocal}/reset_password`, dataPass)
+      .post(`${ApiConfigDeploy}/reset_password`, dataPass)
       .then(res => {
         console.log('response:', res);
         // Alert.alert(

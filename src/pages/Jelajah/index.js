@@ -87,7 +87,7 @@ const Jelajah = ({navigation}) => {
     }
   };
 
-  // Load More 
+  // Load More
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -409,8 +409,9 @@ const Jelajah = ({navigation}) => {
                           theme={colorScheme}
                           onPress={() => {
                             saveHistory(makeHistory(search));
-                            dispatch({type: 'SET_SEARCH', value: search});
-                            navigation.navigate('DetailSearch');
+                            // dispatch({type: 'SET_SEARCH', value: search});
+                            const newsID = search._id;
+                            navigation.navigate('DetailBerita', {newsID});
                           }}
                         />
                       );
@@ -463,8 +464,9 @@ const Jelajah = ({navigation}) => {
                     ]}>
                     <Text
                       style={[
-                        colorScheme === 'dark' ?
-                        ms.fzBC(13, '400', colors.white) : ms.fzBC(13, '400', colors.black),
+                        colorScheme === 'dark'
+                          ? ms.fzBC(13, '400', colors.white)
+                          : ms.fzBC(13, '400', colors.black),
                         ms.txA('center'),
                       ]}>
                       Maaf, hasil pencarian tidak ditemukan. Silahkan coba kata

@@ -17,17 +17,30 @@ import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {Logo, Point, SportImg} from '../../assets/images';
 import RenderHTML from 'react-native-render-html';
 import {Linking} from 'react-native';
-import { useEffect } from 'react';
-import { getNewsById } from '../../redux/action/news';
+import {useEffect} from 'react';
+import {getNewsById} from '../../redux/action/news';
 
 // News Detail Page for Search Result
 
-const DetailSearch = ({navigation}) => {
+const DetailSearch = ({route, navigation}) => {
   const dispatch = useDispatch();
   const {search} = useSelector(state => state.newsReducer);
   const {width: contentWidth} = ms.width((windowWidth * 90) / 100);
   const colorScheme = useColorScheme();
-  
+  const {news, newsbyid} = useSelector(state => state.newsReducer);
+  const {isLoadingScreen, isLogin} = useSelector(state => state.globalReducer);
+
+  useEffect(() => {
+    console.log(colorScheme);
+    if (navigation.isFocused) {
+      init();
+    }
+  }, [colorScheme]);
+
+  // Initialize req. API
+  const init = () => {
+    dispatch(getNewsById(search?._id));
+  };
   // remove image
   const removeImg = (htmlAttribs, children, convertedCSSStyles, passProps) => {
     return null;
@@ -46,18 +59,6 @@ const DetailSearch = ({navigation}) => {
   // show html content
   const source = {
     html: search?.content,
-  };
-
-  useEffect(() => {
-    console.log(colorScheme);
-    if (navigation.isFocused) {
-      init();
-    }
-  }, [colorScheme]);
-
-  // Initialize req. API
-  const init = async () => {
-      dispatch(getNewsById(search?._id));
   };
 
   // Open url news source
@@ -112,74 +113,16 @@ const DetailSearch = ({navigation}) => {
           </View>
         </View>
 
-        {/* Title */}
-        <View style={[ms.width((windowWidth * 100) / 100)]}>
-          <View
-            style={[
-              ms.width((windowWidth * 90) / 100),
-              ms.jc('center'),
-              ms.mgT(12),
-              ms.pdH(20),
-            ]}>
-            <Text style={[ms.fzBCLh(18, '700', colors.black, 19)]}>
-              {search?.title}
-            </Text>
+        {isLoadingScreen ? (
+          <ActivityIndicator
+            color={colorScheme === 'dark' ? colors.white : colors.black}
+            style={{margin: 5}}
+          />
+        ) : (
+          <View>
+            <NewsDetail news={newsbyid} theme={colorScheme} />
           </View>
-
-          <View style={[ms.row, ms.mgT(10)]}>
-            <View style={[ms.mgL(20)]}>
-              <Text style={[ms.fzBC(12, '500', colors.blue)]}>
-                {search?.kategori}
-              </Text>
-            </View>
-            <View style={[ms.width((windowWidth * 50) / 100), ms.row]}>
-              <Image source={Point} style={[ms.mgT(7), ms.mgH(10)]} />
-              <Text style={[ms.fzBC(12, '400', colors.black)]}>
-                {search?.date}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Content */}
-        <View
-          style={[
-            ms.mgT(20),
-            ms.aiJc('center'),
-            ms.width((windowWidth * 100) / 100),
-          ]}>
-          <View style={[ms.mgB(20)]}>
-            <Image
-              source={{uri: search?.image}}
-              style={[
-                ms.width((windowWidth * 90) / 100),
-                ms.height((windowHeight * 30) / 100),
-              ]}
-            />
-          </View>
-          <View style={[ms.width((windowWidth * 90) / 100), ms.jc('center')]}>
-            <RenderHTML
-              source={{html: search?.content}}
-              contentWidth={contentWidth}
-              renderers={renderers}
-              baseStyle={baseStyle}
-            />
-          </View>
-        </View>
-
-        {/* Sumber */}
-        <View
-          style={[
-            ms.mgT(20),
-            ms.pdH(20),
-            ms.row,
-            ms.ai('center'),
-            ms.width((windowWidth * 100) / 100),
-            ms.height((windowHeight * 10) / 100),
-          ]}>
-          <Text style={[ms.fzBC(12, '400', colors.black)]}>Sumber : </Text>
-          <OpenURLButton url={search?.original}>link</OpenURLButton>
-        </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

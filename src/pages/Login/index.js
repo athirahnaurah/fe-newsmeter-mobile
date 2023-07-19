@@ -89,7 +89,7 @@ const Login = ({navigation}) => {
         colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
         ms.height((windowHeight * 100) / 100),
       ]}>
-      <Loader isVisible={isLoadingScreen} />
+      <Loader isVisible={isLoadingScreen} theme={colorScheme} />
       <ScrollView>
         {/* Lewati */}
         <View style={[ms.height((windowHeight * 20) / 100), styles.lewati]}>

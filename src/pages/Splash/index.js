@@ -17,11 +17,11 @@ const Splash = ({navigation}) => {
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
         getData('preference').then(resPreference => {
-          if (resPreference === null) {
+          if (resPreference.length === 0) {
             AsyncStorage.clear();
             dispatch(setLogin(false));
             return navigation.reset({index: 0, routes: [{name: 'Login'}]});
-          } else {
+          } else{
             return navigation.reset({index: 0, routes: [{name: 'MainApp'}]});
           }
           // getData('authUser').then(resAuthUser => {

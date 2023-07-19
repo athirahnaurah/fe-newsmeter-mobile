@@ -28,8 +28,10 @@ const ResetPassword = ({route, navigation}) => {
   const {isLoadingScreen} = useSelector(state => state.globalReducer);
   const [emailValue, setEmailValue] = useState('');
   const colorScheme = useColorScheme();
+
   useEffect(() => {
     console.log(colorScheme);
+    console.log(route.params.email);
 
     getData('authUser').then(resAuthUser => {
       if (resAuthUser?.data.email) {
@@ -41,7 +43,6 @@ const ResetPassword = ({route, navigation}) => {
   }, [colorScheme]);
 
   const [input, setInput] = useState({
-    email: '',
     password: '',
   });
 
@@ -51,17 +52,6 @@ const ResetPassword = ({route, navigation}) => {
   const onValidate = async () => {
     Keyboard.dismiss();
     let isValid = true;
-
-    if (!input?.email) {
-      onHandleError('Email tidak boleh kosong', 'email');
-      isValid = false;
-    } else if (!input.email.match(/\S+@\S+\.\S+/)) {
-      onHandleError('Masukkan email yang valid', 'email');
-      isValid = false;
-    } else if (input?.email !== emailValue) {
-      onHandleError('Masukkan email yang valid', 'email');
-      isValid = false;
-    }
 
     if (!input.password) {
       onHandleError('Password tidak boleh kosong', 'password');
@@ -80,7 +70,7 @@ const ResetPassword = ({route, navigation}) => {
   const onForgot = async () => {
     let dataPass = {
       password: input?.password,
-      email: input?.email,
+      email: emailValue,
     };
     console.log('form reset pass:', dataPass);
     setInput({
@@ -105,12 +95,12 @@ const ResetPassword = ({route, navigation}) => {
         colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
         ms.height((windowHeight * 100) / 100),
       ]}>
-      <Loader isVisible={isLoadingScreen} />
+      <Loader isVisible={isLoadingScreen} theme={colorScheme}/>
       <ScrollView>
         {/* Header */}
         <View
           style={[
-            ms.height((windowHeight * 15) / 100),
+            ms.height((windowHeight * 13) / 100),
             ms.bc(colors.blue),
             ms.aiJc('center'),
             ms.bdRBLR(10),
@@ -119,7 +109,7 @@ const ResetPassword = ({route, navigation}) => {
           <Image source={Logo} style={[ms.aiJc('center')]} />
         </View>
 
-        <View style={[ms.height((windowHeight * 5) / 100)]}></View>
+        <View style={[ms.height((windowHeight * 7) / 100)]}></View>
 
         <View style={[ms.height((windowHeight * 70) / 100)]}>
           {/* Input */}
@@ -146,21 +136,6 @@ const ResetPassword = ({route, navigation}) => {
               {' '}
               Masukkan kata sandi baru minimal 8 karakter
             </Text>
-
-            <Input
-              height={(windowHeight * 12) / 100}
-              label="Email"
-              placeholder="Masukkan email"
-              error={errors.email}
-              value={input.email}
-              theme={colorScheme}
-              onFocus={() => {
-                onHandleError(null, 'email');
-              }}
-              onChangeText={value => {
-                onHandleChange(value, 'email');
-              }}
-            />
 
             <Input
               height={(windowHeight * 12) / 100}

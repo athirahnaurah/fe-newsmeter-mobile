@@ -31,6 +31,5 @@
             android:scheme="newsmeter" />
         </intent-filter>
       </activity>
-      <!-- <service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" /> -->
     </application>
 </manifest>

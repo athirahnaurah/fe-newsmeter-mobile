@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  useColorScheme,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import ms from '../../utils/ms';
@@ -13,16 +14,14 @@ import {windowHeight, windowWidth} from '../../utils/ms/constant';
 import {colors, getData} from '../../utils';
 import {Loader, MainButton} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  getKategori,
-  postPreference,
-} from '../../redux/action';
+import {getKategori, postPreference} from '../../redux/action';
 import {Alert} from 'react-native';
 
 const MAX_CATEGORY = 3;
 
 // Choose Preference
 const MinatKategori = ({route, navigation}) => {
+  const colorScheme = useColorScheme();
   const dispatch = useDispatch();
   const {kategoriList} = useSelector(state => state.kategoriReducer);
   const [isclicked, setClicked] = useState([]);
@@ -111,22 +110,37 @@ const MinatKategori = ({route, navigation}) => {
   };
 
   useEffect(() => {
+    console.log(colorScheme);
     if (navigation.isFocused) {
-      init(); 
+      init();
     }
-  }, [navigation]);
+  }, [colorScheme, navigation]);
 
   return (
-    <SafeAreaView style={[ms.containerPage]}>
-      <Loader isVisible={isLoadingScreen} />
+    <SafeAreaView
+      style={[
+        colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
+      ]}>
+      <Loader isVisible={isLoadingScreen} theme={colorScheme}/>
       <ScrollView>
         {/* Header */}
         <View
           style={[ms.height(windowHeight * 10) / 100, ms.pdH(20), ms.pdV(30)]}>
-          <Text style={[ms.fzBC(14, '700', colors.black), ms.mgB(10)]}>
+          <Text
+            style={[
+              colorScheme === 'dark'
+                ? ms.fzBC(14, '700', colors.white)
+                : ms.fzBC(14, '700', colors.black),
+              ms.mgB(10),
+            ]}>
             Pilih Minat Bacaan Anda
           </Text>
-          <Text style={[ms.fzBC(12, '400', colors.grey)]}>
+          <Text
+            style={[
+              colorScheme === 'dark'
+                ? ms.fzBC(12, '400', colors.white)
+                : ms.fzBC(12, '400', colors.grey),
+            ]}>
             Untuk memberikan rekomendasi bacaan berita yang Anda minati
           </Text>
         </View>
@@ -141,7 +155,11 @@ const MinatKategori = ({route, navigation}) => {
                 dispatch({type: 'SET_MINAT_KATEGORI', value: kategoriparam});
               }}
               style={[
-                isclicked.includes(kategoriparam)
+                colorScheme === 'dark'
+                  ? isclicked.includes(kategoriparam)
+                    ? styles.activeboxD
+                    : styles?.inactiveboxD
+                  : isclicked.includes(kategoriparam)
                   ? styles.activebox
                   : styles?.inactivebox,
               ]}>
@@ -153,8 +171,12 @@ const MinatKategori = ({route, navigation}) => {
               </View>
               <Text
                 style={[
-                  isclicked.includes(kategoriparam)
-                    ? ms.fzBC(13, '650', colors.white)
+                  colorScheme === 'dark'
+                    ? isclicked.includes(kategoriparam)
+                      ? ms.fzBC(13, '700', colors.white)
+                      : ms.fzBC(13, '650', colors.white)
+                    : isclicked.includes(kategoriparam)
+                    ? ms.fzBC(13, '700', colors.white)
                     : ms.fzBC(13, '650', colors.greyDark),
                 ]}>
                 {kategoriparam}
@@ -168,7 +190,11 @@ const MinatKategori = ({route, navigation}) => {
             label="Berikutnya"
             // width={(windowWidth * 40) / 100}
             style={[
-              isclicked.length == 0
+              colorScheme === 'dark'
+                ? isclicked.length == 0
+                  ? styles.inactiveButtonD
+                  : styles.activeButtonD
+                : isclicked.length == 0
                 ? styles.inactiveButton
                 : styles.activeButton,
             ]}
@@ -217,6 +243,26 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
   },
+  inactiveboxD: {
+    width: (windowWidth * 39) / 100,
+    height: (windowHeight * 8) / 100,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: colors.grey_dark,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
+  activeboxD: {
+    width: (windowWidth * 39) / 100,
+    height: (windowHeight * 8) / 100,
+    marginHorizontal: 10,
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: colors.blue,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
   button: {
     flexDirection: 'row-reverse',
     marginHorizontal: 20,
@@ -248,5 +294,37 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey3,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  activeButtonD: {
+    width: (windowWidth * 40) / 100,
+    height: 40,
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.white,
+    margin: 5,
+    borderColor: colors.blue,
+    borderRadius: 12,
+    borderWidth: 0.5,
+    backgroundColor: colors.blue,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inactiveButtonD: {
+    width: (windowWidth * 40) / 100,
+    height: 40,
+    fontSize: 12,
+    fontWeight: '700',
+    color: colors.blue,
+    margin: 5,
+    borderColor: colors.grey_dark,
+    borderRadius: 12,
+    borderWidth: 0.5,
+    backgroundColor: colors.grey_dark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  containerPageD: {
+    backgroundColor: '#131313',
+    flex: 1,
   },
 });

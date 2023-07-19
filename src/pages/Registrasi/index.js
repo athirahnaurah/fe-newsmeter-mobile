@@ -112,7 +112,7 @@ const Registrasi = ({navigation}) => {
 
   return (
     <SafeAreaView style={[colorScheme === 'dark' ? styles.containerPageD : ms.containerPage]}>
-      <Loader isVisible={isLoadingScreen}/>
+      <Loader isVisible={isLoadingScreen} theme={colorScheme}/>
       <ScrollView>
         
           <View>

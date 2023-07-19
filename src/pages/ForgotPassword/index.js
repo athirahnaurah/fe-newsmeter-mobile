@@ -82,12 +82,12 @@ const ForgotPassword = ({navigation}) => {
         colorScheme === 'dark' ? styles.containerPageD : ms.containerPage,
         ms.height((windowHeight * 100) / 100),
       ]}>
-      <Loader isVisible={isLoadingScreen} />
+      <Loader isVisible={isLoadingScreen} theme={colorScheme}/>
       <ScrollView>
         {/* Header */}
         <View
           style={[
-            ms.height((windowHeight * 15) / 100),
+            ms.height((windowHeight * 13) / 100),
             ms.bc(colors.blue),
             ms.aiJc('center'),
             ms.bdRBLR(10),
@@ -96,7 +96,7 @@ const ForgotPassword = ({navigation}) => {
           <Image source={Logo} style={[ms.aiJc('center')]} />
         </View>
 
-        <View style={[ms.height((windowHeight * 5) / 100)]}></View>
+        <View style={[ms.height((windowHeight * 7) / 100)]}></View>
 
         <View style={[ms.height((windowHeight * 70) / 100)]}>
           {/* Input */}
