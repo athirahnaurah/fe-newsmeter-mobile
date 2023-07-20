@@ -73,61 +73,12 @@ const NewsDetail = ({news, theme}) => {
   };
 
   // share button
-  const shareFunc = async (id) => {
-    console.log("ID: ", id);
-    try {
-      const result = await Share.share({
-        message: "Check out this recipe!",
-        url: `newsmeter://mo.news/detailberita/${id}`,
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          alert('share');
-
-        }
-      } else if (result.action === Share.dismissedAction) {
-        alert('dismiss');
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  const onShare = async () => {
-    try {
-      const result = await Share.share({
-        message:
-          'test message',
-        url: 'newsmeter://mo.news/detailberita/${news._id}'
-      });
-      if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          // shared with activity type of result.activityType
-        } else {
-          // shared
-        }
-      } else if (result.action === Share.dismissedAction) {
-        // dismissed
-      }
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
-  const openDeepLink = (url) => {
-    Linking.openURL(url)
-  };
-
   const customShare = async (id) => {
-    const deepLink = `newsmeter://mo.news/detailberita/${id}`;
-    
+    const shareUrl = news?.original;
+
     const shareOptions = {
       message: news?.title,
-      // imageUrl: news?.image,
-      // social: Share.Social.WHATSAPP,
-      url: `https://beta.newsmeter.id/news/${id}`
+      url: shareUrl
     };
 
     try {
@@ -167,8 +118,9 @@ const NewsDetail = ({news, theme}) => {
             ms.jc('space-between'),
             ms.mgR(20),
             ms.height((windowHeight * 4) / 100),
+            ms.width((windowWidth * 90) / 100),
           ]}>
-          <View style={[ms.row]}>
+          <View style={[ms.row, ms.width((windowWidth * 83) / 100),]}>
             <View style={[ms.mgL(20)]}>
               <Text
                 style={[
@@ -179,7 +131,7 @@ const NewsDetail = ({news, theme}) => {
                 {news?.kategori}
               </Text>
             </View>
-            <View style={[ms.width((windowWidth * 68) / 100), ms.row]}>
+            <View style={[ms.row]}>
               <Icon2
                 name="dot-single"
                 size={12}
@@ -199,7 +151,6 @@ const NewsDetail = ({news, theme}) => {
           <View
             style={[
               ms.row,
-              ms.width((windowWidth * 20) / 100),
               ms.ai('center'),
             ]}>
             <Text

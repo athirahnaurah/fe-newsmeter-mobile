@@ -37,8 +37,8 @@ const BeritaByKategori = ({navigation}) => {
   const initialGet = slice(bykategori, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  console.log('cat: ', kategori);
-  console.log('katlist: ', bykategori);
+  // console.log('cat: ', kategori);
+  // console.log('katlist: ', bykategori);
 
   const init = async () => {
     await dispatch(getNewsByKategori(kategori));
@@ -179,8 +179,9 @@ const BeritaByKategori = ({navigation}) => {
                           // height={65}
                           onPress={() => {
                             saveHistory(makeHistory(news));
-                            dispatch({type: 'SET_NEWS', value: news});
-                            navigation.navigate('DetailBerita');
+                            // dispatch({type: 'SET_NEWS', value: news});
+                            const newsID = news._id;
+                            navigation.navigate('DetailBerita', {newsID});
                           }}
                         />
                       );

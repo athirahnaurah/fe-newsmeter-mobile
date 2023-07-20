@@ -36,7 +36,7 @@ const BeritaByMedia = ({navigation}) => {
   const initialGet = slice(bymedia, 0, i);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  console?.log('med: ', bymedia);
+  // console?.log('med: ', bymedia);
 
   // Initialize req. API
   const init = async () => {
@@ -56,12 +56,12 @@ const BeritaByMedia = ({navigation}) => {
     });
   }, []);
 
-  // Capitalize the first letter 
+  // Capitalize the first letter
   const capitalizeFirstLetter = string => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-  // Load more 
+  // Load more
   const loadMore = () => {
     setI(i + 15);
     console.log('index', i);
@@ -181,8 +181,9 @@ const BeritaByMedia = ({navigation}) => {
                           // height={65}
                           onPress={() => {
                             saveHistory(makeHistory(news));
-                            dispatch({type: 'SET_NEWS', value: news});
-                            navigation.navigate('DetailBerita');
+                            // dispatch({type: 'SET_NEWS', value: news});
+                            const newsID = news._id;
+                            navigation.navigate('DetailBerita', {newsID});
                           }}
                         />
                       );

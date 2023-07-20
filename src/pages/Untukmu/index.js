@@ -190,8 +190,9 @@ const Untukmu = ({navigation}) => {
                                 theme={colorScheme}
                                 onPress={() => {
                                   saveHistory(makeHistory(news));
-                                  dispatch({type: 'SET_NEWS', value: news});
-                                  navigation.navigate('DetailBerita');
+                                  // dispatch({type: 'SET_NEWS', value: news});
+                                  const newsID = news._id;
+                                  navigation.navigate('DetailBerita', {newsID});
                                   // detail rekomendasi
                                 }}
                               />
@@ -273,7 +274,8 @@ const Untukmu = ({navigation}) => {
                                   onPress={() => {
                                     saveHistory(makeHistory(rekom));
                                     dispatch({type: 'SET_NEWS', value: rekom});
-                                    navigation.navigate('DetailBerita');
+                                    const newsID = rekom._id;
+                                    navigation.navigate('DetailBerita', {newsID});
                                   }}
                                 />
                               );

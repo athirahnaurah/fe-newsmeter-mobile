@@ -46,9 +46,9 @@ const DetailBerita = ({route, navigation}) => {
 
   // Initialize req. API
   const init = async () => {
-    console.log('berita: ', news);
+    // console.log('berita: ', news);
     console.log('news id: ', newsID);
-    console.log('param id: ', paramID);
+    // console.log('param id: ', paramID);
     if (newsID !== undefined) {
       dispatch(getNewsById(newsID));
     } else{

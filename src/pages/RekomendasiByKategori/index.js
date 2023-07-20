@@ -173,8 +173,9 @@ const RekomendasiByKategori = ({navigation}) => {
                     // height={65}
                     onPress={() => {
                       saveHistory(makeHistory(news));
-                      dispatch({type: 'SET_NEWS', value: news});
-                      navigation.navigate('DetailBerita');
+                      // dispatch({type: 'SET_NEWS', value: news});
+                      const newsID = news._id;
+                      navigation.navigate('DetailBerita', {newsID});
                     }}
                   />
                 );
