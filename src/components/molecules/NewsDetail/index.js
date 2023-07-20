@@ -16,7 +16,6 @@ import Share from 'react-native-share';
 import RenderHTML from 'react-native-render-html';
 import {useCallback} from 'react';
 import {Linking} from 'react-native';
-import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 
 const NewsDetail = ({news, theme}) => {
   const {width: contentWidth} = ms.width((windowWidth * 90) / 100);
