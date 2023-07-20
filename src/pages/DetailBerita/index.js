@@ -77,13 +77,12 @@ const DetailBerita = ({route, navigation}) => {
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {
-            dispatch({type: 'SET_NEWS_BY_ID', value: null});
-            navigation.navigate('MainApp');
+            navigation.goBack();
           }}
           style={styles.back}>
           <Icon
             name="arrowleft"
-            size={24}
+            size={22}
             color={colors.white}
             style={[ms.mgL(20)]}
           />
@@ -118,13 +117,13 @@ const styles = StyleSheet.create({
     width: (windowWidth * 100) / 100,
     height: (windowHeight * 6) / 100,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start'
   },
   background: {
-    // width: (windowWidth * 70) / 100,
-    // height: (windowHeight * 6) / 100,
-    paddingVertical: 5,
     justifyContent: 'center',
+    // paddingVertical: 5
+    width: (windowWidth * 70) / 100,
+    height: (windowHeight * 6) / 100,
   },
   back: {
     width: (windowWidth * 35) / 100,

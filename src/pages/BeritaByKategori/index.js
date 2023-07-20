@@ -129,7 +129,7 @@ const BeritaByKategori = ({navigation}) => {
           style={styles.back}>
           <Icon
             name="arrowleft"
-            size={24}
+            size={22}
             color={colors.white}
             style={[ms.mgL(20)]}
           />
