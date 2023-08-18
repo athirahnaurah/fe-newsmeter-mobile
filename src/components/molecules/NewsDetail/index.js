@@ -211,7 +211,7 @@ const NewsDetail = ({news, theme}) => {
           ms.row,
           ms.ai('center'),
           ms.width((windowWidth * 100) / 100),
-          ms.height((windowHeight * 8) / 100),
+          ms.height((windowHeight * 10) / 100),
           ms.mgB(10),
         ]}>
         <Text
