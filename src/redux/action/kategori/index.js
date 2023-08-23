@@ -11,7 +11,7 @@ export const getKategori = (onCallback = res => {}, onError = err => {}) => disp
     // const paramList = [{}];
     dispatch(setLoadingScreen(true));
 
-    axios.get(`http://beta.newsmeter.id/api/get/list/kategori`, 
+    axios.get(`${ApiConfig}/api/get/list/kategori`, 
     {headers: ApiHeader})
     .then((res) => {
         console.log('result', res);

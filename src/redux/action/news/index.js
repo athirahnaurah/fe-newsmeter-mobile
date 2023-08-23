@@ -42,7 +42,7 @@ export const getNewsById =
     dispatch(setLoadingScreen(true));
 
     axios
-      .get(`http://beta.newsmeter.id/api/news/${id}`, {headers: ApiHeader})
+      .get(`${ApiConfig}/api/news/${id}`, {headers: ApiHeader})
       .then(res => {
         console.log('result news by id', res);
         dispatch({type: 'SET_NEWS_BY_ID', value: res.data});
@@ -179,7 +179,7 @@ export const getRecommendationByKategori =
             // console.log('preference', preference);
             axios
               .get(
-                `http://beta.newsmeter.id/api/get/news/kategori/${preference}/50`,
+                `${ApiConfig}/api/get/news/kategori/${preference}/50`,
                 {
                   headers: ApiHeader,
                 },

@@ -22,7 +22,7 @@ const KategoriRekomendasi = ({theme, news, onPress}) => {
             <Image
               source={{uri: news?.image}}
               style={[
-                ms.width((windowWidth * 50) / 100),
+                ms.width((windowWidth * 35) / 100),
                 ms.height((windowHeight * 14) / 100),
               ]}
             />
