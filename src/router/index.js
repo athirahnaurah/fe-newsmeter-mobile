@@ -19,6 +19,9 @@ import {
   RekomendasiByKategori,
   ForgotPassword,
   ResetPassword,
+  TentangKami,
+  Bantuan,
+  HubungiKami
 } from '../pages';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {BottomNavigator} from '../components';
@@ -140,6 +143,21 @@ const Router = () => {
       <Stack.Screen
         name="ResetPassword"
         component={ResetPassword}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="TentangKami"
+        component={TentangKami}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Bantuan"
+        component={Bantuan}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="HubungiKami"
+        component={HubungiKami}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

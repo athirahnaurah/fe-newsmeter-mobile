@@ -47,7 +47,7 @@ const Input = ({
         <TextInput
           secureTextEntry={hidePassword}
           style={[
-            theme === 'dark' ? styles.labelD : styles.label,
+            theme === 'dark' ? styles.labelD : styles.label, ms.txC(theme === 'dark' ? colors.white : colors.grey),
             ms.width((windowWidth * 80) / 100),
           ]}
           autoCorrect={false}

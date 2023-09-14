@@ -14,6 +14,9 @@ import DetailSearch from "./DetailSearch";
 import RekomendasiByKategori from './RekomendasiByKategori';
 import ForgotPassword from "./ForgotPassword";
 import ResetPassword from "./ResetPassword";
+import TentangKami from "./TentangKami";
+import Bantuan from "./Bantuan";
+import HubungiKami from "./HubungiKami";
 
 export{
     Beranda,
@@ -31,5 +34,8 @@ export{
     DetailSearch,
     RekomendasiByKategori,
     ForgotPassword,
-    ResetPassword
+    ResetPassword,
+    TentangKami,
+    Bantuan,
+    HubungiKami
 }

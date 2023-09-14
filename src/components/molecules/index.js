@@ -19,5 +19,5 @@ export{
     ListMedia,
     SearchList,
     NewsList,
-    NewsDetail
+    NewsDetail,
 }

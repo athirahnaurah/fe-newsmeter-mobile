@@ -21,6 +21,8 @@ import {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setLogin} from '../../redux/action';
 import {Linking} from 'react-native';
+import Icon1 from 'react-native-vector-icons/Feather';
+
 
 // Profile Page
 
@@ -161,8 +163,8 @@ const Profil = ({navigation}) => {
             <Text
               style={[
                 colorScheme === 'dark'
-                  ? ms.fzBC(12, '400', colors.white)
-                  : ms.fzBC(12, '400', colors.black),
+                  ? ms.fzBC(13, '400', colors.white)
+                  : ms.fzBC(13, '400', colors.black),
                 ms.width((windowWidth * 78) / 100),
               ]}>
               Kunjungi Website
@@ -190,8 +192,8 @@ const Profil = ({navigation}) => {
               <Text
                 style={[
                   colorScheme === 'dark'
-                    ? ms.fzBC(12, '400', colors.white)
-                    : ms.fzBC(12, '400', colors.black),
+                    ? ms.fzBC(13, '400', colors.white)
+                    : ms.fzBC(13, '400', colors.black),
                   ms.width((windowWidth * 78) / 100),
                 ]}>
                 Keluar
@@ -218,8 +220,8 @@ const Profil = ({navigation}) => {
               <Text
                 style={[
                   colorScheme === 'dark'
-                    ? ms.fzBC(12, '400', colors.white)
-                    : ms.fzBC(12, '400', colors.black),
+                    ? ms.fzBC(13, '400', colors.white)
+                    : ms.fzBC(13, '400', colors.black),
                   ms.width((windowWidth * 78) / 100),
                 ]}>
                 Masuk
@@ -232,6 +234,34 @@ const Profil = ({navigation}) => {
               />
             </TouchableOpacity>
           )}
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Bantuan");
+            }}
+            style={[ms.row, ms.ai('center'), ms.pdV(10)]}>
+            <Icon1
+              name="help-circle"
+              size={18}
+              color={colorScheme === 'dark' ? colors.white : colors.black}
+              style={[ms.width((windowWidth * 8) / 100)]}
+            />
+            <Text
+              style={[
+                colorScheme === 'dark'
+                  ? ms.fzBC(13, '400', colors.white)
+                  : ms.fzBC(13, '400', colors.black),
+                ms.width((windowWidth * 78) / 100),
+              ]}>
+              Bantuan
+            </Text>
+            <Icon
+              name="chevron-forward"
+              size={18}
+              color={colorScheme === 'dark' ? colors.white : colors.black}
+              style={[ms.width((windowWidth * 12) / 100), ms.pdR(20)]}
+            />
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
